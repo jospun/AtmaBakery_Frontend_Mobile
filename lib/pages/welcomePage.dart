@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:p3l_atmabakery/registerPage.dart';
+import 'package:p3l_atmabakery/pages/registerPage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:p3l_atmabakery/loginPage.dart';
+import 'package:p3l_atmabakery/pages/loginPage.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});

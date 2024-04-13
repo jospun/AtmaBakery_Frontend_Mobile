@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:p3l_atmabakery/welcomePage.dart';
+import 'package:p3l_atmabakery/pages/welcomePage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
