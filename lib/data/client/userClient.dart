@@ -33,17 +33,16 @@ class userClient {
     }
   }
 
-  // static Future<Response> create(User user) async {
-  //   try {
-  //     print(Uri.http(url, "/api/register"));
-  //     print(user.toRawJson());
-  //     var response = await post(Uri.http(url, "register"),
-  //         headers: {"Content-Type": "application/json"},
-  //         body: user.toRawJson());
-  //     if (response.statusCode != 200) throw Exception(response.reasonPhrase);
-  //     return response;
-  //   } catch (e) {
-  //     return Future.error(e.toString());
-  //   }
-  // }
+  static Future<Response> create(User user) async {
+    try {
+      var response = await post(Uri.parse("https://$url/register"),
+          headers: {"Content-Type": "application/json"},
+          body: user.toRawJson());
+      if (response.statusCode != 200) throw Exception(response.reasonPhrase);
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return Future.error(e.toString());
+    }
+  }
 }

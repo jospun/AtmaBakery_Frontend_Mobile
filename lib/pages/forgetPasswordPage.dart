@@ -96,33 +96,32 @@ class _ForgetPasswordPage extends State<ForgetPasswordPage> {
                         ),
                       ),
                       SizedBox(height: 0.8.h),
-                      SizedBox(
-                        height: 5.h,
-                        child: Center(
-                            child: TextFormField(
-                          controller: controllerEmail,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          decoration: InputDecoration(
-                              filled: true,
-                              fillColor: const Color.fromRGBO(234, 234, 234, 1),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              hintText: 'Email Anda',
-                              hintStyle: TextStyle(height: 0.13.h)),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
-                            } else if (!value.contains('@')) {
-                              return 'Email tidak valid';
-                            }
-                            return null;
-                          },
-                        )),
-                      ),
+                      Center(
+                          child: TextFormField(
+                        controller: controllerEmail,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: const Color.fromRGBO(234, 234, 234, 1),
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
+                            hintText: 'Email Anda',
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 10.0),
+                            hintStyle: TextStyle(height: 0.13.h)),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          } else if (!value.contains('@')) {
+                            return 'Email tidak valid';
+                          }
+                          return null;
+                        },
+                      )),
                       SizedBox(height: 5.h),
                       Center(
                         child: SizedBox(

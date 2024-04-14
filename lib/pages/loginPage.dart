@@ -98,10 +98,8 @@ class _LoginPage extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(height: 0.8.h),
-                      SizedBox(
-                        height: 5.h,
-                        child: Center(
-                            child: TextFormField(
+                      Center(
+                        child: TextFormField(
                           controller: controllerEmail,
                           style: const TextStyle(
                             fontSize: 14,
@@ -114,6 +112,8 @@ class _LoginPage extends State<LoginPage> {
                                 borderSide: BorderSide.none,
                               ),
                               hintText: 'Email Anda',
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 10.0),
                               hintStyle: TextStyle(height: 0.13.h)),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -123,7 +123,7 @@ class _LoginPage extends State<LoginPage> {
                             }
                             return null;
                           },
-                        )),
+                        ),
                       ),
                       SizedBox(height: 2.h),
                       const SizedBox(
@@ -137,49 +137,48 @@ class _LoginPage extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(height: 0.8.h),
-                      SizedBox(
-                        height: 5.h,
-                        child: Center(
-                          child: TextFormField(
-                            controller: controllerPassword,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Color.fromRGBO(234, 234, 234, 1),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              hintText: 'Password Anda',
-                              hintStyle: TextStyle(height: 0.13.h),
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isPasswordVisible = !isPasswordVisible;
-                                  });
-                                },
-                                icon: Icon(
-                                  isPasswordVisible
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: isPasswordVisible
-                                      ? Colors.grey
-                                      : Colors.blue,
-                                ),
-                              ),
-                            ),
-                            obscureText: isPasswordVisible,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Password Tidak Boleh Kosong';
-                              } else if (value.length < 8) {
-                                return 'Password Minimal 8 karakter';
-                              }
-                              return null;
-                            },
+                      Center(
+                        child: TextFormField(
+                          controller: controllerPassword,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
                           ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Color.fromRGBO(234, 234, 234, 1),
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
+                            hintText: 'Password Anda',
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 10.0),
+                            hintStyle: TextStyle(height: 0.13.h),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  isPasswordVisible = !isPasswordVisible;
+                                });
+                              },
+                              icon: Icon(
+                                isPasswordVisible
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: isPasswordVisible
+                                    ? Colors.grey
+                                    : Colors.blue,
+                              ),
+                            ),
+                          ),
+                          obscureText: isPasswordVisible,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Password Tidak Boleh Kosong';
+                            } else if (value.length < 8) {
+                              return 'Password Minimal 8 karakter';
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       SizedBox(height: 0.3.h),
