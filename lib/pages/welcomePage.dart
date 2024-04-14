@@ -46,7 +46,7 @@ class NarrowLayout extends StatelessWidget {
             SizedBox(height: 7.h),
             SizedBox(
               width: 80.w,
-              height: 6.h,
+              height: 4.h,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromRGBO(255, 68, 76, 1),
@@ -70,7 +70,7 @@ class NarrowLayout extends StatelessWidget {
             SizedBox(height: 2.h),
             SizedBox(
               width: 80.w,
-              height: 6.h,
+              height: 4.h,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromRGBO(255, 68, 76, 1),
@@ -94,7 +94,7 @@ class NarrowLayout extends StatelessWidget {
             SizedBox(height: 2.h),
             SizedBox(
               width: 80.w,
-              height: 6.h,
+              height: 4.h,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromRGBO(255, 68, 76, 1),

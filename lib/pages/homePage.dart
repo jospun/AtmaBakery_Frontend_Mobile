@@ -12,8 +12,14 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Placeholder(
-      child: Text(widget.loggedIn.email.toString()),
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(widget.loggedIn.email.toString()),
+        ],
+      ),
     );
   }
 }
