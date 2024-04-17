@@ -6,6 +6,7 @@ import 'package:p3l_atmabakery/pages/registerPage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:p3l_atmabakery/data/user.dart';
 import 'package:p3l_atmabakery/data/client/userClient.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,9 +23,9 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<LoginModel?> login() async {
+    Future<String?> login() async {
       try {
-        LoginModel loggedIn = await userClient.Login(
+        String loggedIn = await userClient.Login(
             controllerEmail.text, controllerPassword.text);
         showSnackbar(context, "Berhasil Login", Colors.green);
         return loggedIn;
@@ -210,15 +211,13 @@ class _LoginPage extends State<LoginPage> {
                               ),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  LoginModel? loggedIn = await login();
-                                  if (loggedIn != null) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              HomePage(loggedIn: loggedIn)),
-                                    );
-                                  }
+                                  String? loggedIn = await login();
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  prefs.setString('token', loggedIn!);
+                                  print(prefs.getString('token')!);
+                                  MaterialPageRoute(
+                                      builder: (_) => const HomePage());
                                 }
                               },
                               child: const Text(

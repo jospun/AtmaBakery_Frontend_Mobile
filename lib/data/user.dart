@@ -1,41 +1,28 @@
 import 'dart:convert';
 
-class LoginModel {
-  String email;
-
-  LoginModel({
-    required this.email,
-  });
-
-  factory LoginModel.fromRawJson(String str) =>
-      LoginModel.fromJson(json.decode(str));
-
-  factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
-        email: json["email"],
-      );
-
-  String toRawJson() => json.encode(toJson());
-  Map<String, dynamic> toJson() => {
-        "email": email,
-      };
-}
-
 class User {
-  String email, nama, password, no_telp, password_confirmation;
-  String tanggal_lahir;
+  final int? id;
+
+  final String? token;
+  String? email, nama, password, no_telp, password_confirmation;
+  String? tanggal_lahir;
 
   User({
-    required this.email,
-    required this.nama,
-    required this.password,
-    required this.password_confirmation,
-    required this.no_telp,
-    required this.tanggal_lahir,
+    this.id,
+    this.token,
+    this.email,
+    this.nama,
+    this.password,
+    this.password_confirmation,
+    this.no_telp,
+    this.tanggal_lahir,
   });
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 
   factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json["id_user"],
+        token: json["token"],
         email: json["email"],
         nama: json["nama"],
         password: json["password"],
@@ -46,6 +33,8 @@ class User {
 
   String toRawJson() => json.encode(toJson());
   Map<String, dynamic> toJson() => {
+        "id_user": id.toString(),
+        "token": token,
         "email": email,
         "nama": nama,
         "password": password,

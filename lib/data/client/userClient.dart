@@ -5,16 +5,16 @@ import 'package:http/http.dart';
 
 class userClient {
   static final String url =
-      "api-atma-bakery.vercel.app/api"; // ini pake emu yaa
+      "api-atma-bakery.azurewebsites.net"; // ini pake emu yaa
 
-  static Future<LoginModel> Login(String email, String password) async {
+  static Future<String> Login(String email, String password) async {
     try {
       var response = await post(Uri.parse("https://$url/login"),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode({"email": email, "password": password}));
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
-      return LoginModel.fromJson(json.decode(response.body)['data']);
+      return json.decode(response.body)['token'].toString();
     } catch (e) {
       return Future.error(e.toString());
     }
@@ -42,6 +42,19 @@ class userClient {
       return response;
     } catch (e) {
       print(e.toString());
+      return Future.error(e.toString());
+    }
+  }
+
+  static Future<User> showSelf() async {
+    try {
+      var response = await get(Uri.parse("https://$url/users/self"))
+          .timeout(const Duration(seconds: 5));
+
+      if (response.statusCode != 200) throw Exception(response.reasonPhrase);
+
+      return User.fromJson(jsonDecode(response.body)["data"]);
+    } catch (e) {
       return Future.error(e.toString());
     }
   }

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:p3l_atmabakery/data/user.dart';
 
 class HomePage extends StatefulWidget {
-  final LoginModel loggedIn;
-  const HomePage({super.key, required this.loggedIn});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePage();
@@ -17,7 +16,7 @@ class _HomePage extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(widget.loggedIn.email.toString()),
+          Text("PP"),
         ],
       ),
     );
