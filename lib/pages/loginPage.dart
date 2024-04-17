@@ -216,8 +216,12 @@ class _LoginPage extends State<LoginPage> {
                                       await SharedPreferences.getInstance();
                                   prefs.setString('token', loggedIn!);
                                   print(prefs.getString('token')!);
-                                  MaterialPageRoute(
-                                      builder: (_) => const HomePage());
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const HomePage(),
+                                    ),
+                                  );
                                 }
                               },
                               child: const Text(

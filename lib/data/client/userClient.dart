@@ -20,6 +20,18 @@ class userClient {
     }
   }
 
+  static Future<String> Logout() async {
+    try {
+      var response = await post(Uri.parse("https://$url/logout"),
+          headers: {"Content-Type": "application/json"});
+
+      if (response.statusCode != 200) throw Exception(response.reasonPhrase);
+      return json.decode(response.body)['token'].toString();
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
   static Future<Response> sendEmailForResetPassword(String email) async {
     try {
       var response = await post(Uri.parse("https://$url/password/email"),
