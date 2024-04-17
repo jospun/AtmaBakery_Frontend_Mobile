@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:p3l_atmabakery/data/user.dart';
 import 'package:p3l_atmabakery/data/client/userClient.dart';
 import 'package:p3l_atmabakery/pages/loginPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,28 +12,70 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
+  User? currentUser;
+  bool _isLoading = true;
+  String? nama, email;
+
+  void getUserData() async {
+    _isLoading = true;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    try {
+      currentUser = await userClient.showSelf();
+      setState(() {
+        nama = currentUser!.nama;
+        email = currentUser!.email;
+      });
+      _isLoading = false;
+    } catch (e) {
+      print("Error fetching SharedPreferences: $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+    if (currentUser == null) {
+      setState(() {
+        nama = "Guest";
+        email = "Please log In";
+      });
+      _isLoading = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("PP"),
-          ElevatedButton(
-              onPressed: () async {
-                FocusManager.instance.primaryFocus!.unfocus();
-                userClient.Logout();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const LoginPage(),
-                  ),
-                );
-              },
-              child: Text("Logout")),
-        ],
-      ),
+    return Scaffold(
+      body: !_isLoading
+          ? Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Hi, $nama"),
+                  ElevatedButton(
+                      onPressed: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        FocusManager.instance.primaryFocus!.unfocus();
+                        prefs.remove('token');
+                        userClient.Logout();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const LoginPage(),
+                          ),
+                        );
+                      },
+                      child: Text("Logout")),
+                ],
+              ),
+            )
+          : const Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 }

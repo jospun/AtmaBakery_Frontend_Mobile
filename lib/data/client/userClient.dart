@@ -1,5 +1,5 @@
 import 'package:p3l_atmabakery/data/user.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
 
@@ -60,8 +60,15 @@ class userClient {
 
   static Future<User> showSelf() async {
     try {
-      var response = await get(Uri.parse("https://$url/users/self"))
-          .timeout(const Duration(seconds: 5));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token')!;
+      var response = await get(
+        Uri.parse("https://$url/users/self"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token'
+        },
+      ).timeout(const Duration(seconds: 5));
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
 

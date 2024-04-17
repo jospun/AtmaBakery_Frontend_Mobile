@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:p3l_atmabakery/pages/homePage.dart';
 import 'package:p3l_atmabakery/pages/registerPage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:p3l_atmabakery/pages/loginPage.dart';
@@ -99,7 +100,14 @@ class NarrowLayout extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromRGBO(255, 68, 76, 1),
                   ),
-                  onPressed: () => {},
+                  onPressed: () => {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const HomePage(),
+                          ),
+                        )
+                      },
                   child: const Text(
                     'Continue with Guest',
                     style: TextStyle(
@@ -186,7 +194,14 @@ class WideLayout extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromRGBO(255, 68, 76, 1),
                       ),
-                      onPressed: () => {},
+                      onPressed: () => {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const HomePage(),
+                              ),
+                            )
+                          },
                       child: const Text(
                         'Continue with Guest',
                         style: TextStyle(
