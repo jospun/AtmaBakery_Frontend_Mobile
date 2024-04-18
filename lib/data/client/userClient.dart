@@ -20,13 +20,15 @@ class userClient {
     }
   }
 
-  static Future<String> Logout() async {
+  static Future<String> Logout(String token) async {
     try {
-      var response = await post(Uri.parse("https://$url/logout"),
-          headers: {"Content-Type": "application/json"});
+      var response = await post(Uri.parse("https://$url/logout"), headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      });
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
-      return json.decode(response.body)['token'].toString();
+      return json.decode(response.body)['message'].toString();
     } catch (e) {
       return Future.error(e.toString());
     }

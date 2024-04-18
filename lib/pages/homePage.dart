@@ -60,8 +60,9 @@ class _HomePage extends State<HomePage> {
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
                         FocusManager.instance.primaryFocus!.unfocus();
+                        String token = prefs.getString('token').toString();
+                        await userClient.Logout(token);
                         prefs.remove('token');
-                        userClient.Logout();
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
