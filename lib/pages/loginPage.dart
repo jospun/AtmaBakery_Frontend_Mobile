@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:p3l_atmabakery/pages/forgetPasswordPage.dart';
+import 'package:p3l_atmabakery/pages/homeNavbar.dart';
 import 'package:p3l_atmabakery/pages/homePage.dart';
 import 'package:p3l_atmabakery/pages/registerPage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -219,7 +220,7 @@ class _LoginPage extends State<LoginPage> {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => const HomePage(),
+                                      builder: (_) => const HomeNavbar(),
                                     ),
                                   );
                                 }

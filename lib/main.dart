@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:p3l_atmabakery/pages/homePage.dart';
+import 'package:p3l_atmabakery/pages/homeNavbar.dart';
 import 'package:p3l_atmabakery/pages/loginPage.dart';
 import 'package:p3l_atmabakery/pages/welcomePage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
             useMaterial3: true,
           ),
-          home: token!.isEmpty ? WelcomePage() : HomePage(),
+          home: token!.isEmpty ? const WelcomePage() : const HomeNavbar(),
         );
       },
     );
