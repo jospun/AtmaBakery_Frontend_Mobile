@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   User? currentUser;
   bool _isLoading = true;
-  String? nama, email;
+  String? nama, email, id_role;
 
   void getUserData() async {
     _isLoading = true;
@@ -25,6 +25,7 @@ class _HomePage extends State<HomePage> {
       setState(() {
         nama = currentUser!.nama;
         email = currentUser!.email;
+        id_role = currentUser!.id_role;
       });
       _isLoading = false;
     } catch (e) {
@@ -40,6 +41,7 @@ class _HomePage extends State<HomePage> {
       setState(() {
         nama = "Guest";
         email = "Please log In";
+        id_role = null;
       });
       _isLoading = false;
     }
@@ -55,6 +57,7 @@ class _HomePage extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Hi, $nama"),
+                  Text("Hi, $id_role"),
                   ElevatedButton(
                       onPressed: () async {
                         SharedPreferences prefs =

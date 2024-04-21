@@ -5,10 +5,11 @@ class User {
 
   final String? token;
   String? email, nama, password, no_telp, password_confirmation;
-  String? tanggal_lahir;
+  String? tanggal_lahir, id_role;
 
   User({
     this.id,
+    this.id_role,
     this.token,
     this.email,
     this.nama,
@@ -22,6 +23,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id_user"],
+        id_role: json["id_role"],
         token: json["token"],
         email: json["email"],
         nama: json["nama"],
@@ -34,6 +36,7 @@ class User {
   String toRawJson() => json.encode(toJson());
   Map<String, dynamic> toJson() => {
         "id_user": id.toString(),
+        "id_role": id_role,
         "token": token,
         "email": email,
         "nama": nama,

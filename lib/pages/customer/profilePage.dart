@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:p3l_atmabakery/data/user.dart';
@@ -95,22 +96,52 @@ class _ProfilePage extends State<ProfilePage> {
                         ],
                       ),
                     ),
-                    ElevatedButton(
-                        onPressed: () async {
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          FocusManager.instance.primaryFocus!.unfocus();
-                          String token = prefs.getString('token').toString();
-                          await userClient.Logout(token);
-                          prefs.remove('token');
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const LoginPage(),
+                    (currentUser != null)
+                        ? ElevatedButton(
+                            onPressed: () async {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              FocusManager.instance.primaryFocus!.unfocus();
+                              String token =
+                                  prefs.getString('token').toString();
+                              await userClient.Logout(token);
+                              prefs.remove('token');
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const LoginPage(),
+                                ),
+                              );
+                            },
+                            child: Text("Logout"))
+                        : Center(
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                    text: "Sudah Punya Akun?",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                    text: " Masuk Sekarang",
+                                    style: const TextStyle(
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 15,
+                                        color: Color.fromRGBO(90, 175, 220, 1)),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () => Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const LoginPage())),
+                                  ),
+                                ],
+                              ),
                             ),
-                          );
-                        },
-                        child: Text("Logout")),
+                          ),
                   ],
                 )),
               ),
