@@ -152,7 +152,7 @@ class _RegisterPage extends State<RegisterPage> {
                               hintStyle: TextStyle(height: 0.13.h)),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
+                              return 'Silahkan Masukkan Email Anda!';
                             } else if (!RegExp(
                                     r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$')
                                 .hasMatch(value)) {
@@ -411,6 +411,7 @@ class _RegisterPage extends State<RegisterPage> {
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
+                                      color: Colors.black,
                                     ),
                                     children: <TextSpan>[
                                   const TextSpan(
@@ -419,6 +420,11 @@ class _RegisterPage extends State<RegisterPage> {
                                   ),
                                   TextSpan(
                                     text: "Term of Service ",
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.blue,
+                                    ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () => Navigator.of(context)
                                           .push(MaterialPageRoute(
@@ -430,6 +436,11 @@ class _RegisterPage extends State<RegisterPage> {
                                   ),
                                   TextSpan(
                                     text: "Privacy Policy",
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.blue,
+                                    ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () => Navigator.of(context)
                                           .push(MaterialPageRoute(
@@ -458,7 +469,8 @@ class _RegisterPage extends State<RegisterPage> {
                                       const Color.fromRGBO(255, 68, 76, 1),
                                 ),
                                 onPressed: () => {
-                                      if (_formKey.currentState!.validate())
+                                      if (_formKey.currentState!.validate() &&
+                                          checkedValue != false)
                                         {submission()}
                                     },
                                 child: const Text(
