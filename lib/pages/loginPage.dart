@@ -165,16 +165,16 @@ class _LoginPage extends State<LoginPage> {
                                   });
                                 },
                                 icon: Icon(
-                                  isPasswordVisible
+                                  !isPasswordVisible
                                       ? Icons.visibility_off
                                       : Icons.visibility,
-                                  color: isPasswordVisible
+                                  color: !isPasswordVisible
                                       ? Colors.grey
                                       : Colors.blue,
                                 ),
                               ),
                             ),
-                            obscureText: isPasswordVisible,
+                            obscureText: !isPasswordVisible,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Password Tidak Boleh Kosong';

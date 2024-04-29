@@ -17,6 +17,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPage extends State<RegisterPage> {
   String selectedDate = '';
   bool isPasswordVisible = false;
+  bool isPasswordVisible2 = false;
   bool checkedValue = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController controllerEmail = TextEditingController();
@@ -153,8 +154,7 @@ class _RegisterPage extends State<RegisterPage> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Silahkan Masukkan Email Anda!';
-                            } else if (!RegExp(
-                                    r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$')
+                            } else if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
                                 .hasMatch(value)) {
                               return 'Email tidak valid';
                             }
@@ -325,16 +325,16 @@ class _RegisterPage extends State<RegisterPage> {
                                   });
                                 },
                                 icon: Icon(
-                                  isPasswordVisible
+                                  !isPasswordVisible
                                       ? Icons.visibility_off
                                       : Icons.visibility,
-                                  color: isPasswordVisible
+                                  color: !isPasswordVisible
                                       ? Colors.grey
                                       : Colors.blue,
                                 ),
                               ),
                             ),
-                            obscureText: isPasswordVisible,
+                            obscureText: !isPasswordVisible,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Password Tidak Boleh Kosong';
@@ -377,20 +377,20 @@ class _RegisterPage extends State<RegisterPage> {
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    isPasswordVisible = !isPasswordVisible;
+                                    isPasswordVisible2 = !isPasswordVisible2;
                                   });
                                 },
                                 icon: Icon(
-                                  isPasswordVisible
+                                  !isPasswordVisible2
                                       ? Icons.visibility_off
                                       : Icons.visibility,
-                                  color: isPasswordVisible
+                                  color: !isPasswordVisible2
                                       ? Colors.grey
                                       : Colors.blue,
                                 ),
                               ),
                             ),
-                            obscureText: isPasswordVisible,
+                            obscureText: !isPasswordVisible2,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Password Tidak Boleh Kosong';
