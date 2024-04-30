@@ -18,14 +18,17 @@ class _WelcomePage extends State<WelcomePage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxWidth > 800) {
-              return WideLayout();
-            } else {
-              return NarrowLayout();
-            }
-          },
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth > 800) {
+                return WideLayout();
+              } else {
+                return NarrowLayout();
+              }
+            },
+          ),
         ),
       ),
     );
@@ -41,83 +44,141 @@ class NarrowLayout extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'assets/images/logoAtma.png',
-              width: 50.w,
-              height: 20.h,
+              'assets/images/cakes.png',
             ),
-            SizedBox(height: 7.h),
+            SizedBox(height: 2.h),
+            Text(
+              'Raih Kelezatan Bersama Kami',
+               textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 22.sp,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Montserrat',
+              ),
+            ),
+            SizedBox(height: 1.h),
+            Text(
+              'Kue-kue ini dibuat sepenuh hati dengan ketelitian dan menggunakan bahan-bahan berkualitas pilihan',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontFamily: 'Montserrat',
+                color: Color.fromARGB(255, 53, 52, 52),
+              ),
+            ),
+            SizedBox(height: 5.h),
             SizedBox(
-              width: 80.w,
-              height: 4.h,
+              width: 85.w,
+              height: 6.h,
               child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(255, 68, 76, 1),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromRGBO(244, 142, 40, 1),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.account_box_rounded,
+                      color: Colors.white,
+                    ),
+                    SizedBox(width: 7), 
+                    Text(
+                      'Masuk ke Akun',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontStyle: FontStyle.normal,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+              SizedBox(height: 2.h),
+              SizedBox(
+                width: 85.w,
+                height: 6.h,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: const Color.fromRGBO(244, 142, 40, 1)),
                   ),
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
-                        ));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterPage(),
+                      ),
+                    );
                   },
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  )),
-            ),
-            SizedBox(height: 2.h),
-            SizedBox(
-              width: 80.w,
-              height: 4.h,
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(255, 68, 76, 1),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.email,
+                        color: Color.fromARGB(255, 53, 52, 52),
+                      ),
+                      SizedBox(width: 7), 
+                      Text(
+                        'Daftar Akun',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          color: Color.fromARGB(255, 53, 52, 52),
+                          fontStyle: FontStyle.normal,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterPage(),
-                        ));
-                  },
-                  child: const Text(
-                    'Register',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                  )),
-            ),
-            SizedBox(height: 2.h),
-            SizedBox(
-              width: 80.w,
-              height: 4.h,
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(255, 68, 76, 1),
+                ),
+              ),
+              SizedBox(height: 2.h),
+              SizedBox(
+                width: 85.w,
+                height: 6.h,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: const Color.fromRGBO(244, 142, 40, 1)),
                   ),
                   onPressed: () => {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const HomeNavbar(),
-                          ),
-                        )
-                      },
-                  child: const Text(
-                    'Continue with Guest',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  )),
-            ),
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const HomeNavbar(),
+                            ),
+                          )
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.people_sharp,
+                        color: Color.fromARGB(255, 53, 52, 52),
+                      ),
+                      SizedBox(width: 7), 
+                      Text(
+                        'Sebagai Tamu',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          color: Color.fromARGB(255, 53, 52, 52),
+                          fontStyle: FontStyle.normal,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
           ]),
     );
   }
@@ -132,86 +193,126 @@ class WideLayout extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'assets/images/logoAtma.png',
+              'assets/images/cakes.png',
               width: 50.w,
-              height: 20.h,
+              height: 50.h,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
+              SizedBox(
                   width: 40.w,
-                  height: 8.h,
+                  height: 6.h,
                   child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(255, 68, 76, 1),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(244, 142, 40, 1),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.account_box_rounded,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 7), 
+                        Text(
+                          'Masuk ke Akun',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 2.h),
+                  SizedBox(
+                    width: 40.w,
+                    height: 6.h,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: const Color.fromRGBO(244, 142, 40, 1)),
                       ),
                       onPressed: () {
                         Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterPage(),
+                          ),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.email,
+                            color: Color.fromARGB(255, 53, 52, 52),
+                          ),
+                          SizedBox(width: 7), 
+                          Text(
+                            'Daftar Akun',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              color: Color.fromARGB(255, 53, 52, 52),
+                              fontStyle: FontStyle.normal,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              SizedBox(height: 2.h),
+              SizedBox(
+                width: 40.w,
+                height: 6.h,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: const Color.fromRGBO(244, 142, 40, 1)),
+                  ),
+                  onPressed: () => {
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ));
-                      },
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontStyle: FontStyle.normal,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold),
-                      )),
-                ),
-                SizedBox(height: 2.h),
-                SizedBox(
-                  width: 40.w,
-                  height: 8.h,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(255, 68, 76, 1),
+                              builder: (_) => const HomeNavbar(),
+                            ),
+                          )
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.people_sharp,
+                        color: Color.fromARGB(255, 53, 52, 52),
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const RegisterPage(),
-                            ));
-                      },
-                      child: const Text(
-                        'Register',
+                      SizedBox(width: 7), 
+                      Text(
+                        'Sebagai Tamu',
                         style: TextStyle(
-                            color: Colors.white,
-                            fontStyle: FontStyle.normal,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold),
-                      )),
-                ),
-                SizedBox(height: 2.h),
-                SizedBox(
-                  width: 40.w,
-                  height: 8.h,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(255, 68, 76, 1),
+                          fontFamily: 'Inter',
+                          color: Color.fromARGB(255, 53, 52, 52),
+                          fontStyle: FontStyle.normal,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      onPressed: () => {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const HomeNavbar(),
-                              ),
-                            )
-                          },
-                      child: const Text(
-                        'Continue with Guest',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontStyle: FontStyle.normal,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      )),
+                    ],
+                  ),
                 ),
+              ),
               ],
             ),
           ]),
