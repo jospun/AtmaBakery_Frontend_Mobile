@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
 
 class User {
   final int? id;
@@ -8,20 +11,34 @@ class User {
   String? tanggal_lahir, id_role;
   String? jenis_kelamin;
   String? foto_profil;
+  XFile? foto_profil_upload;
 
-  User({
-    this.id,
-    this.id_role,
-    this.token,
-    this.email,
-    this.nama,
-    this.password,
-    this.password_confirmation,
-    this.no_telp,
-    this.tanggal_lahir,
-    this.jenis_kelamin,
-    this.foto_profil
-  });
+  User(
+      {this.id,
+      this.id_role,
+      this.token,
+      this.email,
+      this.nama,
+      this.password,
+      this.password_confirmation,
+      this.no_telp,
+      this.tanggal_lahir,
+      this.jenis_kelamin,
+      this.foto_profil});
+
+  User.toUpload(
+      {this.id,
+      this.id_role,
+      this.token,
+      this.email,
+      this.nama,
+      this.password,
+      this.password_confirmation,
+      this.no_telp,
+      this.tanggal_lahir,
+      this.jenis_kelamin,
+      this.foto_profil,
+      this.foto_profil_upload});
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 
@@ -51,6 +68,6 @@ class User {
         "no_telp": no_telp,
         "tanggal_lahir": tanggal_lahir,
         "jenis_kelamin": jenis_kelamin,
-        "foto_profil": foto_profil,
+        "foto_profil": File(foto_profil_upload!.path),
       };
 }

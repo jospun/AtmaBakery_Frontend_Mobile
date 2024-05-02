@@ -19,7 +19,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePage extends State<ProfilePage> {
   User? currentUser;
   bool _isLoading = true;
-  String? nama, email;
+  String? nama, email, pfp;
 
   void getUserData() async {
     _isLoading = true;
@@ -67,8 +67,8 @@ class _ProfilePage extends State<ProfilePage> {
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: NetworkImage(
-                              "https://img.freepik.com/free-vector/abstract-colorful-flow-shapes-background_23-2148236278.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1708041600&semt=ais"), // Ganti dengan path gambar Anda
-                          fit: BoxFit.cover, 
+                              "https://res.cloudinary.com/daorbrq8v/image/upload/f_auto,q_auto/v1/atma-bakery/p27iua0trapjq3hb6vxz"), // Ganti dengan path gambar Anda
+                          fit: BoxFit.cover,
                         ),
                       ),
                       child: Row(
@@ -81,8 +81,13 @@ class _ProfilePage extends State<ProfilePage> {
                               children: [
                                 CircleAvatar(
                                   radius: 45,
-                                  backgroundImage: NetworkImage(
-                                      "https://res.cloudinary.com/daorbrq8v/image/upload/f_auto,q_auto/v1/atma-bakery/r1xujbu1yfoenzked4rc"),
+                                  backgroundImage: currentUser?.foto_profil !=
+                                          null
+                                      ? NetworkImage(currentUser!.foto_profil!)
+                                          as ImageProvider<Object>
+                                      : const NetworkImage(
+                                              "https://res.cloudinary.com/daorbrq8v/image/upload/f_auto,q_auto/v1/atma-bakery/r1xujbu1yfoenzked4rc")
+                                          as ImageProvider<Object>,
                                 ),
                                 SizedBox(height: 2.h),
                                 Text(
@@ -97,12 +102,12 @@ class _ProfilePage extends State<ProfilePage> {
                                 Text(
                                   "$email",
                                   style: TextStyle(
-                                    fontSize: 14, 
+                                    fontSize: 14,
                                     fontFamily: 'Montserrat',
                                     fontStyle: FontStyle.normal,
                                   ),
                                 ),
-                                 SizedBox(height: 1.h),
+                                SizedBox(height: 1.h),
                               ],
                             ),
                           )
@@ -111,137 +116,136 @@ class _ProfilePage extends State<ProfilePage> {
                     ),
                     SizedBox(height: 2.h),
                     Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
-                                spreadRadius: 1, 
-                                blurRadius: 4,
-                                offset: Offset(0, 2), 
-                              ),
-                            ],
-                            ),
-                            height: 100,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                
-                                Text(
-                                  'Saldo Saya',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 1,
+                                    blurRadius: 4,
+                                    offset: Offset(0, 2),
                                   ),
-                                ),
-                                Icon(Icons.attach_money, color: Colors.black),
-                              ],
+                                ],
+                              ),
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Saldo Saya',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Icon(Icons.attach_money, color: Colors.black),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
-                                spreadRadius: 1, 
-                                blurRadius: 4,
-                                offset: Offset(0, 2), 
-                              ),
-                            ],
-                            ),
-                            height: 100,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                
-                                Text(
-                                  'Poin Saya',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 1,
+                                    blurRadius: 4,
+                                    offset: Offset(0, 2),
                                   ),
-                                ),
-                                Icon(Icons.monetization_on, color: Colors.black),
-                              ],
+                                ],
+                              ),
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Poin Saya',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Icon(Icons.monetization_on,
+                                      color: Colors.black),
+                                ],
+                              ),
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 2.h),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color.fromRGBO(244, 142, 40, 1),
+                            Colors.white,
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 2.h),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20), 
-                    decoration: BoxDecoration(
-                       gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color.fromRGBO(244, 142, 40, 1), 
-                                    Colors.white, 
-                                  ],
-                                ),
-                      boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 1, 
-                        blurRadius: 4,
-                        offset: Offset(0, 2), 
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
                       ),
-                    ],
+                      height: 110,
                     ),
-                    height: 110,
-                  ),
-                  SizedBox(height: 2.h),
-                  Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(255, 255, 255, 1),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 1, 
-                        blurRadius: 4,
-                        offset: Offset(0, 2), 
+                    SizedBox(height: 2.h),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(255, 255, 255, 1),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  height: 300,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 2.h),
-                      buildRow(Icons.account_circle, 'Profil Saya', () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ProfilSayaPage(),
-                                ),
-                              );
-                            }),
-                      buildRow(Icons.info, 'Tentang Kami', () {}),
-                      buildRow(Icons.attach_money, 'Histori Pemesanan', () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HistoriPemesananPage(),
-                                ),
-                              );
-                            }),
-                      buildRow(Icons.library_books, 'Ketentuan', () {}),
-                      buildRow(Icons.security, 'Privacy Policy', () {}),
-                      buildRow(Icons.logout, 'Logout', () {}),
-                    ],
-                  ),
-                ),
+                      height: 300,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 2.h),
+                          buildRow(Icons.account_circle, 'Profil Saya', () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProfilSayaPage(),
+                              ),
+                            );
+                          }),
+                          buildRow(Icons.info, 'Tentang Kami', () {}),
+                          buildRow(Icons.attach_money, 'Histori Pemesanan', () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HistoriPemesananPage(),
+                              ),
+                            );
+                          }),
+                          buildRow(Icons.library_books, 'Ketentuan', () {}),
+                          buildRow(Icons.security, 'Privacy Policy', () {}),
+                          buildRow(Icons.logout, 'Logout', () {}),
+                        ],
+                      ),
+                    ),
                     (currentUser != null)
                         ? ElevatedButton(
                             onPressed: () async {
@@ -309,11 +313,11 @@ Widget buildRow(IconData icon, String title, Function() onTap) {
           Icon(icon),
           SizedBox(width: 20),
           Text(
-              title,
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-              ),
+            title,
+            style: TextStyle(
+              fontFamily: 'Montserrat',
             ),
+          ),
         ],
       ),
     ),

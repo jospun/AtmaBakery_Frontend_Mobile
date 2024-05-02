@@ -86,21 +86,53 @@ class userClient {
 
   static Future<Response> update(User user, String token) async {
     try {
-      var response = await post(Uri.parse("https://$url/users/self"),
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": 'Bearer $token'
-          },
-          body: user.toRawJson());
-      print(response.body);
+      var request = await MultipartRequest(
+        'POST',
+        Uri.parse("https://$url/users/self"),
+      );
+
+      request.headers.addAll({
+        "Authorization": 'Bearer $token',
+      });
+
+      // Add fields
+      if (user.nama != null) request.fields['nama'] = user.nama!;
+      if (user.no_telp != null) request.fields['no_telp'] = user.no_telp!;
+      if (user.tanggal_lahir != null)
+        request.fields['tanggal_lahir'] = user.tanggal_lahir!;
+      if (user.jenis_kelamin != null)
+        request.fields['jenis_kelamin'] = user.jenis_kelamin!;
+      if (user.id_role != null) request.fields['id_role'] = user.id_role!;
+      if (user.email != null) request.fields['email'] = user.email!;
+      if (user.id != null) request.fields['id_user'] = user.id.toString();
+
+      if (user.foto_profil == null) {
+        delete(Uri.parse("https://$url/users/self/pfp"), headers: {
+          "Content-Type": "application/json",
+          "Authorization": 'Bearer $token',
+        });
+      }
+
+      // Add file if present
+      if (user.foto_profil_upload != null) {
+        request.files.add(
+          await MultipartFile.fromPath(
+            'foto_profil',
+            user.foto_profil_upload!.path,
+            filename: 'foto_profil_upload.png',
+          ),
+        );
+      }
+
+      var response = await request.send();
+
       if (response.statusCode != 200)
-        throw Exception(jsonDecode(response.body)['message'].toString());
-      return response;
+        throw Exception(jsonDecode(response.stream.toString()).toString());
+
+      return Response.fromStream(response);
     } catch (e) {
       print(e.toString());
       return Future.error(e.toString());
     }
   }
-
-
 }
