@@ -6,6 +6,8 @@ class User {
   final String? token;
   String? email, nama, password, no_telp, password_confirmation;
   String? tanggal_lahir, id_role;
+  String? jenis_kelamin;
+  String? foto_profil;
 
   User({
     this.id,
@@ -17,6 +19,8 @@ class User {
     this.password_confirmation,
     this.no_telp,
     this.tanggal_lahir,
+    this.jenis_kelamin,
+    this.foto_profil
   });
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
@@ -31,6 +35,8 @@ class User {
         password_confirmation: json["password_confirmation"],
         no_telp: json["no_telp"],
         tanggal_lahir: json["tanggal_lahir"],
+        jenis_kelamin: json["jenis_kelamin"],
+        foto_profil: json["foto_profil"],
       );
 
   String toRawJson() => json.encode(toJson());
@@ -44,5 +50,7 @@ class User {
         "password_confirmation": password_confirmation,
         "no_telp": no_telp,
         "tanggal_lahir": tanggal_lahir,
+        "jenis_kelamin": jenis_kelamin,
+        "foto_profil": foto_profil,
       };
 }

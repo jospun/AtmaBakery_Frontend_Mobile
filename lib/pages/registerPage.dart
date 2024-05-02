@@ -8,7 +8,7 @@ import 'package:p3l_atmabakery/data/user.dart';
 import 'package:p3l_atmabakery/data/client/userClient.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   State<RegisterPage> createState() => _RegisterPage();
@@ -69,410 +69,457 @@ class _RegisterPage extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Stack(
-                  children: [
-                    CustomPaint(
-                      painter: ShapesPainter(),
-                      child: Container(height: 110),
-                    ),
-                    Center(
-                      child: Image.asset(
-                        'assets/images/logoKecil.png',
-                        width: 47.5.w,
-                        height: 16.h,
-                      ),
-                    ),
-                  ],
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Stack(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: const [
+                      Color.fromRGBO(244, 142, 40, 1),
+                      Color.fromRGBO(237, 202, 180, 1),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 1.h),
-                Form(
-                  key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 60.0, left: 22),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Selamat Datang!',
+                        style: TextStyle(
+                            fontSize: 30,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "Daftar segera dan akses segala\nfitur dari Atma Bakery!",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.22,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(50),
+                        topRight: Radius.circular(50)),
+                    color: Colors.white,
+                  ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const SizedBox(
-                          child: Text(
-                            "Daftarkan diri anda",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        const SizedBox(
-                          child: Text(
-                            "Daftar segera dan akses segala fitur dari Atma Bakery yang telah menanti anda",
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        ),
-                        SizedBox(height: 2.h),
-                        const SizedBox(
-                          child: Text(
-                            "Email",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w800),
-                          ),
-                        ),
-                        SizedBox(height: 0.8.h),
-                        Center(
-                            child: TextFormField(
-                          controller: controllerEmail,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Color.fromRGBO(234, 234, 234, 1),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              hintText: 'Email Anda',
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
-                              hintStyle: TextStyle(height: 0.13.h)),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Silahkan Masukkan Email Anda!';
-                            } else if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
-                                .hasMatch(value)) {
-                              return 'Email tidak valid';
-                            }
-                            return null;
-                          },
-                        )),
-                        SizedBox(height: 2.h),
-                        const SizedBox(
-                          child: Text(
-                            "Nama",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w800),
-                          ),
-                        ),
-                        SizedBox(height: 0.8.h),
-                        Center(
-                            child: TextFormField(
-                          controller: controllerNama,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Color.fromRGBO(234, 234, 234, 1),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              hintText: 'Nama Anda',
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
-                              hintStyle: TextStyle(height: 0.13.h)),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Silahkan masukkan nama';
-                            }
-                            return null;
-                          },
-                        )),
-                        SizedBox(height: 2.h),
-                        const SizedBox(
-                          child: Text(
-                            "Nomor Telepon",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w800),
-                          ),
-                        ),
-                        SizedBox(height: 0.8.h),
-                        Center(
-                            child: TextFormField(
-                          controller: controllerNoTelp,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Color.fromRGBO(234, 234, 234, 1),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              hintText: 'Nomor Telepon Anda',
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
-                              hintStyle: TextStyle(height: 0.13.h)),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Silahkan masukkan Nomor Telepon';
-                            } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                              return 'Nomor Telepon Tidak Valid!';
-                            }
-                            return null;
-                          },
-                        )),
-                        SizedBox(height: 2.h),
-                        const SizedBox(
-                          child: Text(
-                            "Tanggal Lahir",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w800),
-                          ),
-                        ),
-                        SizedBox(height: 0.8.h),
-                        TextFormField(
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Color.fromRGBO(234, 234, 234, 1),
-                            border: const OutlineInputBorder(
-                              borderSide: BorderSide.none,
+                    padding: const EdgeInsets.all(25.2),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(height: 20),
+                          const SizedBox(
+                            child: Text(
+                              "Email",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800),
                             ),
-                            hintText: 'Tanggal Lahir Anda',
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 10.0),
-                            hintStyle: TextStyle(height: 0.13.h),
-                            prefixIcon: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                GestureDetector(
+                          ),
+                          SizedBox(height: 20),
+                          Center(
+                            child: TextFormField(
+                              controller: controllerEmail,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              decoration: InputDecoration(
+                              filled: false,
+                              fillColor: const Color.fromRGBO(234, 234, 234, 1),
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromRGBO(244, 142, 40, 1)),
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromRGBO(210, 145, 79, 1),), 
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromARGB(255, 181, 179, 179)), 
+                                  ),
+                                hintText: 'Email Anda',
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 10.0),
+                                hintStyle: TextStyle(height: 0.13.h),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Silahkan Masukkan Email Anda!';
+                                } else if (!RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
+                                    .hasMatch(value)) {
+                                  return 'Email tidak valid';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          const SizedBox(
+                            child: Text(
+                              "Nama",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Center(
+                            child: TextFormField(
+                              controller: controllerNama,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              decoration: InputDecoration(
+                                                              filled: false,
+                              fillColor: const Color.fromRGBO(234, 234, 234, 1),
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromRGBO(244, 142, 40, 1)),
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromRGBO(210, 145, 79, 1),), 
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromARGB(255, 181, 179, 179)), 
+                                  ),
+                                hintText: 'Nama Anda',
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 10.0),
+                                hintStyle: TextStyle(height: 0.13.h),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Silahkan masukkan nama';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          const SizedBox(
+                            child: Text(
+                              "Nomor Telepon",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Center(
+                            child: TextFormField(
+                              controller: controllerNoTelp,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              decoration: InputDecoration(
+                                                              filled: false,
+                              fillColor: const Color.fromRGBO(234, 234, 234, 1),
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromRGBO(244, 142, 40, 1)),
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromRGBO(210, 145, 79, 1),), 
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromARGB(255, 181, 179, 179)), 
+                                  ),
+                                hintText: 'Nomor Telepon Anda',
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 10.0),
+                                hintStyle: TextStyle(height: 0.13.h),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Silahkan masukkan Nomor Telepon';
+                                } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                                  return 'Nomor Telepon Tidak Valid!';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          const SizedBox(
+                            child: Text(
+                              "Tanggal Lahir",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          TextFormField(
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            decoration: InputDecoration(
+                              filled: false,
+                              fillColor: const Color.fromRGBO(234, 234, 234, 1),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Color.fromRGBO(244, 142, 40, 1)),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Color.fromRGBO(210, 145, 79, 1),), 
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Color.fromARGB(255, 181, 179, 179)), 
+                              ),
+                              hintText: 'Tanggal Lahir Anda',
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10.0, 
+                                horizontal: 10.0,
+                              ),
+                              hintStyle: TextStyle(height: 0.13.h),
+                              suffixIcon: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: GestureDetector(
                                   onTap: () {
                                     _selectDate(context);
                                   },
                                   child: const Icon(Icons.calendar_today),
                                 ),
-                                const SizedBox(width: 8),
-                              ],
-                            ),
-                          ),
-                          validator: (value) {
-                            if (selectedDate.isEmpty) {
-                              return 'Silahkan Masukkan Tanggal Lahir';
-                            }
-                            return null;
-                          },
-                          controller: TextEditingController(
-                            text: selectedDate.isEmpty ? null : selectedDate,
-                          ),
-                          onTap: () {
-                            _selectDate(context);
-                          },
-                        ),
-                        SizedBox(height: 2.h),
-                        const SizedBox(
-                          child: Text(
-                            "Password",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w800),
-                          ),
-                        ),
-                        SizedBox(height: 0.8.h),
-                        Center(
-                          child: TextFormField(
-                            controller: controllerPassword,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Color.fromRGBO(234, 234, 234, 1),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              hintText: 'Password Anda',
-                              hintStyle: TextStyle(height: 0.13.h),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isPasswordVisible = !isPasswordVisible;
-                                  });
-                                },
-                                icon: Icon(
-                                  !isPasswordVisible
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: !isPasswordVisible
-                                      ? Colors.grey
-                                      : Colors.blue,
-                                ),
                               ),
                             ),
-                            obscureText: !isPasswordVisible,
                             validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Password Tidak Boleh Kosong';
-                              } else if (value.length < 8) {
-                                return 'Password Minimal 8 karakter';
+                              if (selectedDate.isEmpty) {
+                                return 'Silahkan Masukkan Tanggal Lahir';
                               }
                               return null;
                             },
-                          ),
-                        ),
-                        SizedBox(height: 2.h),
-                        const SizedBox(
-                          child: Text(
-                            "Konfirmasi Password",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontStyle: FontStyle.normal,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w800),
-                          ),
-                        ),
-                        SizedBox(height: 0.8.h),
-                        Center(
-                          child: TextFormField(
-                            controller: controllerConfirmPassword,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
+                            controller: TextEditingController(
+                              text: selectedDate.isEmpty ? null : selectedDate,
                             ),
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Color.fromRGBO(234, 234, 234, 1),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                            onTap: () {
+                              _selectDate(context);
+                            },
+                          ),
+
+                          SizedBox(height: 20),
+                          const SizedBox(
+                            child: Text(
+                              "Password",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Center(
+                            child: TextFormField(
+                              controller: controllerPassword,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
                               ),
-                              hintText: 'Konfirmasi Password Anda',
-                              hintStyle: TextStyle(height: 0.13.h),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isPasswordVisible2 = !isPasswordVisible2;
-                                  });
-                                },
-                                icon: Icon(
-                                  !isPasswordVisible2
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: !isPasswordVisible2
-                                      ? Colors.grey
-                                      : Colors.blue,
+                              decoration: InputDecoration(
+                                                              filled: false,
+                              fillColor: const Color.fromRGBO(234, 234, 234, 1),
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromRGBO(244, 142, 40, 1)),
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromRGBO(210, 145, 79, 1),), 
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromARGB(255, 181, 179, 179)), 
+                                  ),
+                                hintText: 'Password Anda',
+                                hintStyle: TextStyle(height: 0.13.h),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 10.0),
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isPasswordVisible = !isPasswordVisible;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    !isPasswordVisible
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color: !isPasswordVisible
+                                        ? Colors.grey
+                                        : Colors.blue,
+                                  ),
                                 ),
                               ),
+                              obscureText: !isPasswordVisible,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Password Tidak Boleh Kosong';
+                                } else if (value.length < 8) {
+                                  return 'Password Minimal 8 karakter';
+                                }
+                                return null;
+                              },
                             ),
-                            obscureText: !isPasswordVisible2,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Password Tidak Boleh Kosong';
-                              } else if (value.length < 8) {
-                                return 'Password Minimal 8 karakter';
-                              } else if (value != controllerPassword.text) {
-                                return 'Konfirmasi password berbeda dengan password';
-                              }
-                              return null;
-                            },
                           ),
-                        ),
-                        SizedBox(height: 0.08.h),
-                        Center(
-                          child: CheckboxListTile(
-                            title: RichText(
-                                text: TextSpan(
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black,
-                                    ),
-                                    children: <TextSpan>[
-                                  const TextSpan(
-                                    text:
-                                        "Dengan mencentang checkbox ini, anda telah setuju dengan ",
-                                  ),
-                                  TextSpan(
-                                    text: "Term of Service ",
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.blue,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () => Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const PrivacyPolicyPage())),
-                                  ),
-                                  const TextSpan(
-                                    text: "dan ",
-                                  ),
-                                  TextSpan(
-                                    text: "Privacy Policy",
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.blue,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () => Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const PrivacyPolicyPage())),
-                                  ),
-                                ])),
-                            value: checkedValue,
-                            onChanged: (newValue) {
-                              setState(() {
-                                checkedValue = !checkedValue;
-                              });
-                            },
-                            controlAffinity: ListTileControlAffinity.leading,
+                          SizedBox(height: 20),
+                          const SizedBox(
+                            child: Text(
+                              "Konfirmasi Password",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 0.08.h),
-                        Center(
-                          child: SizedBox(
-                            width: 55.w,
-                            child: ElevatedButton(
+                          SizedBox(height: 20),
+                          Center(
+                            child: TextFormField(
+                              controller: controllerConfirmPassword,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              decoration: InputDecoration(
+                                                              filled: false,
+                              fillColor: const Color.fromRGBO(234, 234, 234, 1),
+                                  border: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromRGBO(244, 142, 40, 1)),
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromRGBO(210, 145, 79, 1),), 
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromARGB(255, 181, 179, 179)), 
+                                  ),
+                                hintText: 'Konfirmasi Password Anda',
+                                hintStyle: TextStyle(height: 0.13.h),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 10.0),
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isPasswordVisible2 = !isPasswordVisible2;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    !isPasswordVisible2
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color: !isPasswordVisible2
+                                        ? Colors.grey
+                                        : Colors.blue,
+                                  ),
+                                ),
+                              ),
+                              obscureText: !isPasswordVisible2,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Password Tidak Boleh Kosong';
+                                } else if (value.length < 8) {
+                                  return 'Password Minimal 8 karakter';
+                                } else if (value != controllerPassword.text) {
+                                  return 'Konfirmasi password berbeda dengan password';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Center(
+                            child: CheckboxListTile(
+                              title: RichText(
+                                  text: TextSpan(
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                      ),
+                                      children: <TextSpan>[
+                                    const TextSpan(
+                                      text:
+                                          "Dengan mencentang checkbox ini, anda telah setuju dengan ",
+                                    ),
+                                    TextSpan(
+                                      text: "Term of Service ",
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.blue,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () => Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const PrivacyPolicyPage())),
+                                    ),
+                                    const TextSpan(
+                                      text: "dan ",
+                                    ),
+                                    TextSpan(
+                                      text: "Privacy Policy",
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.blue,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () => Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const PrivacyPolicyPage())),
+                                    ),
+                                  ])),
+                              value: checkedValue,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  checkedValue = !checkedValue;
+                                });
+                              },
+                              controlAffinity: ListTileControlAffinity.leading,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Center(
+                            child: SizedBox(
+                              width: 80.w,
+                              height: 5.h,
+                              child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5)),
-                                  backgroundColor:
-                                      const Color.fromRGBO(255, 68, 76, 1),
-                                ),
+                                backgroundColor:const Color.fromRGBO(244, 142, 40, 1)
+                              ),
                                 onPressed: () => {
-                                      if (_formKey.currentState!.validate() &&
-                                          checkedValue != false)
-                                        {submission()}
-                                    },
+                                  if (_formKey.currentState!.validate() &&
+                                      checkedValue != false)
+                                    {submission()}
+                                },
                                 child: const Text(
                                   'Daftar',
                                   style: TextStyle(
@@ -480,45 +527,47 @@ class _RegisterPage extends State<RegisterPage> {
                                       fontStyle: FontStyle.normal,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
-                                )),
-                          ),
-                        ),
-                        SizedBox(height: 1.h),
-                        Center(
-                          child: RichText(
-                            text: TextSpan(
-                              children: [
-                                const TextSpan(
-                                  text: "Sudah Punya Akun?",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
                                 ),
-                                TextSpan(
-                                  text: " Masuk Sekarang",
-                                  style: const TextStyle(
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 15,
-                                      color: Color.fromRGBO(90, 175, 220, 1)),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const LoginPage())),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 2.h),
-                      ],
+                          SizedBox(height: 20),
+                          Center(
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                    text: "Sudah Punya Akun?",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  TextSpan(
+                                    text: " Masuk Sekarang",
+                                    style: const TextStyle(
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 15,
+                                        color: Color.fromRGBO(90, 175, 220, 1)),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () => Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const LoginPage())),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -526,23 +575,14 @@ class _RegisterPage extends State<RegisterPage> {
   }
 }
 
-const double _kCurveHeight = 35;
-
-class ShapesPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final p = Path();
-    p.lineTo(0, size.height - _kCurveHeight);
-    p.relativeQuadraticBezierTo(
-        size.width / 2, 2.3 * _kCurveHeight, size.width, 0);
-    p.lineTo(size.width, 0);
-    p.close();
-
-    canvas.drawPath(p, Paint()..color = const Color.fromRGBO(255, 68, 76, 1));
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
+void showSnackbar(BuildContext context, String message, Color color) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: const TextStyle(fontSize: 14),
+      ),
+      backgroundColor: color,
+    ),
+  );
 }

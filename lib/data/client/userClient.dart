@@ -83,4 +83,24 @@ class userClient {
       return Future.error(e.toString());
     }
   }
+
+  static Future<Response> update(User user, String token) async {
+    try {
+      var response = await post(Uri.parse("https://$url/users/self"),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": 'Bearer $token'
+          },
+          body: user.toRawJson());
+      print(response.body);
+      if (response.statusCode != 200)
+        throw Exception(jsonDecode(response.body)['message'].toString());
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return Future.error(e.toString());
+    }
+  }
+
+
 }

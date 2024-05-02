@@ -1,10 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:p3l_atmabakery/pages/customer/historiPemesananPage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:p3l_atmabakery/data/user.dart';
 import 'package:p3l_atmabakery/data/client/userClient.dart';
 import 'package:p3l_atmabakery/pages/loginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:p3l_atmabakery/pages/customer/profilSayaPage.dart';
+import 'package:p3l_atmabakery/pages/customer/historiPemesananPage.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -65,7 +68,7 @@ class _ProfilePage extends State<ProfilePage> {
                         image: DecorationImage(
                           image: NetworkImage(
                               "https://img.freepik.com/free-vector/abstract-colorful-flow-shapes-background_23-2148236278.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1708041600&semt=ais"), // Ganti dengan path gambar Anda
-                          fit: BoxFit.cover, // Atur sesuai kebutuhan
+                          fit: BoxFit.cover, 
                         ),
                       ),
                       child: Row(
@@ -79,23 +82,166 @@ class _ProfilePage extends State<ProfilePage> {
                                 CircleAvatar(
                                   radius: 45,
                                   backgroundImage: NetworkImage(
-                                      "https://www.bpocenter.com.bo/wp-content/uploads/2017/11/10.jpg"),
+                                      "https://res.cloudinary.com/daorbrq8v/image/upload/f_auto,q_auto/v1/atma-bakery/r1xujbu1yfoenzked4rc"),
                                 ),
-                                SizedBox(height: 1.h),
+                                SizedBox(height: 2.h),
                                 Text(
                                   "Hi, $nama",
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 20,
+                                    fontFamily: 'Montserrat',
                                     fontWeight: FontWeight.w900,
                                     fontStyle: FontStyle.normal,
                                   ),
                                 ),
+                                Text(
+                                  "$email",
+                                  style: TextStyle(
+                                    fontSize: 14, 
+                                    fontFamily: 'Montserrat',
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                ),
+                                 SizedBox(height: 1.h),
                               ],
                             ),
                           )
                         ],
                       ),
                     ),
+                    SizedBox(height: 2.h),
+                    Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 1, 
+                                blurRadius: 4,
+                                offset: Offset(0, 2), 
+                              ),
+                            ],
+                            ),
+                            height: 100,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                
+                                Text(
+                                  'Saldo Saya',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Icon(Icons.attach_money, color: Colors.black),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 1, 
+                                blurRadius: 4,
+                                offset: Offset(0, 2), 
+                              ),
+                            ],
+                            ),
+                            height: 100,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                
+                                Text(
+                                  'Poin Saya',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Icon(Icons.monetization_on, color: Colors.black),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 2.h),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20), 
+                    decoration: BoxDecoration(
+                       gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color.fromRGBO(244, 142, 40, 1), 
+                                    Colors.white, 
+                                  ],
+                                ),
+                      boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 1, 
+                        blurRadius: 4,
+                        offset: Offset(0, 2), 
+                      ),
+                    ],
+                    ),
+                    height: 110,
+                  ),
+                  SizedBox(height: 2.h),
+                  Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 1, 
+                        blurRadius: 4,
+                        offset: Offset(0, 2), 
+                      ),
+                    ],
+                  ),
+                  height: 300,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 2.h),
+                      buildRow(Icons.account_circle, 'Profil Saya', () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProfilSayaPage(),
+                                ),
+                              );
+                            }),
+                      buildRow(Icons.info, 'Tentang Kami', () {}),
+                      buildRow(Icons.attach_money, 'Histori Pemesanan', () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HistoriPemesananPage(),
+                                ),
+                              );
+                            }),
+                      buildRow(Icons.library_books, 'Ketentuan', () {}),
+                      buildRow(Icons.security, 'Privacy Policy', () {}),
+                      buildRow(Icons.logout, 'Logout', () {}),
+                    ],
+                  ),
+                ),
                     (currentUser != null)
                         ? ElevatedButton(
                             onPressed: () async {
@@ -151,4 +297,25 @@ class _ProfilePage extends State<ProfilePage> {
             ),
     );
   }
+}
+
+Widget buildRow(IconData icon, String title, Function() onTap) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+      child: Row(
+        children: [
+          Icon(icon),
+          SizedBox(width: 20),
+          Text(
+              title,
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+              ),
+            ),
+        ],
+      ),
+    ),
+  );
 }
