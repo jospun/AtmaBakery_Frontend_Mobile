@@ -63,7 +63,12 @@ class _ProfilSayaPage extends State<ProfilSayaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile Saya"),
+        title: Text("Profile Saya",
+        style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Montserrat',
+            ),
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_outlined),
           onPressed: () {
@@ -402,7 +407,11 @@ class _ProfilSayaPage extends State<ProfilSayaPage> {
       if (token != null) {
         _selectedGender = (_selectedGender == 'L') ? 'L' : 'P';
 
-        User updatedUser = User.toUpload(
+        User updatedUser;
+
+      if (_userData?.foto_profil_upload != null) {
+
+        updatedUser = User.toUpload(
           nama: _namaController.text,
           email: _emailController.text,
           tanggal_lahir: _tanggalLahirController.text,
@@ -410,7 +419,16 @@ class _ProfilSayaPage extends State<ProfilSayaPage> {
           jenis_kelamin: _selectedGender,
           foto_profil_upload: _userData?.foto_profil_upload,
         );
-
+      } else {
+        updatedUser = User.toUpload(
+          nama: _namaController.text,
+          email: _emailController.text,
+          tanggal_lahir: _tanggalLahirController.text,
+          no_telp: _noTelpController.text,
+          jenis_kelamin: _selectedGender,
+          foto_profil: _userData?.foto_profil,
+        );
+      }
         await userClient.update(updatedUser, token);
 
         setState(() {
