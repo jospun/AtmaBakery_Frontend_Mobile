@@ -24,7 +24,7 @@ class presensiClient {
       List<dynamic> jsonData = jsonDecode(response.body)["data"];
       List<Presensi> listPresensi =
           jsonData.map((data) => Presensi.fromJson(data)).toList();
-
+      print(listPresensi);
       return listPresensi;
     } catch (e) {
       return Future.error(e.toString());

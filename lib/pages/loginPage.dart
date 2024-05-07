@@ -35,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
         return null;
       }
     }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -46,10 +47,10 @@ class _LoginPageState extends State<LoginPage> {
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                     colors: const [
-                    Color.fromRGBO(244, 142, 40, 1),
-                    Color.fromRGBO(237, 202, 180, 1),
-                                ],
+                    colors: const [
+                      Color.fromRGBO(244, 142, 40, 1),
+                      Color.fromRGBO(237, 202, 180, 1),
+                    ],
                   ),
                 ),
                 child: Padding(
@@ -84,8 +85,8 @@ class _LoginPageState extends State<LoginPage> {
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50)),
+                        topLeft: Radius.circular(50),
+                        topRight: Radius.circular(50)),
                     color: Colors.white,
                   ),
                   child: Padding(
@@ -114,18 +115,22 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: InputDecoration(
                               filled: false,
                               fillColor: const Color.fromRGBO(234, 234, 234, 1),
-                                  border: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromRGBO(244, 142, 40, 1)),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromRGBO(210, 145, 79, 1),), 
-                                  ),
-                                  enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromARGB(255, 181, 179, 179)), 
-                                  ),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(244, 142, 40, 1)),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color.fromRGBO(210, 145, 79, 1),
+                                ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 181, 179, 179)),
+                              ),
                               hintText: 'Masukkan email Anda',
                               contentPadding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 10.0),
+                                  vertical: 10.0, horizontal: 10.0),
                               hintStyle: TextStyle(height: 0.13.h),
                             ),
                             validator: (value) {
@@ -156,15 +161,19 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: InputDecoration(
                               filled: false,
                               fillColor: const Color.fromRGBO(234, 234, 234, 1),
-                                  border: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromRGBO(244, 142, 40, 1)),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromRGBO(210, 145, 79, 1),), 
-                                  ),
-                                  enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromARGB(255, 181, 179, 179)), 
-                                  ),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(244, 142, 40, 1)),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color.fromRGBO(210, 145, 79, 1),
+                                ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 181, 179, 179)),
+                              ),
                               hintText: 'Masukkan Kata Sandi Anda',
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 10.0, horizontal: 10.0),
@@ -219,38 +228,38 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           SizedBox(height: 20),
                           Center(
-                          child: SizedBox(
-                            width: 80.w,
-                            height: 5.h,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:const Color.fromRGBO(244, 142, 40, 1)
-                              ),
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  String? loggedIn = await login();
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-                                  prefs.setString('token', loggedIn!);
-                                  print(prefs.getString('token')!);
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => const HomeNavbar(),
-                                    ),
-                                  );
-                                }
-                              },
-                              child: const Text(
-                                'Masuk',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
+                            child: SizedBox(
+                              width: 80.w,
+                              height: 5.h,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        const Color.fromRGBO(244, 142, 40, 1)),
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    String? loggedIn = await login();
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    prefs.setString('token', loggedIn!);
+                                    print(prefs.getString('token')!);
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const HomeNavbar(),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: const Text(
+                                  'Masuk',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
-                          ),
                           ),
                           SizedBox(height: 35),
                           Center(
@@ -271,8 +280,7 @@ class _LoginPageState extends State<LoginPage> {
                                         fontStyle: FontStyle.normal,
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
-                                        color:
-                                            Color.fromRGBO(90, 175, 220, 1)),
+                                        color: Color.fromRGBO(90, 175, 220, 1)),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () => Navigator.of(context)
                                           .push(MaterialPageRoute(
