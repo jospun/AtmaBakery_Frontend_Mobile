@@ -71,7 +71,7 @@ class DetailTransaksiPage extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 10),
                 padding: EdgeInsets.all(20),
@@ -213,28 +213,71 @@ class DetailTransaksiPage extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10),
-                    if (userHistory.detailTransaksi != null)
                       DataTable(
                         columns: <DataColumn>[
-                          DataColumn(label: Text('Nama Produk')),
-                          DataColumn(label: Text('Jumlah')),
-                          DataColumn(label: Text('Subtotal')),
+                          DataColumn(label: Text('No', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
+                          DataColumn(label: Text('Produk', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
+                          DataColumn(label: Text('Jumlah', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
+                          DataColumn(label: Text('Sub Total', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
                         ],
-                        rows: userHistory.detailTransaksi!.map((produk) {
-                          return DataRow(
-                            cells: [
-                              DataCell(Text(produk.nama_produk ?? 'N/A')),
-                              DataCell(Text(produk.jumlah != null ? produk.jumlah.toString() : 'N/A')),
-                              DataCell(Text(produk.subtotal != null ? formatRupiah(produk.subtotal!) : 'N/A')),
-                            ],
-                          );
-                        }).toList(),
+                        rows: [
+                          ...userHistory.detailTransaksi!.asMap().entries.map((entry) {
+                            final index = entry.key + 1;
+                            final produk = entry.value;
+                            return DataRow(cells: [
+                              DataCell(Text(index.toString(), style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12))),
+                              DataCell(Text(produk.nama_produk ?? 'N/A', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12))),
+                              DataCell(Text(produk.jumlah?.toString() ?? 'N/A', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12))),
+                              DataCell(Text(produk.subtotal != null ? formatRupiah(produk.subtotal!) : 'N/A', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12))),
+                            ]);
+                          }),
+                          DataRow(cells: [
+                            DataCell(Text('', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12))),
+                            DataCell(Text('Potongan Poin', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12))),
+                            DataCell(Text('0', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12))),
+                            DataCell(Text(formatRupiah((userHistory.penggunaan_poin ?? 0) * 100), style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12))),
+                          ]),
+                          DataRow(cells: [
+                            DataCell(Text('', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12))),
+                            DataCell(Text('Total', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
+                            DataCell(Text('', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
+                            DataCell(Text(formatRupiah(userHistory.total ?? 0), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
+                          ]),
+                        ],
                       ),
+                    SizedBox(height: 20),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: const Color.fromRGBO(244, 142, 40, 1),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text(
+                        'Penambahan Poin: ${userHistory.penambahan_poin ?? "N/A"}',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
                     SizedBox(height: 10),
-                    Text('Penambahan Poin: ${userHistory.penambahan_poin ?? "N/A"}',
-                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12)),
-                    Text('Poin User Setelah Penambahan: ${userHistory.poin_user_setelah_penambahan ?? "N/A"}',
-                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12)),
+                    Container(
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: const Color.fromRGBO(244, 142, 40, 1)),
+                    ),
+                    child: Text(
+                      'Poin User Setelah Penambahan: ${userHistory.poin_user_setelah_penambahan ?? "N/A"}',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
                   ],
                 ),
               ),

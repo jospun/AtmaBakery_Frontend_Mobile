@@ -15,6 +15,7 @@ class HistoriPemesananPage extends StatefulWidget {
 class _HistoriPemesananPage extends State<HistoriPemesananPage> {
   List<UserHistory>? userHistories;
   UserHistory? userDetailHistories;
+  List<UserHistory>? filteredUserHistories;
 
   bool _isLoading = true;
 
@@ -35,6 +36,7 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
     });
     try {
       userHistories = await userHistoryClient.showHistorySelf();
+      filteredUserHistories = List.from(userHistories!); 
     } catch (e) {
       print("Error fetching user history: $e");
     }
@@ -52,6 +54,15 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
     );
   }
 
+  void _searchByNamaProduk(String namaProduk) {
+    setState(() {
+      filteredUserHistories = userHistories!.where((history) {
+        return history.detailTransaksi1!.any((detail) =>
+            detail.nama_produk!.toLowerCase().contains(namaProduk.toLowerCase()));
+      }).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -61,6 +72,8 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
     } else {
       return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.white,
           title: Text(
             "Riwayat Pesanan",
             style: TextStyle(
@@ -68,22 +81,51 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
               fontFamily: 'Montserrat',
             ),
           ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new_outlined),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+          leading: Padding(
+            padding: EdgeInsets.only(left: 20),
+            child: IconButton(
+              icon: Icon(Icons.arrow_circle_left_outlined),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              iconSize: 30,
+            ),
           ),
-          backgroundColor: Color.fromARGB(255, 255, 255, 255),
-          elevation: 4,
-          shadowColor: Colors.grey,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                setState(() {
+                  filteredUserHistories = List.from(userHistories!);
+                });
+              },
+            ),
+          ],
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(70),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Cari Produk',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onChanged: (value) {
+                  _searchByNamaProduk(value);
+                },
+              ),
+            ),
+          ),
         ),
         body: Padding(
-          padding: EdgeInsets.all(30),
+          padding: EdgeInsets.only(top: 10, bottom: 10, right: 30, left: 30),
           child: ListView.builder(
-            itemCount: userHistories?.length ?? 0,
+            itemCount: filteredUserHistories?.length ?? 0,
             itemBuilder: (context, index) {
-              final userHistory = userHistories![index];
+              final userHistory = filteredUserHistories![index];
               Color badgeColor = Colors.grey;
               String statusText = 'Menunggu Pembayaran';
               if (userHistory.status == 'Terkirim') {
@@ -97,8 +139,10 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
               return GestureDetector(
                 onTap: () async {
                   try {
-                    userDetailHistories = await userHistoryClient.showDetailHistory(userHistory);
-                    _navigateToDetail(userDetailHistories!); 
+                    userDetailHistories =
+                        await userHistoryClient.showDetailHistory(userHistory);
+                    print(userDetailHistories!.detailTransaksi);
+                    _navigateToDetail(userDetailHistories!);
                   } catch (e) {
                     print("Error fetching user history: $e");
                   }
@@ -130,11 +174,11 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
                               Row(
                                 children: [
                                   Text(
-                                    '${userHistory.detailTransaksi != null && userHistory.detailTransaksi!.isNotEmpty ? '${userHistory.detailTransaksi![0].nama_produk ?? 'N/A'}' : 'N/A'}',
+                                    '${userHistory.detailTransaksi1 != null && userHistory.detailTransaksi1!.isNotEmpty ? '${userHistory.detailTransaksi1![0].nama_produk ?? 'N/A'}' : 'N/A'}',
                                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(width: 10),
-                                  if (userHistory.detailTransaksi != null && userHistory.detailTransaksi!.length != 1)
+                                  if (userHistory.detailTransaksi1 != null && userHistory.detailTransaksi1!.length != 1)
                                     Container(
                                       width: 20,
                                       height: 20,
@@ -144,7 +188,7 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
                                       ),
                                       child: Center(
                                         child: Text(
-                                          '+${userHistory.detailTransaksi!.length - 1}',
+                                          '+${userHistory.detailTransaksi1!.length - 1}',
                                           style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                                         ),
                                       ),
