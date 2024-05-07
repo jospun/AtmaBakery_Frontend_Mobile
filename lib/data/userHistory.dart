@@ -13,12 +13,12 @@ class UserHistory {
   final String? tipe_delivery;
   final int? penggunaan_poin;
   final int? total;
-  final double? radius;
+  final int? radius;
   final int? ongkir;
   final String? status;
   final int? penambahan_poin;
   final int? poin_user_setelah_penambahan;
-  final List<Produk>? detailTransaksi; 
+  final List<Produk>? detailTransaksi;
 
   UserHistory({
     this.no_nota,
@@ -38,7 +38,7 @@ class UserHistory {
     this.status,
     this.penambahan_poin,
     this.poin_user_setelah_penambahan,
-    this.detailTransaksi, 
+    this.detailTransaksi,
   });
 
   String toRawJson() => json.encode(toJson());
@@ -62,13 +62,16 @@ class UserHistory {
       status: json['status'],
       penambahan_poin: json['penambahan_poin'],
       poin_user_setelah_penambahan: json['poin_user_setelah_penambahan'],
-      detailTransaksi: json['detail_transaksi'] != null ? List<Produk>.from(json['detail_transaksi'].map((x) => Produk.fromJson(x))) : null, 
+      detailTransaksi: json['detail_transaksi'] != null
+          ? List<Produk>.from(
+              json['detail_transaksi'].map((x) => Produk.fromJson(x)))
+          : null,
     );
   }
 
   Map<String, dynamic> toJson() => {
         "no_nota": no_nota,
-        "nama" : nama,
+        "nama": nama,
       };
 }
 
@@ -97,8 +100,3 @@ class Produk {
     );
   }
 }
-
-
-
-
-
