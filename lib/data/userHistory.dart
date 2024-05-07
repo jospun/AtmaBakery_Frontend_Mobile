@@ -40,6 +40,7 @@ class UserHistory {
     this.status,
     this.penambahan_poin,
     this.poin_user_setelah_penambahan,
+    
     this.detailTransaksi, 
     this.detailTransaksi1,
   });

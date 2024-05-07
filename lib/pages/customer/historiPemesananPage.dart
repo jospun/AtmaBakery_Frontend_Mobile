@@ -16,7 +16,6 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
   List<UserHistory>? userHistories;
   UserHistory? userDetailHistories;
   List<UserHistory>? filteredUserHistories;
-
   bool _isLoading = true;
 
   String formatRupiah(int amount) {
@@ -31,18 +30,22 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
 
   Future<void> _loadHistoryData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    
     setState(() {
       _isLoading = true;
     });
+
     try {
       userHistories = await userHistoryClient.showHistorySelf();
       filteredUserHistories = List.from(userHistories!); 
     } catch (e) {
       print("Error fetching user history: $e");
     }
+
     setState(() {
       _isLoading = false;
     });
+    
   }
 
   void _navigateToDetail(UserHistory userHistory) {

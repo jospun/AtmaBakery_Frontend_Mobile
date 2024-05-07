@@ -4,7 +4,6 @@ import 'package:p3l_atmabakery/data/userHistory.dart';
 
 class DetailTransaksiPage extends StatelessWidget {
   final UserHistory userHistory;
-
   const DetailTransaksiPage({Key? key, required this.userHistory}) : super(key: key);
 
   String formatRupiah(int amount) {
