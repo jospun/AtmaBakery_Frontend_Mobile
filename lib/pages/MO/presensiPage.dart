@@ -23,6 +23,17 @@ class _PresensiPageState extends State<PresensiPage> {
     _loadPresensiData();
   }
 
+  Future<void> editPresensi(int id, Presensi presensi) async {
+    print(id);
+    print(presensi.status);
+    try {
+      // Panggil fungsi update dari userClient
+      await presensiClient.updatePresensi(id, presensi);
+    } catch (e) {
+      print("Error during user update: $e");
+    }
+  }
+
   Future<void> _loadPresensiData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -87,10 +98,74 @@ class _PresensiPageState extends State<PresensiPage> {
           padding: EdgeInsets.all(10),
           child: ListView.builder(
               itemCount: listPresensi?.length ?? 0,
-              itemBuilder: (context, index) => ListTile(
-                    title: Text('${listPresensi![index].nama}'),
-                    subtitle: Text('${listPresensi![index].no_telp}'),
-                  )),
+              itemBuilder: (context, index) {
+                String selectedValue =
+                    listPresensi![index].status == 1 ? 'Hadir' : 'Tidak Hadir';
+
+                return Container(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              '${listPresensi![index].nama}',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              '${listPresensi![index].no_telp}',
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          DropdownButton<String>(
+                            items: <String>['Hadir', 'Tidak Hadir']
+                                .map((String item) => DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
+                            value: selectedValue,
+                            onChanged: (String? value) async {
+                              Presensi main;
+                              if (value == selectedValue) {
+                                main = Presensi(
+                                  id: listPresensi![index].id,
+                                  status: selectedValue == 'Hadir' ? 1 : 0,
+                                );
+                              } else {
+                                main = Presensi(
+                                  id: listPresensi![index].id,
+                                  status: selectedValue == 'Hadir' ? 0 : 1,
+                                );
+
+                                await editPresensi(
+                                    listPresensi![index].id!, main);
+                                _loadPresensiData();
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              }),
         ),
       );
     }

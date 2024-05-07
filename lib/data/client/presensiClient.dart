@@ -30,4 +30,24 @@ class presensiClient {
       return Future.error(e.toString());
     }
   }
+
+  static Future<Response> updatePresensi(int id, Presensi presensi) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token')!;
+      var response = await put(Uri.parse("https://$url/presensi/${id}"),
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": 'Bearer $token'
+              },
+              body: presensi.toRawJson())
+          .timeout(const Duration(seconds: 5));
+
+      if (response.statusCode != 200) throw Exception(response.reasonPhrase);
+
+      return response;
+    } catch (e) {
+      return Future.error('error sini ' + e.toString());
+    }
+  }
 }
