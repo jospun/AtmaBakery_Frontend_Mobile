@@ -19,17 +19,26 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePage extends State<ProfilePage> {
   User? currentUser;
   bool _isLoading = true;
-  String? nama, email, pfp;
+  String? nama, pfp;
+  String? email, id_role;
+
+  Future<void> main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    id_role = prefs.getString('id_role');
+    email = prefs.getString('email');
+  }
 
   void getUserData() async {
-    _isLoading = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    email = prefs.getString('email');
+    _isLoading = true;
+    print(email);
     try {
       currentUser = await userClient.showSelf();
       setState(() {
         nama = currentUser!.nama;
-        email = currentUser!.email;
       });
       _isLoading = false;
     } catch (e) {
@@ -52,6 +61,7 @@ class _ProfilePage extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    main();
     return Scaffold(
       body: !_isLoading
           ? Scaffold(

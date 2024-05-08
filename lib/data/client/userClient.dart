@@ -14,6 +14,13 @@ class userClient {
 
       if (response.statusCode != 200)
         throw Exception(jsonDecode(response.body)['message'].toString());
+
+      dynamic responseBody = json.decode(response.body)['data'];
+      print(responseBody);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('id_role', responseBody['id_role'].toString());
+      prefs.setString('email', responseBody['email'].toString());
+      print(prefs.getString('id_role'));
       return json.decode(response.body)['token'].toString();
     } catch (e) {
       return Future.error(e.toString());

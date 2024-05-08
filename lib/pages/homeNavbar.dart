@@ -31,8 +31,14 @@ class _HomeNavbarState extends State<HomeNavbar> {
     _loadUserData();
   }
 
-  Future<void> _loadUserData() async {
+  Future<void> main() async {
+    WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    id_role = prefs.getString('id_role');
+    email = prefs.getString('email');
+  }
+
+  Future<void> _loadUserData() async {
     setState(() {
       _isLoading = true;
     });
@@ -40,8 +46,6 @@ class _HomeNavbarState extends State<HomeNavbar> {
       currentUser = await userClient.showSelf();
       setState(() {
         nama = currentUser!.nama;
-        email = currentUser!.email;
-        id_role = currentUser!.id_role;
         _isLoading = false;
       });
     } catch (e) {
@@ -52,7 +56,8 @@ class _HomeNavbarState extends State<HomeNavbar> {
     }
   }
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index) async {
+    main();
     setState(() {
       _selectedIndex = index;
     });
