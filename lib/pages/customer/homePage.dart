@@ -12,52 +12,53 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  User? currentUser;
-  bool _isLoading = true;
   String? nama, email, id_role;
-
-  void getUserData() async {
-    _isLoading = true;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    try {
-      currentUser = await userClient.showSelf();
-      setState(() {
-        nama = currentUser!.nama;
-        email = currentUser!.email;
-        id_role = currentUser!.id_role;
-      });
-      _isLoading = false;
-    } catch (e) {
-      print("Error fetching SharedPreferences: $e");
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getUserData();
-    if (currentUser == null) {
-      setState(() {
-        nama = "Guest";
-        email = "Please log In";
-        id_role = null;
-      });
-      _isLoading = false;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: !_isLoading
-          ? Center(
+    return FutureBuilder(
+        future: userClient.showSelf(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Hi, Guest"),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const LoginPage(),
+                          ),
+                        );
+                      },
+                      child: Text("Login"))
+                ],
+              ),
+            );
+          }
+
+          User user = snapshot.data as User;
+          nama = user.nama;
+          id_role = user.id_role;
+
+          return Scaffold(
+            body: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Hi, $nama"),
-                  Text("Hi, $id_role"),
+                  Text("Role, $id_role"),
                   ElevatedButton(
                       onPressed: () async {
                         SharedPreferences prefs =
@@ -76,10 +77,8 @@ class _HomePage extends State<HomePage> {
                       child: Text("Logout")),
                 ],
               ),
-            )
-          : const Center(
-              child: CircularProgressIndicator(),
             ),
-    );
+          );
+        });
   }
 }

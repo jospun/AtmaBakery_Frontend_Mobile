@@ -17,298 +17,313 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePage extends State<ProfilePage> {
-  User? currentUser;
-  bool _isLoading = true;
+  bool _isLoading = false;
   String? nama, pfp;
   String? email, id_role;
 
-  Future<void> main() async {
-    WidgetsFlutterBinding.ensureInitialized();
-
+  Future<User> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    id_role = prefs.getString('id_role');
-    email = prefs.getString('email');
-  }
-
-  void getUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    email = prefs.getString('email');
     _isLoading = true;
-    print(email);
     try {
-      currentUser = await userClient.showSelf();
-      setState(() {
-        nama = currentUser!.nama;
-      });
+      User data = User(
+          email: prefs.getString('email'),
+          nama: prefs.getString('nama'),
+          foto_profil: prefs.getString('foto_profil'),
+          id_role: prefs.getString('id_role'));
       _isLoading = false;
+      return data;
     } catch (e) {
       print("Error fetching SharedPreferences: $e");
+      return Future.error(e.toString());
     }
   }
 
   @override
   void initState() {
     super.initState();
-    getUserData();
-    if (currentUser == null) {
-      setState(() {
-        nama = "Guest";
-        email = "Please log In";
-      });
-      _isLoading = false;
-    }
+    setState(() {
+      nama = "Guest";
+      pfp = "";
+      email = "Please log In";
+    });
+    _isLoading = false;
   }
 
   @override
   Widget build(BuildContext context) {
-    main();
-    return Scaffold(
-      body: !_isLoading
-          ? Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.white,
-              body: SingleChildScrollView(
-                child: SafeArea(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      height: 25.h,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(
-                              "https://res.cloudinary.com/daorbrq8v/image/upload/f_auto,q_auto/v1/atma-bakery/p27iua0trapjq3hb6vxz"), // Ganti dengan path gambar Anda
-                          fit: BoxFit.cover,
+    return FutureBuilder(
+      future: getUserData(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error: ${snapshot.error}"),
+          );
+        }
+
+        pfp = snapshot.data!.foto_profil ??
+            "https://res.cloudinary.com/daorbrq8v/image/upload/f_auto,q_auto/v1/atma-bakery/r1xujbu1yfoenzked4rc";
+        nama = snapshot.data!.nama;
+        email = snapshot.data!.email;
+        id_role = snapshot.data!.id_role;
+
+        return Scaffold(
+          body: !_isLoading
+              ? Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  backgroundColor: Colors.white,
+                  body: SingleChildScrollView(
+                    child: SafeArea(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          height: 25.h,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  "https://res.cloudinary.com/daorbrq8v/image/upload/f_auto,q_auto/v1/atma-bakery/p27iua0trapjq3hb6vxz"), // Ganti dengan path gambar Anda
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 30.0, bottom: 8),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CircleAvatar(
+                                        radius: 45,
+                                        backgroundImage: NetworkImage(pfp!)),
+                                    SizedBox(height: 2.h),
+                                    Text(
+                                      "Hi, ${nama ?? "Guest"}",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w900,
+                                        fontStyle: FontStyle.normal,
+                                      ),
+                                    ),
+                                    Text(
+                                      "${email ?? "Please log In"}",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Montserrat',
+                                        fontStyle: FontStyle.normal,
+                                      ),
+                                    ),
+                                    SizedBox(height: 1.h),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 30.0, bottom: 8),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CircleAvatar(
-                                  radius: 45,
-                                  backgroundImage: currentUser?.foto_profil !=
-                                          null
-                                      ? NetworkImage(currentUser!.foto_profil!)
-                                          as ImageProvider<Object>
-                                      : const NetworkImage(
-                                              "https://res.cloudinary.com/daorbrq8v/image/upload/f_auto,q_auto/v1/atma-bakery/r1xujbu1yfoenzked4rc")
-                                          as ImageProvider<Object>,
-                                ),
-                                SizedBox(height: 2.h),
-                                Text(
-                                  "Hi, $nama",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.w900,
-                                    fontStyle: FontStyle.normal,
+                        SizedBox(height: 2.h),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 1,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  height: 100,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Saldo Saya',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Icon(Icons.attach_money,
+                                          color: Colors.black),
+                                    ],
                                   ),
                                 ),
-                                Text(
-                                  "$email",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'Montserrat',
-                                    fontStyle: FontStyle.normal,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 1,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  height: 100,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Poin Saya',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Icon(Icons.monetization_on,
+                                          color: Colors.black),
+                                    ],
                                   ),
                                 ),
-                                SizedBox(height: 1.h),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 2.h),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Color.fromRGBO(244, 142, 40, 1),
+                                Colors.white,
                               ],
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.3),
-                                    spreadRadius: 1,
-                                    blurRadius: 4,
-                                    offset: Offset(0, 2),
-                                  ),
-                                ],
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 4,
+                                offset: Offset(0, 2),
                               ),
-                              height: 100,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Saldo Saya',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Icon(Icons.attach_money, color: Colors.black),
-                                ],
-                              ),
-                            ),
+                            ],
                           ),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.3),
-                                    spreadRadius: 1,
-                                    blurRadius: 4,
-                                    offset: Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              height: 100,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Poin Saya',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Icon(Icons.monetization_on,
-                                      color: Colors.black),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Color.fromRGBO(244, 142, 40, 1),
-                            Colors.white,
-                          ],
+                          height: 110,
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            spreadRadius: 1,
-                            blurRadius: 4,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      height: 110,
-                    ),
-                    SizedBox(height: 2.h),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            spreadRadius: 1,
-                            blurRadius: 4,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      height: 300,
-                      child: Column(
-                        children: [
-                          SizedBox(height: 2.h),
-                          buildRow(Icons.account_circle, 'Profil Saya', () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProfilSayaPage(),
+                        SizedBox(height: 2.h),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 4,
+                                offset: Offset(0, 2),
                               ),
-                            );
-                          }),
-                          buildRow(Icons.info, 'Tentang Kami', () {}),
-                          buildRow(Icons.attach_money, 'Histori Pemesanan', () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HistoriPemesananPage(),
-                              ),
-                            );
-                          }),
-                          buildRow(Icons.library_books, 'Ketentuan', () {}),
-                          buildRow(Icons.security, 'Privacy Policy', () {}),
-                          buildRow(Icons.logout, 'Logout', () {}),
-                        ],
-                      ),
-                    ),
-                    (currentUser != null)
-                        ? ElevatedButton(
-                            onPressed: () async {
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              FocusManager.instance.primaryFocus!.unfocus();
-                              String token =
-                                  prefs.getString('token').toString();
-                              await userClient.Logout(token);
-                              prefs.remove('token');
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const LoginPage(),
+                            ],
+                          ),
+                          height: 300,
+                          child: Column(
+                            children: [
+                              SizedBox(height: 2.h),
+                              buildRow(Icons.account_circle, 'Profil Saya', () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProfilSayaPage(),
+                                  ),
+                                );
+                              }),
+                              buildRow(Icons.info, 'Tentang Kami', () {}),
+                              id_role == "CUST"
+                                  ? buildRow(
+                                      Icons.shopping_cart, 'Histori Pemesanan',
+                                      () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              HistoriPemesananPage(),
+                                        ),
+                                      );
+                                    })
+                                  : Container(),
+                              buildRow(Icons.library_books, 'Ketentuan', () {}),
+                              buildRow(Icons.security, 'Privacy Policy', () {}),
+                              buildRow(Icons.logout, 'Logout', () async {
+                                _isLoading = true;
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                FocusManager.instance.primaryFocus!.unfocus();
+                                String token =
+                                    prefs.getString('token').toString();
+                                await userClient.Logout(token);
+                                prefs.remove('token');
+                                _isLoading = false;
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const LoginPage(),
+                                  ),
+                                );
+                              }),
+                            ],
+                          ),
+                        ),
+                        snapshot.requireData.nama == null
+                            ? Center(
+                                child: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      const TextSpan(
+                                        text: "Sudah Punya Akun?",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      TextSpan(
+                                        text: " Masuk Sekarang",
+                                        style: const TextStyle(
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 15,
+                                            color: Color.fromRGBO(
+                                                90, 175, 220, 1)),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () => Navigator.of(context)
+                                              .pushReplacement(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const LoginPage())),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              );
-                            },
-                            child: Text("Logout"))
-                        : Center(
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  const TextSpan(
-                                    text: "Sudah Punya Akun?",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(
-                                    text: " Masuk Sekarang",
-                                    style: const TextStyle(
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 15,
-                                        color: Color.fromRGBO(90, 175, 220, 1)),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () => Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const LoginPage())),
-                                  ),
-                                ],
+                              )
+                            : Container(
+                                height: 10,
                               ),
-                            ),
-                          ),
-                  ],
-                )),
-              ),
-            )
-          : const Center(
-              child: CircularProgressIndicator(),
-            ),
+                      ],
+                    )),
+                  ),
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
+        );
+      },
     );
   }
 }

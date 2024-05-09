@@ -19,7 +19,9 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
   bool _isLoading = true;
 
   String formatRupiah(int amount) {
-    return NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(amount);
+    return NumberFormat.currency(
+            locale: 'id_ID', symbol: 'Rp', decimalDigits: 0)
+        .format(amount);
   }
 
   @override
@@ -30,14 +32,14 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
 
   Future<void> _loadHistoryData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    
+
     setState(() {
       _isLoading = true;
     });
 
     try {
       userHistories = await userHistoryClient.showHistorySelf();
-      filteredUserHistories = List.from(userHistories!); 
+      filteredUserHistories = List.from(userHistories!);
     } catch (e) {
       print("Error fetching user history: $e");
     }
@@ -45,7 +47,6 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
     setState(() {
       _isLoading = false;
     });
-    
   }
 
   void _navigateToDetail(UserHistory userHistory) {
@@ -60,8 +61,9 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
   void _searchByNamaProduk(String namaProduk) {
     setState(() {
       filteredUserHistories = userHistories!.where((history) {
-        return history.detailTransaksi1!.any((detail) =>
-            detail.nama_produk!.toLowerCase().contains(namaProduk.toLowerCase()));
+        return history.detailTransaksi1!.any((detail) => detail.nama_produk!
+            .toLowerCase()
+            .contains(namaProduk.toLowerCase()));
       }).toList();
     });
   }
@@ -178,10 +180,13 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
                                 children: [
                                   Text(
                                     '${userHistory.detailTransaksi1 != null && userHistory.detailTransaksi1!.isNotEmpty ? '${userHistory.detailTransaksi1![0].nama_produk ?? 'N/A'}' : 'N/A'}',
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(width: 10),
-                                  if (userHistory.detailTransaksi1 != null && userHistory.detailTransaksi1!.length != 1)
+                                  if (userHistory.detailTransaksi1 != null &&
+                                      userHistory.detailTransaksi1!.length != 1)
                                     Container(
                                       width: 20,
                                       height: 20,
@@ -192,7 +197,10 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
                                       child: Center(
                                         child: Text(
                                           '+${userHistory.detailTransaksi1!.length - 1}',
-                                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
                                         ),
                                       ),
                                     ),
@@ -209,7 +217,7 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                '${formatRupiah( userHistory.total ?? 0)}',
+                                '${formatRupiah(userHistory.total ?? 0)}',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -225,7 +233,8 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
                             children: [
                               Text(
                                 'No. ${userHistory.no_nota ?? 'N/A'}',
-                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                               SizedBox(height: 8),
                               Text(
@@ -243,14 +252,18 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
                               ),
                               SizedBox(height: 15),
                               Container(
-                                padding: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 3, horizontal: 8),
                                 decoration: BoxDecoration(
                                   color: badgeColor,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
                                   statusText,
-                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12),
                                 ),
                               ),
                             ],

@@ -18,8 +18,13 @@ class userClient {
       dynamic responseBody = json.decode(response.body)['data'];
       print(responseBody);
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (responseBody['foto_profil'] != null) {
+        prefs.setString("foto_profil", responseBody['foto_profil'].toString());
+      }
+
       prefs.setString('id_role', responseBody['id_role'].toString());
       prefs.setString('email', responseBody['email'].toString());
+      prefs.setString('nama', responseBody['nama'].toString());
       print(prefs.getString('id_role'));
       return json.decode(response.body)['token'].toString();
     } catch (e) {
@@ -36,6 +41,8 @@ class userClient {
 
       if (response.statusCode != 200)
         throw Exception(jsonDecode(response.body)['message'].toString());
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.clear();
       return json.decode(response.body)['message'].toString();
     } catch (e) {
       return Future.error(e.toString());
@@ -73,7 +80,10 @@ class userClient {
   static Future<User> showSelf() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('token')!;
+      String? token = prefs.getString('token')?.toString();
+
+      if (token == null) throw Exception("Token not found");
+
       var response = await get(
         Uri.parse("https://$url/users/self"),
         headers: {
