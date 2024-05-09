@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:p3l_atmabakery/data/user.dart';
 import 'package:p3l_atmabakery/data/client/userClient.dart';
+import 'package:p3l_atmabakery/pages/customer/homePage.dart';
+import 'package:p3l_atmabakery/pages/customer/profilePage.dart';
+import 'package:p3l_atmabakery/pages/homeNavbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -63,16 +69,22 @@ class _ProfilSayaPage extends State<ProfilSayaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile Saya",
-        style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Montserrat',
-            ),
+        title: Text(
+          "Profile Saya",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Montserrat',
+          ),
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_outlined),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const HomeNavbar(index: 3),
+              ),
+            );
           },
         ),
         elevation: 4,
@@ -403,33 +415,42 @@ class _ProfilSayaPage extends State<ProfilSayaPage> {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
-
+      print(token);
       if (token != null) {
         _selectedGender = (_selectedGender == 'L') ? 'L' : 'P';
 
         User updatedUser;
 
-      if (_userData?.foto_profil_upload != null) {
+        if (_userData?.foto_profil_upload != null) {
+          updatedUser = User.toUpload(
+            nama: _namaController.text,
+            email: _emailController.text,
+            tanggal_lahir: _tanggalLahirController.text,
+            no_telp: _noTelpController.text,
+            jenis_kelamin: _selectedGender,
+            foto_profil_upload: _userData?.foto_profil_upload,
+          );
+        } else {
+          updatedUser = User.toUpload(
+            nama: _namaController.text,
+            email: _emailController.text,
+            tanggal_lahir: _tanggalLahirController.text,
+            no_telp: _noTelpController.text,
+            jenis_kelamin: _selectedGender,
+            foto_profil: _userData?.foto_profil,
+          );
+        }
+        Response res = await userClient.update(updatedUser, token);
+        dynamic body = jsonDecode(res.body);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        if (body['data']['foto_profil'] != null) {
+          prefs.setString(
+              "foto_profil", body['data']['foto_profil'].toString());
+        }
 
-        updatedUser = User.toUpload(
-          nama: _namaController.text,
-          email: _emailController.text,
-          tanggal_lahir: _tanggalLahirController.text,
-          no_telp: _noTelpController.text,
-          jenis_kelamin: _selectedGender,
-          foto_profil_upload: _userData?.foto_profil_upload,
-        );
-      } else {
-        updatedUser = User.toUpload(
-          nama: _namaController.text,
-          email: _emailController.text,
-          tanggal_lahir: _tanggalLahirController.text,
-          no_telp: _noTelpController.text,
-          jenis_kelamin: _selectedGender,
-          foto_profil: _userData?.foto_profil,
-        );
-      }
-        await userClient.update(updatedUser, token);
+        prefs.setString('id_role', body['data']['id_role'].toString());
+        prefs.setString('email', body['data']['email'].toString());
+        prefs.setString('nama', body['data']['nama'].toString());
 
         setState(() {
           _userData = updatedUser;

@@ -7,7 +7,6 @@ import 'package:p3l_atmabakery/data/client/userClient.dart';
 import 'package:p3l_atmabakery/pages/loginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:p3l_atmabakery/pages/customer/profilSayaPage.dart';
-import 'package:p3l_atmabakery/pages/customer/historiPemesananPage.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -313,7 +312,7 @@ class _ProfilePage extends State<ProfilePage> {
                                 ),
                               )
                             : Container(
-                                height: 10,
+                                height: 4.h,
                               ),
                       ],
                     )),

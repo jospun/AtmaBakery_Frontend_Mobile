@@ -11,7 +11,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:p3l_atmabakery/data/client/userClient.dart';
 
 class HomeNavbar extends StatefulWidget {
-  const HomeNavbar({Key? key}) : super(key: key);
+  final int index; // Optional parameter for initial index
+
+  const HomeNavbar({this.index = 0, Key? key}) : super(key: key);
 
   @override
   State<HomeNavbar> createState() => _HomeNavbarState();
@@ -22,20 +24,14 @@ class _HomeNavbarState extends State<HomeNavbar> {
   bool _isLoading = true;
   String? nama, email;
   String? id_role;
-  int _selectedIndex = 0;
+  late int _selectedIndex;
   late List<Widget> _widgetOptions;
 
   @override
   void initState() {
     super.initState();
+    _selectedIndex = widget.index;
     _loadUserData();
-  }
-
-  Future<void> main() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    id_role = prefs.getString('id_role');
-    email = prefs.getString('email');
   }
 
   Future<void> _loadUserData() async {
@@ -43,9 +39,11 @@ class _HomeNavbarState extends State<HomeNavbar> {
       _isLoading = true;
     });
     try {
-      currentUser = await userClient.showSelf();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      id_role = prefs.getString('id_role');
+      email = prefs.getString('email');
+      nama = prefs.getString('nama');
       setState(() {
-        nama = currentUser!.nama;
         _isLoading = false;
       });
     } catch (e) {
@@ -57,7 +55,6 @@ class _HomeNavbarState extends State<HomeNavbar> {
   }
 
   void _onItemTapped(int index) async {
-    main();
     setState(() {
       _selectedIndex = index;
     });
