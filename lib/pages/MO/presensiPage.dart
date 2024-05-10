@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:p3l_atmabakery/data/presensi.dart';
 import 'package:p3l_atmabakery/data/client/presensiClient.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PresensiPage extends StatefulWidget {
@@ -132,12 +133,13 @@ class _PresensiPageState extends State<PresensiPage> {
                               Text(
                                 '${listPresensi![index].nama}',
                                 style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 '${listPresensi![index].no_telp}',
                                 style: TextStyle(
-                                    fontSize: 11,
+                                    fontSize: 14.sp,
                                     color: Colors.grey,
                                     fontWeight: FontWeight.normal),
                               ),

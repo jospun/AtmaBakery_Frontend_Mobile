@@ -19,12 +19,20 @@ class DetailTransaksiPage extends StatelessWidget {
 
   String getStatusText(String? status) {
     switch (status) {
-      case "Terkirim":
-        return "Pesanan Selesai";
+      case "Sedang Diproses":
+        return "Pesanan Sedang Dibuat";
+      case "Sedang Dikirim":
+        return "Pesanan Dalam Perjalanan";
       case "Dibatalkan":
         return "Pesanan Batal";
       case "Menunggu Pembayaran":
         return "Pesanan Perlu Dibayar";
+      case "Menunggu Konfirmasi":
+        return "Pesanan Sedang dicek oleh admin";
+      case "Diterima":
+        return "Pesanan Selesai";
+      case "Terkirim":
+        return "Pesanan Selesai";
       default:
         return "N/A";
     }
@@ -255,99 +263,107 @@ class DetailTransaksiPage extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10),
-                    DataTable(
-                      columns: <DataColumn>[
-                        DataColumn(
-                            label: Text('No',
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        columns: <DataColumn>[
+                          DataColumn(
+                              label: Text('No',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12))),
+                          DataColumn(
+                              label: Text('Produk',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12))),
+                          DataColumn(
+                              label: Text('Jumlah',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12))),
+                          DataColumn(
+                              label: Text('Sub Total',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12))),
+                        ],
+                        rows: [
+                          ...userHistory.detailTransaksi!
+                              .asMap()
+                              .entries
+                              .map((entry) {
+                            final index = entry.key + 1;
+                            final produk = entry.value;
+                            return DataRow(cells: [
+                              DataCell(Text(index.toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12))),
+                              DataCell(Text(
+                                  produk.id_kategori
+                                              .toString()
+                                              .compareTo("CK") ==
+                                          0
+                                      ? formatLoyang(
+                                          produk.ukuran!, produk.nama_produk!)
+                                      : produk.nama_produk!,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12))),
+                              DataCell(Text(produk.jumlah?.toString() ?? 'N/A',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12))),
+                              DataCell(Text(
+                                  produk.subtotal != null
+                                      ? formatRupiah(produk.subtotal!)
+                                      : 'N/A',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12))),
+                            ]);
+                          }),
+                          DataRow(cells: [
+                            DataCell(Text('',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.normal,
                                     fontSize: 12))),
-                        DataColumn(
-                            label: Text('Produk',
+                            DataCell(Text('Potongan Poin',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.normal,
                                     fontSize: 12))),
-                        DataColumn(
-                            label: Text('Jumlah',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12))),
-                        DataColumn(
-                            label: Text('Sub Total',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12))),
-                      ],
-                      rows: [
-                        ...userHistory.detailTransaksi!
-                            .asMap()
-                            .entries
-                            .map((entry) {
-                          final index = entry.key + 1;
-                          final produk = entry.value;
-                          return DataRow(cells: [
-                            DataCell(Text(index.toString(),
+                            DataCell(Text('0',
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12))),
                             DataCell(Text(
-                                produk.id_kategori.toString().compareTo("CK") ==
-                                        0
-                                    ? formatLoyang(
-                                        produk.ukuran!, produk.nama_produk!)
-                                    : produk.nama_produk!,
+                                formatRupiah(
+                                    (userHistory.penggunaan_poin ?? 0) * 100),
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12))),
-                            DataCell(Text(produk.jumlah?.toString() ?? 'N/A',
+                          ]),
+                          DataRow(cells: [
+                            DataCell(Text('',
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12))),
-                            DataCell(Text(
-                                produk.subtotal != null
-                                    ? formatRupiah(produk.subtotal!)
-                                    : 'N/A',
+                            DataCell(Text('Total',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.normal,
+                                    fontWeight: FontWeight.bold,
                                     fontSize: 12))),
-                          ]);
-                        }),
-                        DataRow(cells: [
-                          DataCell(Text('',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12))),
-                          DataCell(Text('Potongan Poin',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12))),
-                          DataCell(Text('0',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12))),
-                          DataCell(Text(
-                              formatRupiah(
-                                  (userHistory.penggunaan_poin ?? 0) * 100),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12))),
-                        ]),
-                        DataRow(cells: [
-                          DataCell(Text('',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12))),
-                          DataCell(Text('Total',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 12))),
-                          DataCell(Text('',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 12))),
-                          DataCell(Text(formatRupiah(userHistory.total ?? 0),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 12))),
-                        ]),
-                      ],
+                            DataCell(Text('',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12))),
+                            DataCell(Text(formatRupiah(userHistory.total ?? 0),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12))),
+                          ]),
+                        ],
+                      ),
                     ),
                     SizedBox(height: 20),
                     Container(

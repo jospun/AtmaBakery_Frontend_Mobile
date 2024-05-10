@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:p3l_atmabakery/data/client/userHistoryClient.dart';
 import 'package:p3l_atmabakery/data/userHistory.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:p3l_atmabakery/pages/customer/detailTransaksiPage.dart';
 import 'package:intl/intl.dart';
@@ -132,15 +133,16 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
             itemBuilder: (context, index) {
               final userHistory = filteredUserHistories![index];
               Color badgeColor = Colors.grey;
-              String statusText = 'Menunggu Pembayaran';
-              if (userHistory.status == 'Terkirim') {
+              String statusText = userHistory.status!;
+              if (userHistory.status == 'Terkirim' ||
+                  userHistory.status == 'Diterima') {
                 badgeColor = Colors.green;
-                statusText = 'Terkirim';
               } else if (userHistory.status == 'Dibatalkan') {
                 badgeColor = Colors.red;
-                statusText = 'Dibatalkan';
+              } else if (userHistory.status == 'Sedang Diproses' ||
+                  userHistory.status == 'Sedang Dikirim') {
+                badgeColor = Colors.blue;
               }
-
               return GestureDetector(
                 onTap: () async {
                   try {
@@ -181,7 +183,7 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
                                   Text(
                                     '${userHistory.detailTransaksi1 != null && userHistory.detailTransaksi1!.isNotEmpty ? '${userHistory.detailTransaksi1![0].nama_produk ?? 'N/A'}' : 'N/A'}',
                                     style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 16.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(width: 10),
