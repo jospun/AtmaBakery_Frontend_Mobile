@@ -1,21 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:p3l_atmabakery/formatter.dart';
 import 'package:p3l_atmabakery/data/userHistory.dart';
 
 class DetailTransaksiPage extends StatelessWidget {
   final UserHistory userHistory;
   const DetailTransaksiPage({Key? key, required this.userHistory})
       : super(key: key);
-
-  String formatRupiah(int amount) {
-    return NumberFormat.currency(
-            locale: 'id_ID', symbol: 'Rp', decimalDigits: 0)
-        .format(amount);
-  }
-
-  String formatLoyang(String ukuran, String nama) {
-    return "$nama $ukuran Loyang";
-  }
 
   String getStatusText(String? status) {
     switch (status) {
@@ -145,17 +135,17 @@ class DetailTransaksiPage extends StatelessWidget {
                     ),
                     SizedBox(height: 5),
                     Text(
-                      'Tanggal Pesan: ${userHistory.tanggal_pesan ?? "N/A"}',
+                      'Tanggal Pesan: ${formatTanggalWaktu(userHistory.tanggal_pesan ?? "N/A")}',
                       style: TextStyle(
                           fontWeight: FontWeight.normal, fontSize: 13),
                     ),
                     Text(
-                      'Tanggal Lunas: ${userHistory.tanggal_lunas ?? "N/A"}',
+                      'Tanggal Lunas: ${formatTanggalWaktu(userHistory.tanggal_lunas ?? "N/A")}',
                       style: TextStyle(
                           fontWeight: FontWeight.normal, fontSize: 13),
                     ),
                     Text(
-                      'Tanggal Ambil: ${userHistory.tanggal_ambil ?? "N/A"}',
+                      'Tanggal Ambil: ${formatTanggalWaktu(userHistory.tanggal_ambil ?? "N/A")}',
                       style: TextStyle(
                           fontWeight: FontWeight.normal, fontSize: 13),
                     ),

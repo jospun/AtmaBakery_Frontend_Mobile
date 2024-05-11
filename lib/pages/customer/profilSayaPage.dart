@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
+import 'package:p3l_atmabakery/formatter.dart';
 import 'package:p3l_atmabakery/data/user.dart';
 import 'package:p3l_atmabakery/data/client/userClient.dart';
 import 'package:p3l_atmabakery/pages/customer/homePage.dart';
@@ -54,7 +55,7 @@ class _ProfilSayaPage extends State<ProfilSayaPage> {
         _userData = user;
         _namaController.text = user.nama ?? '';
         _emailController.text = user.email ?? '';
-        _tanggalLahirController.text = user.tanggal_lahir ?? '';
+        _tanggalLahirController.text = formatTanggal(user.tanggal_lahir ?? '');
         _noTelpController.text = user.no_telp ?? '';
         _selectedGender = user.jenis_kelamin ?? '';
         _isLoading = false;

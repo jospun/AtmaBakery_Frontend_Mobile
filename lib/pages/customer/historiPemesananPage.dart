@@ -4,7 +4,7 @@ import 'package:p3l_atmabakery/data/userHistory.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:p3l_atmabakery/pages/customer/detailTransaksiPage.dart';
-import 'package:intl/intl.dart';
+import 'package:p3l_atmabakery/formatter.dart';
 
 class HistoriPemesananPage extends StatefulWidget {
   const HistoriPemesananPage({Key? key}) : super(key: key);
@@ -18,12 +18,6 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
   UserHistory? userDetailHistories;
   List<UserHistory>? filteredUserHistories;
   bool _isLoading = true;
-
-  String formatRupiah(int amount) {
-    return NumberFormat.currency(
-            locale: 'id_ID', symbol: 'Rp', decimalDigits: 0)
-        .format(amount);
-  }
 
   @override
   void initState() {
@@ -249,7 +243,8 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                userHistory.tanggal_pesan ?? 'N/A',
+                                formatTanggalWaktu(
+                                    userHistory.tanggal_pesan ?? 'N/A'),
                                 style: TextStyle(fontSize: 14),
                               ),
                               SizedBox(height: 15),
