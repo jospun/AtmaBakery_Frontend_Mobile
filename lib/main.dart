@@ -6,10 +6,13 @@ import 'package:p3l_atmabakery/pages/splashScreen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 //import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:p3l_atmabakery/data/client/firebase_api.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp();
+  await FirebaseApi().initNotifications();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('token') ?? '';
 
