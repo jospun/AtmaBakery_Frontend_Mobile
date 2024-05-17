@@ -6,7 +6,7 @@ import 'package:http/http.dart';
 class produkClient {
   static final String url = "api-atma-bakery.vercel.app";
 
-  static Future<List<Produk>> fetchProduk() async {
+  static Future<List<dynamic>> fetchProduk() async {
     try {
       var response = await get(Uri.parse("https://$url/produk"), headers: {
         "Content-Type": "application/json",
@@ -22,6 +22,37 @@ class produkClient {
       print(listProduk);
       return listProduk;
     } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  static Future<List<dynamic>> searchProduk(String search) async {
+    final Map<String, dynamic> data = {
+      'data': search,
+    };
+    try {
+      var response = await post(
+        Uri.parse("https://$url/produk/search"),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(data),
+      ).timeout(const Duration(seconds: 5));
+
+      print("Response status: ${response.statusCode}");
+      print("Response body: ${response.body}");
+
+      if (response.statusCode != 200) {
+        throw Exception(jsonDecode(response.body)["data"]);
+      }
+
+      List<dynamic> jsonData = jsonDecode(response.body)["data"];
+      List<Produk> listProduk =
+          jsonData.map((data) => Produk.fromJson(data)).toList();
+      print(listProduk);
+      return listProduk;
+    } catch (e) {
+      print("Error fetching products: $e");
       return Future.error(e.toString());
     }
   }

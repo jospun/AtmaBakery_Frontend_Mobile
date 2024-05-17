@@ -51,3 +51,44 @@ class Produk {
         "gambar": foto_produk?.map((url) => {"url": url}).toList(),
       };
 }
+
+class Hampers {
+  final int? id;
+  String? nama;
+  String? id_kategori;
+  String? ukuran;
+  int? harga;
+  List<String>? foto_produk;
+  List<Produk>? products;
+
+  Hampers({
+    this.id,
+    this.nama,
+    this.harga,
+    this.foto_produk,
+    this.id_kategori,
+    this.ukuran,
+  });
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Hampers.fromJson(Map<String, dynamic> json) {
+    return Hampers(
+      id: json['id_hampers'],
+      nama: json['nama_hampers'],
+      harga: json['harga'],
+      ukuran: "",
+      id_kategori: "HMP",
+      foto_produk: (json['gambar'] as List<dynamic>?)
+          ?.map((item) => item['url'] as String)
+          .toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        "id_hampers": id,
+        "nama_hampers": nama,
+        "harga": harga,
+        "gambar": foto_produk?.map((url) => {"url": url}).toList(),
+      };
+}
