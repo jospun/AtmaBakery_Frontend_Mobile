@@ -7,6 +7,7 @@ import 'package:p3l_atmabakery/data/client/userClient.dart';
 import 'package:p3l_atmabakery/pages/loginPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:p3l_atmabakery/pages/customer/profilSayaPage.dart';
+import 'package:p3l_atmabakery/pages/customer/tentangKamiPage.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -244,7 +245,14 @@ class _ProfilePage extends State<ProfilePage> {
                                   ),
                                 );
                               }),
-                              buildRow(Icons.info, 'Tentang Kami', () {}),
+                                 buildRow(Icons.info, 'Tentang Kami', () {
+                                  Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TentangKamiPage(),
+                                  ),
+                                );
+                              }),
                               id_role == "CUST"
                                   ? buildRow(
                                       Icons.shopping_cart, 'Histori Pemesanan',
