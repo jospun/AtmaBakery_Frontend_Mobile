@@ -4,6 +4,7 @@ import 'package:p3l_atmabakery/data/client/hampersClient.dart';
 import 'package:p3l_atmabakery/data/client/produkClient.dart';
 import 'package:p3l_atmabakery/data/produk.dart';
 import 'package:intl/intl.dart';
+import 'package:p3l_atmabakery/pages/customer/detailProdukPage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ProdukPage extends StatefulWidget {
@@ -28,7 +29,7 @@ class _ProdukPage extends State<ProdukPage> {
     'Minuman',
     'Hampers',
     'PO',
-    'Ready'
+    'Ready',
   ];
 
   int selectedIndex = -1;
@@ -87,11 +88,23 @@ class _ProdukPage extends State<ProdukPage> {
     List<dynamic> filteredProduk = _products;
 
     if (selectedIndex != -1) {
-      filteredProduk = filteredProduk
-          .where((produk) => produk.id_kategori!
-              .toLowerCase()
-              .contains(kategoriProduk.toLowerCase()))
-          .toList();
+      if (selectedIndex == 5) {
+        filteredProduk = filteredProduk
+            .where((produk) =>
+                produk.status?.toLowerCase().contains("po") ?? false)
+            .toList();
+      } else if (selectedIndex == 6) {
+        filteredProduk = filteredProduk
+            .where((produk) =>
+                produk.status?.toLowerCase().contains("ready") ?? false)
+            .toList();
+      } else {
+        filteredProduk = filteredProduk
+            .where((produk) => produk.id_kategori!
+                .toLowerCase()
+                .contains(kategoriProduk.toLowerCase()))
+            .toList();
+      }
     }
 
     if (currentSearchTerm.isNotEmpty) {
@@ -117,6 +130,7 @@ class _ProdukPage extends State<ProdukPage> {
   }
 
   void _filterProduk(int kategori) {
+    print(kategori);
     setState(() {
       _isLoadingProduk = true;
       selectedIndex = kategori;
@@ -243,6 +257,7 @@ class _ProdukPage extends State<ProdukPage> {
                               selectedIndex = -1;
                             }
                             selectedIndex = selected ? index : selectedIndex;
+                            print(selectedIndex);
                             _filterProduk(selectedIndex);
                           });
                         },
@@ -262,169 +277,194 @@ class _ProdukPage extends State<ProdukPage> {
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : SingleChildScrollView(
-                child: Column(
-                  children: [
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics:
-                          const NeverScrollableScrollPhysics(), // Prevent scrolling of GridView inside SingleChildScrollView
-                      itemCount: _filteredProducts.length ?? 0,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
-                      itemBuilder: (context, index) {
-                        final product = _filteredProducts[index];
-                        return GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15.0)),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 15.0,
-                                  offset: Offset(1, 5),
+            : _filteredProducts.isEmpty
+                ? Center(
+                    child: Text("Tidak Ada Produk Disini!"),
+                  )
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics:
+                              const NeverScrollableScrollPhysics(), // Prevent scrolling of GridView inside SingleChildScrollView
+                          itemCount: _filteredProducts.length ?? 0,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                          itemBuilder: (context, index) {
+                            final product = _filteredProducts[index];
+                            return GestureDetector(
+                              onTap: () async {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        DetailProdukPage(item: product),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 15.0,
+                                      offset: Offset(1, 5),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            margin: const EdgeInsets.only(
-                                left: 15.0, right: 15.0, bottom: 30.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Flexible(
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        alignment: Alignment.center,
-                                        height: 120.0,
-                                        width: double.infinity,
-                                        child: product.foto_produk != null &&
-                                                product.foto_produk!.isNotEmpty
-                                            ? Image.network(
-                                                product.foto_produk![0],
-                                                fit: BoxFit.cover,
-                                              )
-                                            : Icon(Icons.image_not_supported),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                margin: const EdgeInsets.only(
+                                    left: 15.0, right: 15.0, bottom: 30.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Flexible(
+                                      child: Stack(
                                         children: [
                                           Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 5),
-                                            decoration: BoxDecoration(
-                                              color: const Color.fromRGBO(
-                                                  244, 142, 40, 1),
-                                              borderRadius: BorderRadius.only(),
+                                            alignment: Alignment.center,
+                                            height: 120.0.h,
+                                            width: double.infinity,
+                                            child: Container(
+                                              height: 100.h,
+                                              width: double.infinity,
+                                              child: product.foto_produk !=
+                                                          null &&
+                                                      product.foto_produk!
+                                                          .isNotEmpty
+                                                  ? Image.network(
+                                                      product.foto_produk![0],
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : Icon(Icons
+                                                      .image_not_supported),
                                             ),
-                                            child: Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 3.0,
-                                                  horizontal: 5.0),
-                                              child: Text(
-                                                getKategoriText(
-                                                    product.id_kategori),
-                                                style: TextStyle(
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  fontSize: 11.0.spa,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.white,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 5),
+                                                decoration: BoxDecoration(
+                                                  color: const Color.fromRGBO(
+                                                      244, 142, 40, 1),
+                                                  borderRadius:
+                                                      BorderRadius.only(),
+                                                ),
+                                                child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 3.0,
+                                                      horizontal: 5.0),
+                                                  child: Text(
+                                                    getKategoriText(
+                                                        product.id_kategori),
+                                                    style: TextStyle(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      fontSize: 11.0.spa,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 8.0, top: 6.0),
-                                                child: AutoSizeText(
-                                                  "${product.nama}",
-                                                  style: TextStyle(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    fontSize: 11.8.spa,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.orange,
-                                                  ),
-                                                  maxLines: 2,
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 20.0, top: 6.0),
-                                                child: AutoSizeText(
-                                                  getUkuranText(
-                                                      product.id_kategori,
-                                                      product.ukuran),
-                                                  style: TextStyle(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    fontSize: 10.0.spa,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.black,
-                                                  ),
-                                                  maxLines: 2,
-                                                ),
-                                              ),
-                                            ),
-                                          ]),
-                                      Column(
+                                    ),
+                                    Container(
+                                      child: Column(
                                         children: [
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 8,
-                                                  top: 5.0,
-                                                  bottom: 5.0),
-                                              child: Text(
-                                                formatRupiah(
-                                                    product.harga ?? 0),
-                                                style: TextStyle(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    fontSize: 11.5.spa,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.black),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 8.0, top: 6.0),
+                                                    child: AutoSizeText(
+                                                      "${product.nama}",
+                                                      style: TextStyle(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontSize: 11.spa,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.orange,
+                                                      ),
+                                                      maxLines: 2,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 20.0, top: 6.0),
+                                                    child: AutoSizeText(
+                                                      getUkuranText(
+                                                          product.id_kategori,
+                                                          product.ukuran),
+                                                      style: TextStyle(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontSize: 10.0.spa,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.black,
+                                                      ),
+                                                      maxLines: 2,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ]),
+                                          Column(
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 8,
+                                                      top: 5.0,
+                                                      bottom: 5.0),
+                                                  child: Text(
+                                                    formatRupiah(
+                                                        product.harga ?? 0),
+                                                    style: TextStyle(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontSize: 11.spa,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.black),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
+                                            ],
+                                          )
                                         ],
-                                      )
-                                    ],
-                                  ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
       );
     }
   }

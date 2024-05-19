@@ -46,6 +46,8 @@ dependencies:
   firebase_core: ^1.20.0
   firebase_messaging: ^13.0.4
   auto_size_text: ^3.0.0
+  carousel_slider: ^4.0.0
+  flutter_screenutil: ^5.0.0 
 
 dependency_oveerrides:
   firebase_core_platform_interface: 4.5.1

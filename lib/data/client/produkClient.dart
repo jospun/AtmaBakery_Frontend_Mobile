@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:p3l_atmabakery/data/produk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -53,6 +55,37 @@ class produkClient {
       return listProduk;
     } catch (e) {
       print("Error fetching products: $e");
+      return Future.error(e.toString());
+    }
+  }
+
+  static Future<int> countTransaksi(id, DateTime tanggal) async {
+    final Map<String, dynamic> data = {
+      'id_produk': id,
+      'po_date': tanggal.toIso8601String(),
+    };
+    try {
+      var response = await post(
+        Uri.parse("https://$url/transaksi/count"),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(data),
+      ).timeout(const Duration(seconds: 5));
+
+      print("Response status: ${response.statusCode}");
+      print("Response body: ${response.body}");
+
+      if (response.statusCode != 200) {
+        throw Exception(jsonDecode(response.body)["data"]);
+      }
+
+      int jsonData = jsonDecode(response.body)["data"]["remaining"];
+
+      print(jsonData);
+      return jsonData;
+    } catch (e) {
+      print("Error fetching transaksi count: $e");
       return Future.error(e.toString());
     }
   }
