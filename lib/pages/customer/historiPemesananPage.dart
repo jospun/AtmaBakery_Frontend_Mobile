@@ -1,4 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:p3l_atmabakery/data/client/userHistoryClient.dart';
 import 'package:p3l_atmabakery/data/userHistory.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -74,68 +76,68 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Colors.white,
-          title: Text(
-            "Riwayat Pesanan",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Montserrat',
-            ),
-          ),
-          leading: Padding(
-            padding: EdgeInsets.only(left: 20),
-            child: IconButton(
-              icon: Icon(Icons.arrow_circle_left_outlined),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              iconSize: 30,
-            ),
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                setState(() {
-                  filteredUserHistories = List.from(userHistories!);
-                });
-              },
-            ),
-          ],
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(70),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Cari Produk',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                  title: Row(
+          children: [
+            Expanded(
+              child: Text(
+                "Riwayat Pesanan",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                  color: Colors.black,
                 ),
-                onChanged: (value) {
-                  _searchByNamaProduk(value);
-                },
               ),
             ),
+          ],
+        ),
+bottom: PreferredSize(
+  preferredSize: Size.fromHeight(60.0),
+  child: Padding(
+    padding: EdgeInsets.symmetric(horizontal: 15.0), 
+    child: Container(
+      height: 60.0,
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: 'Cari Produk',
+          prefixIcon: Icon(Icons.search),
+          contentPadding: EdgeInsets.symmetric(vertical: 0.0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
           ),
         ),
+        onChanged: (value) {
+          _searchByNamaProduk(value);
+        },
+      ),
+    ),
+  ),
+),
+
+        ),
         body: Padding(
-          padding: EdgeInsets.only(top: 10, bottom: 10, right: 30, left: 30),
+          padding: EdgeInsets.only(top: 10, bottom: 10, right: 15, left: 15),
           child: ListView.builder(
             itemCount: filteredUserHistories?.length ?? 0,
             itemBuilder: (context, index) {
               final userHistory = filteredUserHistories![index];
               Color badgeColor = Colors.grey;
               String statusText = userHistory.status!;
-              if (userHistory.status == 'Terkirim' ||
-                  userHistory.status == 'Diterima') {
+              if (userHistory.status == 'Pesanan Diterima' ||
+                  userHistory.status == 'Selesai' ||
+                  userHistory.status == 'Terkirim') {
                 badgeColor = Colors.green;
-              } else if (userHistory.status == 'Dibatalkan') {
+              } else if (userHistory.status == 'Ditolak') {
                 badgeColor = Colors.red;
-              } else if (userHistory.status == 'Sedang Diproses' ||
-                  userHistory.status == 'Sedang Dikirim') {
+              } else if (
+                  userHistory.status == 'Siap Pick Up' ||
+                  userHistory.status == 'Siap Kirim'   ||
+                  userHistory.status == 'Sedang Diantar Kurir' ||
+                  userHistory.status == 'Sedang Diantar Ojol' 
+                  ) {
                 badgeColor = Colors.blue;
+              } else if (userHistory.status == 'Sedang Di Proses'){
+                badgeColor = Colors.yellow;
               }
               return GestureDetector(
                 onTap: () async {
@@ -174,15 +176,22 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
                             children: [
                               Row(
                                 children: [
-                                  Text(
-                                    '${userHistory.detailTransaksi1 != null && userHistory.detailTransaksi1!.isNotEmpty ? '${userHistory.detailTransaksi1![0].nama_produk ?? 'N/A'}' : 'N/A'}',
-                                    style: TextStyle(
+                                  Container(
+                                    child: AutoSizeText(
+                                      '${userHistory.detailTransaksi1 != null && userHistory.detailTransaksi1!.isNotEmpty ? 
+                                        (userHistory.detailTransaksi1![0].nama_produk != null && userHistory.detailTransaksi1![0].nama_produk!.length > 15 ? 
+                                          '${userHistory.detailTransaksi1![0].nama_produk!.substring(0, 15)}...' : 
+                                          userHistory.detailTransaksi1![0].nama_produk) : 'N/A'}',
+                                      style: TextStyle(
                                         fontSize: 16.sp,
-                                        fontWeight: FontWeight.bold),
+                                        overflow: TextOverflow.ellipsis,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      maxLines: 1,
+                                    ),
                                   ),
                                   SizedBox(width: 10),
-                                  if (userHistory.detailTransaksi1 != null &&
-                                      userHistory.detailTransaksi1!.length != 1)
+                                  if (userHistory.detailTransaksi1 != null && userHistory.detailTransaksi1!.length > 1)
                                     Container(
                                       width: 20,
                                       height: 20,
@@ -194,9 +203,10 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
                                         child: Text(
                                           '+${userHistory.detailTransaksi1!.length - 1}',
                                           style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       ),
                                     ),

@@ -48,6 +48,7 @@ dependencies:
   auto_size_text: ^3.0.0
   carousel_slider: ^4.0.0
   flutter_screenutil: ^5.0.0 
+  
 
 dependency_oveerrides:
   firebase_core_platform_interface: 4.5.1
@@ -87,6 +88,10 @@ flutter:
   - assets/images/2.jpg
   - assets/images/3.jpg
   - assets/images/4.jpg
+  - assets/images/ads_1.png
+  - assets/images/ads_2.png
+  - assets/images/ads_3.png
+  - assets/images/bg_wallet.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

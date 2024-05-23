@@ -43,14 +43,22 @@ class DetailTransaksiPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detail Pesanan'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_outlined),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+        backgroundColor: Colors.white,
+        title: Row(
+          children: [
+            Expanded(
+              child: Text(
+                "Detail Pesanan",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
         ),
-        backgroundColor: Color.fromARGB(255, 248, 248, 248),
       ),
       backgroundColor: Color.fromARGB(255, 248, 248, 248),
       body: SingleChildScrollView(
@@ -204,7 +212,7 @@ class DetailTransaksiPage extends StatelessWidget {
                                       '${userHistory.tipe_delivery ?? "N/A"}',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 12,
+                                        fontSize: 10,
                                         color: userHistory.tipe_delivery ==
                                                 'Ambil'
                                             ? Colors.white

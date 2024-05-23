@@ -189,39 +189,24 @@ class _ProdukPage extends State<ProdukPage> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Colors.white,
-          title: const Text(
-            "Produk Kami",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Montserrat',
+            title: Text(
+              "Produk Kami",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Montserrat',
+              ),
             ),
-          ),
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: IconButton(
-              icon: const Icon(Icons.arrow_circle_left_outlined),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              iconSize: 30,
-            ),
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                setState(() {});
-              },
-            ),
-          ],
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(120),
+            preferredSize: const Size.fromHeight(140),
             child: Column(
               children: [
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                  child: TextField(
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15), 
+                  child: Container(
+                     height: 60.0,  
+                    child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Cari Produk',
                       prefixIcon: const Icon(Icons.search),
@@ -229,7 +214,7 @@ class _ProdukPage extends State<ProdukPage> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       contentPadding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                          EdgeInsets.symmetric(vertical: 10.0), 
                     ),
                     onChanged: (value) {
                       currentSearchTerm = value;
@@ -237,9 +222,10 @@ class _ProdukPage extends State<ProdukPage> {
                       _isLoading = false;
                     },
                   ),
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.only(top: 0, bottom: 20, right: 15, left: 15),
                   child: SizedBox(
                     height: 30,
                     child: ListView.separated(
@@ -248,7 +234,13 @@ class _ProdukPage extends State<ProdukPage> {
                       itemBuilder: (context, index) => FilterChip(
                         label: Text(
                           kategori[index],
+                           style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal, 
+                          ),
                         ),
+                        labelPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                         selected: index == selectedIndex,
                         onSelected: (bool selected) {
                           setState(() {
@@ -264,7 +256,7 @@ class _ProdukPage extends State<ProdukPage> {
                       ),
                       separatorBuilder: (BuildContext context, int index) =>
                           const SizedBox(
-                        width: 10,
+                        width: 11,
                       ),
                     ),
                   ),

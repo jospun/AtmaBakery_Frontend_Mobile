@@ -164,23 +164,21 @@ class _DetailProdukPageState extends State<DetailProdukPage> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Colors.white,
-          title: const Text(
-            "Produk Kami",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Montserrat',
+        title: Row(
+          children: [
+            Expanded(
+              child: Text(
+                "Detail Produk",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                  color: Colors.black,
+                ),
+              ),
             ),
-          ),
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: IconButton(
-              icon: const Icon(Icons.arrow_circle_left_outlined),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              iconSize: 30,
-            ),
-          ),
+          ],
+        ),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -401,10 +399,10 @@ class _DetailProdukPageState extends State<DetailProdukPage> {
                                 });
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: isReadySelected
+                                backgroundColor: isReadySelected
                                     ? Color.fromRGBO(244, 142, 40, 1)
                                     : Color.fromRGBO(234, 234, 234, 1),
-                                onPrimary: isReadySelected
+                                foregroundColor: isReadySelected
                                     ? Colors.white
                                     : Color.fromRGBO(244, 142, 40, 1),
                                 side: isReadySelected
@@ -427,10 +425,10 @@ class _DetailProdukPageState extends State<DetailProdukPage> {
                                 });
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: !isReadySelected
+                                backgroundColor: !isReadySelected
                                     ? Color.fromRGBO(244, 142, 40, 1)
                                     : Color.fromRGBO(234, 234, 234, 1),
-                                onPrimary: !isReadySelected
+                                foregroundColor: !isReadySelected
                                     ? Colors.white
                                     : Color.fromRGBO(244, 142, 40, 1),
                                 side: !isReadySelected

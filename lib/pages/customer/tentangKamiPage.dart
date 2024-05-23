@@ -95,22 +95,20 @@ class _TentangKamiPageState extends State<TentangKamiPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(
-          "Tentang Kami",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Montserrat',
-          ),
-        ),
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_circle_left_outlined),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            iconSize: 30,
-          ),
+                title: Row(
+          children: [
+            Expanded(
+              child: Text(
+                "Tentang Kami",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60),

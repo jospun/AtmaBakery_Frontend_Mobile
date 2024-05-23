@@ -93,7 +93,7 @@ class _PresensiPageState extends State<PresensiPage> {
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                    primary: const Color.fromRGBO(255, 255, 255, 1)),
+                    backgroundColor: const Color.fromRGBO(255, 255, 255, 1)),
                 child: Text(
                   formatter2.format(datel),
                   style: TextStyle(

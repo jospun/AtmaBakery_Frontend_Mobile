@@ -70,28 +70,23 @@ class _ProfilSayaPage extends State<ProfilSayaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Profile Saya",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Montserrat',
-          ),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_outlined),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const HomeNavbar(index: 3),
-              ),
-            );
-          },
-        ),
-        elevation: 4,
-        shadowColor: Colors.grey,
+            appBar: AppBar(
         backgroundColor: Colors.white,
+        title: Row(
+          children: [
+            Expanded(
+              child: Text(
+                "Profil Saya",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
