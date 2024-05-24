@@ -25,7 +25,7 @@ class userClient {
       prefs.setString('id_role', responseBody['id_role'].toString());
       prefs.setString('email', responseBody['email'].toString());
       prefs.setString('nama', responseBody['nama'].toString());
-      print(prefs.getString('id_role'));
+      prefs.setDouble('saldo', responseBody['saldo'].toDouble());
       return json.decode(response.body)['token'].toString();
     } catch (e) {
       return Future.error(e.toString());

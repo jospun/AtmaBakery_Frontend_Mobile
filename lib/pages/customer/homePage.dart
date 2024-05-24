@@ -87,7 +87,9 @@ class _HomePage extends State<HomePage> {
     final cachedIdRole = prefs.getString('id_role');
     final cachedProfilePictureUrl = prefs.getString('profilePictureUrl');
 
-    if (cachedNama != null && cachedIdRole != null && cachedProfilePictureUrl != null) {
+    if (cachedNama != null &&
+        cachedIdRole != null &&
+        cachedProfilePictureUrl != null) {
       setState(() {
         nama = cachedNama;
         id_role = cachedIdRole;
@@ -123,10 +125,10 @@ class _HomePage extends State<HomePage> {
   }
 
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false, 
+        automaticallyImplyLeading: false,
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
@@ -138,14 +140,14 @@ class _HomePage extends State<HomePage> {
           ),
         ),
         actions: <Widget>[
-          if (id_role == 'CUST') 
+          if (id_role == 'CUST')
             IconButton(
               icon: Icon(Icons.wallet_rounded),
               onPressed: () {
-               Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => WalletPage()),
-               );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WalletPage()),
+                );
               },
             ),
         ],
@@ -163,235 +165,234 @@ class _HomePage extends State<HomePage> {
         ),
       ),
     );
- }
+  }
 
   Widget _buildUserInfo() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 10.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Selamat Datang",
-              style: TextStyle(
-                fontSize: 14,
-                fontFamily: 'Montserrat',
-                color: Colors.grey,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Selamat Datang",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Montserrat',
+                  color: Colors.grey,
+                ),
               ),
-            ),
-            Text(
-              nama != null ? "Halo, $nama" : "Halo, Kamu!",
-              style: TextStyle(
-                fontSize: 20,
-                fontFamily: 'Montserrat',
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+              Text(
+                nama != null ? "Halo, $nama" : "Halo, Kamu!",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'Montserrat',
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
-        ),
-        CircleAvatar(
-          radius: 30,
-          backgroundImage: profilePictureUrl != null
-              ? NetworkImage(profilePictureUrl!)
-              : NetworkImage(
-                  "https://res.cloudinary.com/daorbrq8v/image/upload/f_auto,q_auto/v1/atma-bakery/r1xujbu1yfoenzked4rc"),
-        ),
-      ],
-    ),
-  );
-}
+            ],
+          ),
+          CircleAvatar(
+            radius: 30,
+            backgroundImage: profilePictureUrl != null
+                ? NetworkImage(profilePictureUrl!)
+                : NetworkImage(
+                    "https://res.cloudinary.com/daorbrq8v/image/upload/f_auto,q_auto/v1/atma-bakery/r1xujbu1yfoenzked4rc"),
+          ),
+        ],
+      ),
+    );
+  }
 
-Widget _buildSearchField() {
-  return Padding(
-    padding: EdgeInsets.symmetric(vertical: 12.0), 
-    child: Container(
-      height: 60.0,  
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Cari Produk',
-          prefixIcon: Icon(Icons.search),
-          contentPadding: EdgeInsets.symmetric(vertical: 0.0), 
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+  Widget _buildSearchField() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 12.0),
+      child: Container(
+        height: 60.0,
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: 'Cari Produk',
+            prefixIcon: Icon(Icons.search),
+            contentPadding: EdgeInsets.symmetric(vertical: 0.0),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 
   Widget _buildImageSlider() {
-  return Padding(
-    padding: EdgeInsets.symmetric(vertical: 5.0),
-    child: Column(
-      children: [
-        SizedBox(
-          height: 200,
-          child: PageView.builder(
-            itemCount: iklan.length,
-            onPageChanged: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      image: AssetImage(iklan[index]),
-                      fit: BoxFit.cover,
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5.0),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 200,
+            child: PageView.builder(
+              itemCount: iklan.length,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        image: AssetImage(iklan[index]),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
+                );
+              },
+            ),
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              iklan.length,
+              (index) => AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                margin: EdgeInsets.symmetric(horizontal: 4),
+                width: _currentIndex == index ? 12 : 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _currentIndex == index ? Colors.orange : Colors.grey,
                 ),
-              );
-            },
-          ),
-        ),
-        SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            iklan.length,
-            (index) => AnimatedContainer(
-              duration: Duration(milliseconds: 300),
-              margin: EdgeInsets.symmetric(horizontal: 4),
-              width: _currentIndex == index ? 12 : 8,
-              height: 8,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _currentIndex == index ? Colors.orange : Colors.grey,
               ),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buildQuickAccessButtons() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SizedBox(height: 10),
-      Text(
-        "Kategori Produk",
-        style: TextStyle(
-          fontSize: 16,
-          fontFamily: 'Montserrat',
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      SizedBox(height: 5),
-      Padding(
-        padding: EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _buildRectangularButton(
-              icon: Icons.cake,
-              label: 'Cake',
-              onPressed: () {
-                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProdukPage()),
-                );
-              },
-            ),
-            _buildRectangularButton(
-              icon: Icons.breakfast_dining,
-              label: 'Roti',
-              onPressed: () {
-                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProdukPage()),
-                );
-              },
-            ),
-            _buildRectangularButton(
-              icon: Icons.coffee,
-              label: 'Minuman',
-              onPressed: () {
-                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProdukPage()),
-                );
-              },
-            ),
-            _buildRectangularButton(
-              icon: Icons.local_shipping_rounded,
-              label: 'Titipan',
-              onPressed: () {
-                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProdukPage()),
-                );
-              },
-            ),
-            _buildRectangularButton(
-              icon: Icons.card_giftcard_rounded,
-              label: 'Hampers',
-              onPressed: () {
-                   Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProdukPage()),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
-}
-
-Widget _buildRectangularButton({
-  required IconData icon,
-  required String label,
-  required VoidCallback onPressed,
-}) {
-  return Expanded(
-    child: InkWell(
-      onTap: onPressed,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(
-              icon,
-              color: const Color.fromRGBO(244, 142, 40, 1),
-              size: 30,
-            ),
-          ),
-          SizedBox(height: 4),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 12,
-              color: Colors.black,
             ),
           ),
         ],
       ),
-    ),
-  );
-}
+    );
+  }
+
+  Widget _buildQuickAccessButtons() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 10),
+        Text(
+          "Kategori Produk",
+          style: TextStyle(
+            fontSize: 16,
+            fontFamily: 'Montserrat',
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 5),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildRectangularButton(
+                icon: Icons.cake,
+                label: 'Cake',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProdukPage()),
+                  );
+                },
+              ),
+              _buildRectangularButton(
+                icon: Icons.breakfast_dining,
+                label: 'Roti',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProdukPage()),
+                  );
+                },
+              ),
+              _buildRectangularButton(
+                icon: Icons.coffee,
+                label: 'Minuman',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProdukPage()),
+                  );
+                },
+              ),
+              _buildRectangularButton(
+                icon: Icons.local_shipping_rounded,
+                label: 'Titipan',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProdukPage()),
+                  );
+                },
+              ),
+              _buildRectangularButton(
+                icon: Icons.card_giftcard_rounded,
+                label: 'Hampers',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProdukPage()),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRectangularButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return Expanded(
+      child: InkWell(
+        onTap: onPressed,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                icon,
+                color: const Color.fromRGBO(244, 142, 40, 1),
+                size: 30,
+              ),
+            ),
+            SizedBox(height: 4),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 12,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildLatestProducts() {
     return Column(
@@ -414,8 +415,7 @@ Widget _buildRectangularButton({
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: latestProducts.length ?? 0,
-                gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                 ),
                 itemBuilder: (context, index) {
@@ -433,8 +433,7 @@ Widget _buildRectangularButton({
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius:
-                            BorderRadius.all(Radius.circular(15.0)),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
                         boxShadow: const [
                           BoxShadow(
                             color: Colors.black12,
@@ -472,8 +471,8 @@ Widget _buildRectangularButton({
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 5),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 5),
                                       decoration: BoxDecoration(
                                         color: const Color.fromRGBO(
                                             244, 142, 40, 1),
@@ -483,11 +482,9 @@ Widget _buildRectangularButton({
                                         padding: EdgeInsets.symmetric(
                                             vertical: 3.0, horizontal: 5.0),
                                         child: Text(
-                                          getKategoriText(
-                                              product.id_kategori),
+                                          getKategoriText(product.id_kategori),
                                           style: TextStyle(
-                                            overflow:
-                                                TextOverflow.ellipsis,
+                                            overflow: TextOverflow.ellipsis,
                                             fontSize: 11.0.spa,
                                             fontWeight: FontWeight.w600,
                                             color: Colors.white,
@@ -514,11 +511,9 @@ Widget _buildRectangularButton({
                                           child: AutoSizeText(
                                             "${product.nama}",
                                             style: TextStyle(
-                                              overflow:
-                                                  TextOverflow.ellipsis,
+                                              overflow: TextOverflow.ellipsis,
                                               fontSize: 11.spa,
-                                              fontWeight:
-                                                  FontWeight.bold,
+                                              fontWeight: FontWeight.bold,
                                               color: Colors.orange,
                                             ),
                                             maxLines: 2,
@@ -530,12 +525,10 @@ Widget _buildRectangularButton({
                                           padding: EdgeInsets.only(
                                               left: 20.0, top: 6.0),
                                           child: AutoSizeText(
-                                            getUkuranText(
-                                                product.id_kategori,
+                                            getUkuranText(product.id_kategori,
                                                 product.ukuran),
                                             style: TextStyle(
-                                              overflow:
-                                                  TextOverflow.ellipsis,
+                                              overflow: TextOverflow.ellipsis,
                                               fontSize: 10.0.spa,
                                               fontWeight: FontWeight.w500,
                                               color: Colors.black,
@@ -553,14 +546,11 @@ Widget _buildRectangularButton({
                                         padding: EdgeInsets.only(
                                             left: 8, top: 5.0, bottom: 5.0),
                                         child: Text(
-                                          formatRupiah(
-                                              product.harga ?? 0),
+                                          formatRupiah(product.harga ?? 0),
                                           style: TextStyle(
-                                              overflow:
-                                                  TextOverflow.ellipsis,
+                                              overflow: TextOverflow.ellipsis,
                                               fontSize: 11.spa,
-                                              fontWeight:
-                                                  FontWeight.w500,
+                                              fontWeight: FontWeight.w500,
                                               color: Colors.black),
                                         ),
                                       ),

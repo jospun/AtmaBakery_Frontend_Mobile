@@ -11,6 +11,7 @@ class User {
   String? tanggal_lahir, id_role;
   String? jenis_kelamin;
   String? foto_profil;
+  double? saldo;
   XFile? foto_profil_upload;
 
   User(
@@ -24,7 +25,8 @@ class User {
       this.no_telp,
       this.tanggal_lahir,
       this.jenis_kelamin,
-      this.foto_profil});
+      this.foto_profil,
+      this.saldo});
 
   User.toUpload(
       {this.id,
@@ -54,6 +56,7 @@ class User {
         tanggal_lahir: json["tanggal_lahir"],
         jenis_kelamin: json["jenis_kelamin"],
         foto_profil: json["foto_profil"],
+        saldo: json["saldo"].toDouble(),
       );
 
   String toRawJson() => json.encode(toJson());
@@ -69,5 +72,6 @@ class User {
         "tanggal_lahir": tanggal_lahir,
         "jenis_kelamin": jenis_kelamin,
         "foto_profil": File(foto_profil_upload!.path),
+        "saldo": saldo,
       };
 }

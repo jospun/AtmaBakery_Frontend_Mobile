@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:p3l_atmabakery/data/client/userClient.dart';
+import 'package:p3l_atmabakery/data/user.dart';
+import 'package:p3l_atmabakery/formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:p3l_atmabakery/data/client/saldoHistoryClient.dart';
 import 'package:p3l_atmabakery/data/saldoHistory.dart';
@@ -13,21 +16,23 @@ class WalletPage extends StatefulWidget {
 class _WalletPage extends State<WalletPage> {
   String nama = 'Nama User';
   double saldo = 0.0;
-  late Future<List<SaldoHistory>>? saldoHistoryFuture; // Menentukan variabel untuk menyimpan data histori saldo
+  late Future<List<SaldoHistory>>?
+      saldoHistoryFuture; // Menentukan variabel untuk menyimpan data histori saldo
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
-    saldoHistoryFuture = _fetchSaldoHistory(); // Mengambil histori saldo saat inisialisasi widget
+    saldoHistoryFuture =
+        _fetchSaldoHistory(); // Mengambil histori saldo saat inisialisasi widget
   }
 
   Future<void> _loadUserData() async {
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+      User prefs = await userClient.showSelf();
       setState(() {
-        nama = prefs.getString('nama') ?? 'Nama User';
-        saldo = prefs.getDouble('saldo') ?? 0.0;
+        nama = prefs.nama!;
+        saldo = prefs.saldo!;
       });
     } catch (e) {
       print('Error loading user data: $e');
@@ -96,7 +101,7 @@ class _WalletPage extends State<WalletPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Rp ${saldo.toStringAsFixed(2)}',
+                          formatRupiah(saldo.toInt()),
                           style: TextStyle(
                             fontSize: 24,
                             fontFamily: 'Montserrat',
@@ -215,9 +220,12 @@ class _WalletPage extends State<WalletPage> {
                     itemCount: saldoHistoryList.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text('Tanggal: ${saldoHistoryList[index].tanggal}'),
-                        subtitle: Text('Saldo: ${saldoHistoryList[index].saldo}'),
-                        trailing: Text('Bank: ${saldoHistoryList[index].namaBank}'),
+                        title:
+                            Text('Tanggal: ${saldoHistoryList[index].tanggal}'),
+                        subtitle:
+                            Text('Saldo: ${saldoHistoryList[index].saldo}'),
+                        trailing:
+                            Text('Bank: ${saldoHistoryList[index].namaBank}'),
                       );
                     },
                   );
