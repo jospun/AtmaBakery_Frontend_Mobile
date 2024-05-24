@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:p3l_atmabakery/data/client/firebase_api.dart';
 import 'package:p3l_atmabakery/pages/forgetPasswordPage.dart';
 import 'package:p3l_atmabakery/pages/homeNavbar.dart';
 import 'package:p3l_atmabakery/pages/customer/homePage.dart';
@@ -26,8 +28,13 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     Future<String?> login() async {
       try {
+        await Firebase.initializeApp();
+        await FirebaseApi().initNotifications();
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? fcmToken = prefs.getString('fcm-token');
+        print(fcmToken);
         String loggedIn = await userClient.Login(
-            controllerEmail.text, controllerPassword.text);
+            controllerEmail.text, controllerPassword.text, fcmToken);
         showSnackbar(context, "Berhasil Login", Colors.green);
         return loggedIn;
       } catch (e) {

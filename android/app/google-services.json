@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "339046698082",
-    "project_id": "push-notif-atmabakery",
-    "storage_bucket": "push-notif-atmabakery.appspot.com"
+    "project_number": "249993555787",
+    "project_id": "push-notif-p3l",
+    "storage_bucket": "push-notif-p3l.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:339046698082:android:a9e2d0eaf2a8f31ce6953b",
+        "mobilesdk_app_id": "1:249993555787:android:2aa9df8c165ba7f22c82ce",
         "android_client_info": {
           "package_name": "com.example.p3l_atmabakery"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDnozZF3i0P1Whf0IQRb-FSIm6jkPf7C6I"
+          "current_key": "AIzaSyC2txdFGqK6s0Lv66pH4x1GyeEiiFCmlz8"
         }
       ],
       "services": {

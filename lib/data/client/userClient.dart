@@ -6,11 +6,13 @@ import 'package:http/http.dart';
 class userClient {
   static final String url = "api-atma-bakery.vercel.app"; // ini pake emu yaa
 
-  static Future<String> Login(String email, String password) async {
+  static Future<String> Login(
+      String email, String password, String? fcmToken) async {
     try {
       var response = await post(Uri.parse("https://$url/login"),
-          headers: {"Content-Type": "application/json"},
-          body: jsonEncode({"email": email, "password": password}));
+          headers: {"Content-Type": "application/json", "is-mobile": "true"},
+          body: jsonEncode(
+              {"email": email, "password": password, "fcm": fcmToken}));
 
       if (response.statusCode != 200)
         throw Exception(jsonDecode(response.body)['message'].toString());
@@ -36,6 +38,7 @@ class userClient {
     try {
       var response = await post(Uri.parse("https://$url/logout"), headers: {
         "Content-Type": "application/json",
+        "is-mobile": "true",
         'Authorization': 'Bearer $token',
       });
 
