@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:p3l_atmabakery/data/client/saldoHistoryClient.dart';
+import 'package:p3l_atmabakery/data/saldoHistory.dart';
 
 class WalletPage extends StatefulWidget {
   const WalletPage({Key? key}) : super(key: key);
@@ -10,12 +12,14 @@ class WalletPage extends StatefulWidget {
 
 class _WalletPage extends State<WalletPage> {
   String nama = 'Nama User';
-  double saldo = 0.0; 
+  double saldo = 0.0;
+  late Future<List<SaldoHistory>>? saldoHistoryFuture; // Menentukan variabel untuk menyimpan data histori saldo
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
+    saldoHistoryFuture = _fetchSaldoHistory(); // Mengambil histori saldo saat inisialisasi widget
   }
 
   Future<void> _loadUserData() async {
@@ -23,10 +27,27 @@ class _WalletPage extends State<WalletPage> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       setState(() {
         nama = prefs.getString('nama') ?? 'Nama User';
-        saldo = prefs.getDouble('saldo') ?? 0.0; 
+        saldo = prefs.getDouble('saldo') ?? 0.0;
       });
     } catch (e) {
       print('Error loading user data: $e');
+    }
+  }
+
+  Future<List<SaldoHistory>> _fetchSaldoHistory() async {
+    try {
+      var result = await HistoriSaldoClient.fetchSaldoHistory();
+      if (result['success']) {
+        List<SaldoHistory> saldoHistoryList = [];
+        for (var data in result['data']) {
+          saldoHistoryList.add(SaldoHistory.fromJson(data));
+        }
+        return saldoHistoryList;
+      } else {
+        throw Exception(result['message']);
+      }
+    } catch (e) {
+      throw Exception('Error fetching saldo history: $e');
     }
   }
 
@@ -75,7 +96,7 @@ class _WalletPage extends State<WalletPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Rp $saldo',
+                          'Rp ${saldo.toStringAsFixed(2)}',
                           style: TextStyle(
                             fontSize: 24,
                             fontFamily: 'Montserrat',
@@ -158,17 +179,13 @@ class _WalletPage extends State<WalletPage> {
                 _buildActionButton(
                   icon: Icons.wallet,
                   label: 'Rekening Bank',
-                  onPressed: () {
-                    
-                  },
+                  onPressed: () {},
                 ),
                 SizedBox(width: 20),
                 _buildActionButton(
                   icon: Icons.account_balance,
                   label: 'Penarikan Saldo',
-                  onPressed: () {
-                  
-                  },
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -181,6 +198,31 @@ class _WalletPage extends State<WalletPage> {
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
+            ),
+            SizedBox(height: 10),
+            // Tambahkan FutureBuilder untuk menampilkan data histori saldo
+            FutureBuilder<List<SaldoHistory>>(
+              future: saldoHistoryFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else {
+                  List<SaldoHistory> saldoHistoryList = snapshot.data!;
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: saldoHistoryList.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text('Tanggal: ${saldoHistoryList[index].tanggal}'),
+                        subtitle: Text('Saldo: ${saldoHistoryList[index].saldo}'),
+                        trailing: Text('Bank: ${saldoHistoryList[index].namaBank}'),
+                      );
+                    },
+                  );
+                }
+              },
             ),
           ],
         ),
