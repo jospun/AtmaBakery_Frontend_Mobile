@@ -37,38 +37,5 @@ class HistoriSaldoClient {
       };
     }
   }
-
-  static Future<Map<String, dynamic>> addSaldoHistory(Map<String, dynamic> payload) async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('token');
-
-      final response = await http.post(
-        Uri.parse("https://$url/histori-saldo"),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": 'Bearer $token'
-        },
-        body: json.encode(payload),
-      );
-
-      final responseData = json.decode(response.body);
-      if (response.statusCode == 200) {
-        return {
-          'success': true,
-          'message': responseData['message'],
-        };
-      } else {
-        return {
-          'success': false,
-          'message': responseData['message'],
-        };
-      }
-    } catch (e) {
-      return {
-        'success': false,
-        'message': 'Error: $e',
-      };
-    }
-  }
+  
 }

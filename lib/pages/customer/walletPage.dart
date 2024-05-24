@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:p3l_atmabakery/data/client/userClient.dart';
 import 'package:p3l_atmabakery/data/user.dart';
 import 'package:p3l_atmabakery/formatter.dart';
+import 'package:p3l_atmabakery/pages/customer/tarikWalletPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:p3l_atmabakery/data/client/saldoHistoryClient.dart';
 import 'package:p3l_atmabakery/data/saldoHistory.dart';
@@ -17,14 +18,14 @@ class _WalletPage extends State<WalletPage> {
   String nama = 'Nama User';
   double saldo = 0.0;
   late Future<List<SaldoHistory>>?
-      saldoHistoryFuture; // Menentukan variabel untuk menyimpan data histori saldo
+      saldoHistoryFuture; 
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
     saldoHistoryFuture =
-        _fetchSaldoHistory(); // Mengambil histori saldo saat inisialisasi widget
+        _fetchSaldoHistory(); 
   }
 
   Future<void> _loadUserData() async {
@@ -182,15 +183,16 @@ class _WalletPage extends State<WalletPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildActionButton(
-                  icon: Icons.wallet,
-                  label: 'Rekening Bank',
-                  onPressed: () {},
-                ),
-                SizedBox(width: 20),
-                _buildActionButton(
                   icon: Icons.account_balance,
                   label: 'Penarikan Saldo',
-                  onPressed: () {},
+                  onPressed: () {
+                       Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => TarikWalletPage(),
+                      ),
+                      );
+                  },
                 ),
               ],
             ),
@@ -205,7 +207,6 @@ class _WalletPage extends State<WalletPage> {
               ),
             ),
             SizedBox(height: 10),
-            // Tambahkan FutureBuilder untuk menampilkan data histori saldo
             FutureBuilder<List<SaldoHistory>>(
               future: saldoHistoryFuture,
               builder: (context, snapshot) {
@@ -219,14 +220,30 @@ class _WalletPage extends State<WalletPage> {
                     shrinkWrap: true,
                     itemCount: saldoHistoryList.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        title:
-                            Text('Tanggal: ${saldoHistoryList[index].tanggal}'),
-                        subtitle:
-                            Text('Saldo: ${saldoHistoryList[index].saldo}'),
-                        trailing:
-                            Text('Bank: ${saldoHistoryList[index].namaBank}'),
-                      );
+                   return ListTile(
+                      title: Text(
+                        '${saldoHistoryList[index].tanggal}',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 13,
+                        ),
+                      ),
+                      subtitle: Text(
+                        '${saldoHistoryList[index].namaBank}',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 16,
+                        ),
+                      ),
+                      trailing: Text(
+                        'Rp ${saldoHistoryList[index].saldo}',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 16,
+                          color: Colors.orange,
+                        ),
+                      ),
+                    );
                     },
                   );
                 }
