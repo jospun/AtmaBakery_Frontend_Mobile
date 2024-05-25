@@ -2,7 +2,7 @@ import "dart:convert";
 
 class SaldoHistory {
   final int id_histori_saldo;
-  final String tanggal;
+  final String? tanggal;
   final int id_user;
   final double saldo;
   final String namaBank;

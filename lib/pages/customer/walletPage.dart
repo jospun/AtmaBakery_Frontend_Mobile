@@ -17,15 +17,13 @@ class WalletPage extends StatefulWidget {
 class _WalletPage extends State<WalletPage> {
   String nama = 'Nama User';
   double saldo = 0.0;
-  late Future<List<SaldoHistory>>?
-      saldoHistoryFuture; 
+  late Future<List<SaldoHistory>>? saldoHistoryFuture;
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
-    saldoHistoryFuture =
-        _fetchSaldoHistory(); 
+    saldoHistoryFuture = _fetchSaldoHistory();
   }
 
   Future<void> _loadUserData() async {
@@ -78,178 +76,180 @@ class _WalletPage extends State<WalletPage> {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AspectRatio(
-              aspectRatio: 4 / 2,
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/bg_wallet.png"),
-                    fit: BoxFit.cover,
+      body: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AspectRatio(
+                aspectRatio: 4 / 2,
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/bg_wallet.png"),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Card(
-                  color: Colors.transparent,
-                  elevation: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          formatRupiah(saldo.toInt()),
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontFamily: 'Montserrat',
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 3),
-                        Text(
-                          'Saldo Saya',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontFamily: 'Montserrat',
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        Divider(
-                          color: Colors.white,
-                          thickness: 1,
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.account_box_outlined,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  '$nama',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Montserrat',
-                                  ),
-                                ),
-                              ],
+                  child: Card(
+                    color: Colors.transparent,
+                    elevation: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            formatRupiah(saldo.toInt()),
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontFamily: 'Montserrat',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.bakery_dining,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  'Atma Bakery',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Montserrat',
-                                  ),
-                                ),
-                              ],
+                          ),
+                          SizedBox(height: 3),
+                          Text(
+                            'Saldo Saya',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'Montserrat',
+                              color: Colors.white,
                             ),
-                          ],
-                        ),
-                      ],
+                          ),
+                          SizedBox(height: 5),
+                          Divider(
+                            color: Colors.white,
+                            thickness: 1,
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.account_box_outlined,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    '$nama',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Montserrat',
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.bakery_dining,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    'Atma Bakery',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Montserrat',
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Aksi Transfer',
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: 'Montserrat',
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+              SizedBox(height: 20),
+              Text(
+                'Aksi Transfer',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Montserrat',
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildActionButton(
-                  icon: Icons.account_balance,
-                  label: 'Penarikan Saldo',
-                  onPressed: () {
-                       Navigator.push(
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildActionButton(
+                    icon: Icons.account_balance,
+                    label: 'Penarikan Saldo',
+                    onPressed: () {
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                        builder: (context) => TarikWalletPage(),
-                      ),
+                          builder: (context) => TarikWalletPage(),
+                        ),
                       );
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Riwayat Penarikan',
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: 'Montserrat',
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
-            FutureBuilder<List<SaldoHistory>>(
-              future: saldoHistoryFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else {
-                  List<SaldoHistory> saldoHistoryList = snapshot.data!;
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: saldoHistoryList.length,
-                    itemBuilder: (context, index) {
-                   return ListTile(
-                      title: Text(
-                        '${saldoHistoryList[index].tanggal}',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 13,
-                        ),
-                      ),
-                      subtitle: Text(
-                        '${saldoHistoryList[index].namaBank}',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 16,
-                        ),
-                      ),
-                      trailing: Text(
-                        'Rp ${saldoHistoryList[index].saldo}',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 16,
-                          color: Colors.orange,
-                        ),
-                      ),
-                    );
                     },
-                  );
-                }
-              },
-            ),
-          ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Riwayat Penarikan',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: 'Montserrat',
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 10),
+              FutureBuilder<List<SaldoHistory>>(
+                future: saldoHistoryFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else {
+                    List<SaldoHistory> saldoHistoryList = snapshot.data!;
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: saldoHistoryList.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(
+                            '${saldoHistoryList[index].tanggal}',
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 13,
+                            ),
+                          ),
+                          subtitle: Text(
+                            '${saldoHistoryList[index].namaBank}',
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 16,
+                            ),
+                          ),
+                          trailing: Text(
+                            '${formatRupiahDouble(saldoHistoryList[index].saldo)}',
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 16,
+                              color: Colors.orange,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

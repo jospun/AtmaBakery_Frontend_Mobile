@@ -5,6 +5,11 @@ String formatRupiah(int amount) {
       .format(amount);
 }
 
+String formatRupiahDouble(double amount) {
+  return NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 2)
+      .format(amount);
+}
+
 String formatTanggal(String date) {
   if (date == 'N/A') {
     return date;

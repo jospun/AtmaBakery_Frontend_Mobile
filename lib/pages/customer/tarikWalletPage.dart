@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:p3l_atmabakery/pages/customer/walletPage.dart';
+import 'package:p3l_atmabakery/pages/loginPage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:p3l_atmabakery/data/client/saldoHistoryClient.dart';
@@ -23,9 +25,28 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       nama = prefs.getString('nama') ?? "Guest";
-      pfp = prefs.getString('foto_profil') ?? ""; 
+      pfp = prefs.getString('foto_profil') ?? "";
       email = prefs.getString('email') ?? "Please log In";
     });
+  }
+
+  void submission() async {
+    print(jumlahUangController.text);
+    try {
+      await HistoriSaldoClient.create(double.parse(jumlahUangController.text),
+          namaBankController.text, nomorRekeningController.text);
+      showSnackbar(
+          context, "Berhasil Mengajukan Penarikan Saldo", Colors.green);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => WalletPage(),
+        ),
+      );
+    } catch (e) {
+      print(e.toString());
+      showSnackbar(context, e.toString(), Colors.red);
+    }
   }
 
   @override
@@ -60,7 +81,7 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
                   radius: 20,
                   backgroundImage: NetworkImage(pfp.isNotEmpty
                       ? pfp
-                      : "https://example.com/default_profile_image.jpg"), 
+                      : "https://example.com/default_profile_image.jpg"),
                 ),
                 SizedBox(width: 10),
                 Column(
@@ -85,13 +106,12 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
                 ),
               ],
             ),
-            Divider( 
-              color: Colors.grey, 
-              thickness: 0.5, 
+            Divider(
+              color: Colors.grey,
+              thickness: 0.5,
               indent: 0,
               endIndent: 0,
             ),
-
             SizedBox(height: 30),
             const Text(
               "Jumlah Uang",
@@ -113,8 +133,8 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
                 filled: false,
                 fillColor: const Color.fromRGBO(234, 234, 234, 1),
                 border: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Color.fromRGBO(244, 142, 40, 1)),
+                  borderSide:
+                      BorderSide(color: Color.fromRGBO(244, 142, 40, 1)),
                 ),
                 focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
@@ -122,8 +142,8 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
                   ),
                 ),
                 enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Color.fromARGB(255, 181, 179, 179)),
+                  borderSide:
+                      BorderSide(color: Color.fromARGB(255, 181, 179, 179)),
                 ),
                 hintText: 'Masukkan jumlah uang',
                 contentPadding: const EdgeInsets.symmetric(
@@ -158,8 +178,8 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
                 filled: false,
                 fillColor: const Color.fromRGBO(234, 234, 234, 1),
                 border: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Color.fromRGBO(244, 142, 40, 1)),
+                  borderSide:
+                      BorderSide(color: Color.fromRGBO(244, 142, 40, 1)),
                 ),
                 focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
@@ -167,8 +187,8 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
                   ),
                 ),
                 enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Color.fromARGB(255, 181, 179, 179)),
+                  borderSide:
+                      BorderSide(color: Color.fromARGB(255, 181, 179, 179)),
                 ),
                 hintText: 'Masukkan nama bank',
                 contentPadding: const EdgeInsets.symmetric(
@@ -203,8 +223,8 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
                 filled: false,
                 fillColor: const Color.fromRGBO(234, 234, 234, 1),
                 border: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Color.fromRGBO(244, 142, 40, 1)),
+                  borderSide:
+                      BorderSide(color: Color.fromRGBO(244, 142, 40, 1)),
                 ),
                 focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
@@ -212,8 +232,8 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
                   ),
                 ),
                 enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Color.fromARGB(255, 181, 179, 179)),
+                  borderSide:
+                      BorderSide(color: Color.fromARGB(255, 181, 179, 179)),
                 ),
                 hintText: 'Masukkan nomor rekening',
                 contentPadding: const EdgeInsets.symmetric(
@@ -234,10 +254,9 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
                 height: 5.h,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          const Color.fromRGBO(244, 142, 40, 1)),
+                      backgroundColor: const Color.fromRGBO(244, 142, 40, 1)),
                   onPressed: () {
-                
+                    submission();
                   },
                   child: const Text(
                     'Tarik',
@@ -255,5 +274,4 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
       ),
     );
   }
-
 }
