@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:p3l_atmabakery/data/client/userHistoryClient.dart';
 import 'package:p3l_atmabakery/data/userHistory.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -18,8 +17,27 @@ class HistoriPemesananPage extends StatefulWidget {
 class _HistoriPemesananPage extends State<HistoriPemesananPage> {
   List<UserHistory>? userHistories;
   UserHistory? userDetailHistories;
-  List<UserHistory>? filteredUserHistories;
+  List<UserHistory>? filterUserHistori;
   bool _isLoading = true;
+  String _selectedStatus = 'Semua';
+  String _searchQuery = '';
+
+  final List<String> _statusList = [
+    'Semua',
+    'Menunggu Perhitungan ongkir',
+    'Menunggu Pembayaran',
+    'Menunggu Konfirmasi Pembayaran',
+    'Menunggu Konfirmasi Pesanan',
+    'Pesanan Diterima',
+    'Sedang Di Proses',
+    'Siap Pick Up',
+    'Siap Kirim',
+    'Sedang Diantar Kurir',
+    'Sedang Diantar Ojol',
+    'Terkirim',
+    'Selesai',
+    'Ditolak',
+  ];
 
   @override
   void initState() {
@@ -36,7 +54,7 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
 
     try {
       userHistories = await userHistoryClient.showHistorySelf();
-      filteredUserHistories = List.from(userHistories!);
+      _filterissasi();
     } catch (e) {
       print("Error fetching user history: $e");
     }
@@ -55,14 +73,81 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
     );
   }
 
-  void _searchByNamaProduk(String namaProduk) {
-    setState(() {
-      filteredUserHistories = userHistories!.where((history) {
+  void _filterissasi () {
+    List<UserHistory> temp = List.from(userHistories!);
+
+    if (_selectedStatus != 'Semua') {
+      temp = temp.where((history) {
+        return history.status == _selectedStatus;
+      }).toList();
+    }
+
+    if (_searchQuery.isNotEmpty) {
+      temp = temp.where((history) {
         return history.detailTransaksi1!.any((detail) => detail.nama_produk!
             .toLowerCase()
-            .contains(namaProduk.toLowerCase()));
+            .contains(_searchQuery.toLowerCase()));
       }).toList();
+    }
+
+    setState(() {
+      filterUserHistori = temp;
     });
+  }
+
+  void _searchByNamaProduk(String namaProduk) {
+    setState(() {
+      _searchQuery = namaProduk;
+      _filterissasi();
+    });
+  }
+
+  void _filterByStatus(String status) {
+    setState(() {
+      _selectedStatus = status;
+      _filterissasi();
+    });
+  }
+
+  void _modalPilihStatus() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Container(
+            width: 300,
+            height: 400,
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: _statusList.map((String status) {
+                  return Column(
+                    children: [
+                      ListTile(
+                        title: Text(status),
+                        onTap: () {
+                          _filterByStatus(status);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      Divider(),
+                    ],
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -76,51 +161,79 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Colors.white,
-                  title: Row(
-          children: [
-            Expanded(
-              child: Text(
-                "Riwayat Pesanan",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat',
-                  color: Colors.black,
+          title: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "Riwayat Pesanan",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    color: Colors.black,
+                  ),
                 ),
               ),
+            ],
+          ),
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(130.0),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: 'Cari Produk',
+                            prefixIcon: Icon(Icons.search),
+                            contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            _searchByNamaProduk(value);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: _modalPilihStatus,
+                          child: Text(
+                            _selectedStatus,
+                            style: TextStyle(fontSize: 14),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 15.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-bottom: PreferredSize(
-  preferredSize: Size.fromHeight(60.0),
-  child: Padding(
-    padding: EdgeInsets.symmetric(horizontal: 15.0), 
-    child: Container(
-      height: 60.0,
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Cari Produk',
-          prefixIcon: Icon(Icons.search),
-          contentPadding: EdgeInsets.symmetric(vertical: 0.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
           ),
         ),
-        onChanged: (value) {
-          _searchByNamaProduk(value);
-        },
-      ),
-    ),
-  ),
-),
-
-        ),
         body: Padding(
-          padding: EdgeInsets.only(top: 10, bottom: 10, right: 15, left: 15),
+          padding: EdgeInsets.only(top: 15, bottom: 10, right: 15, left: 15),
           child: ListView.builder(
-            itemCount: filteredUserHistories?.length ?? 0,
+            itemCount: filterUserHistori?.length ?? 0,
             itemBuilder: (context, index) {
-              final userHistory = filteredUserHistories![index];
+              final userHistory = filterUserHistori![index];
               Color badgeColor = Colors.grey;
               String statusText = userHistory.status!;
               if (userHistory.status == 'Pesanan Diterima' ||

@@ -1,6 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:p3l_atmabakery/formatter.dart';
 import 'package:p3l_atmabakery/pages/customer/historiPemesananPage.dart';
+import 'package:p3l_atmabakery/pages/customer/ketentuanPage.dart';
+import 'package:p3l_atmabakery/pages/customer/privacyPage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:p3l_atmabakery/data/user.dart';
 import 'package:p3l_atmabakery/data/client/userClient.dart';
@@ -20,6 +23,8 @@ class _ProfilePage extends State<ProfilePage> {
   bool _isLoading = false;
   String? nama, pfp;
   String? email, id_role;
+  double saldo = 0.0;
+  int poin = 0;
 
   Future<User> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -30,6 +35,8 @@ class _ProfilePage extends State<ProfilePage> {
           nama: prefs.getString('nama'),
           foto_profil: prefs.getString('foto_profil'),
           id_role: prefs.getString('id_role'));
+      saldo = prefs.getDouble('saldo') ?? 0.0;
+      poin = prefs.getInt('poin') ?? 0;
       _isLoading = false;
       return data;
     } catch (e) {
@@ -84,10 +91,9 @@ class _ProfilePage extends State<ProfilePage> {
                       children: <Widget>[
                         Container(
                           height: 25.h,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(
-                                  "https://res.cloudinary.com/daorbrq8v/image/upload/f_auto,q_auto/v1/atma-bakery/p27iua0trapjq3hb6vxz"), // Ganti dengan path gambar Anda
+                              image: AssetImage('assets/images/bg_profile.png'),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -103,13 +109,14 @@ class _ProfilePage extends State<ProfilePage> {
                                         radius: 45,
                                         backgroundImage: NetworkImage(pfp!)),
                                     SizedBox(height: 2.h),
-                                    Text(
+                                      Text(
                                       "Hi, ${nama ?? "Guest"}",
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.w900,
                                         fontStyle: FontStyle.normal,
+                                        color: Colors.white, 
                                       ),
                                     ),
                                     Text(
@@ -117,7 +124,9 @@ class _ProfilePage extends State<ProfilePage> {
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w900,
                                         fontStyle: FontStyle.normal,
+                                        color: Colors.white, 
                                       ),
                                     ),
                                     SizedBox(height: 1.h),
@@ -128,84 +137,110 @@ class _ProfilePage extends State<ProfilePage> {
                           ),
                         ),
                         SizedBox(height: 2.h),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 1,
-                                        blurRadius: 4,
-                                        offset: Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  height: 100,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Saldo Saya',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.3),
+                                          spreadRadius: 1,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 2),
                                         ),
-                                      ),
-                                      Icon(Icons.attach_money,
-                                          color: Colors.black),
-                                    ],
+                                      ],
+                                    ),
+                                    height: 100,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Saldo Saya ',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                                 fontFamily: 'Montserrat',
+                                              ),
+                                            ),
+                                     //     Icon(Icons.attach_money, color: Colors.black),
+                                          ],
+                                        ),
+                                        Text(
+                                          '${formatRupiah(saldo.toInt())}',
+                                          style: TextStyle(
+                                            color: Colors.orange,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.3),
-                                        spreadRadius: 1,
-                                        blurRadius: 4,
-                                        offset: Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  height: 100,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Poin Saya',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
+                                Expanded(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.3),
+                                          spreadRadius: 1,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 2),
                                         ),
-                                      ),
-                                      Icon(Icons.monetization_on,
-                                          color: Colors.black),
-                                    ],
+                                      ],
+                                    ),
+                                    height: 100,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Poin Saya ',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                 fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                                 fontFamily: 'Montserrat',
+                                              ),
+                                            ),
+                                          //  Icon(Icons.monetization_on, color: Colors.black),
+                                          ],
+                                        ),
+                                        Text(
+                                          '$poin',
+                                          style: TextStyle(
+                                             color: Colors.orange,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Montserrat',
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
                         SizedBox(height: 2.h),
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 20),
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color.fromRGBO(244, 142, 40, 1),
-                                Colors.white,
-                              ],
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/konten_profile.png'),
+                              fit: BoxFit.cover,
                             ),
                             boxShadow: [
                               BoxShadow(
@@ -266,8 +301,22 @@ class _ProfilePage extends State<ProfilePage> {
                                       );
                                     })
                                   : Container(),
-                              buildRow(Icons.library_books, 'Ketentuan', () {}),
-                              buildRow(Icons.security, 'Privacy Policy', () {}),
+                              buildRow(Icons.library_books, 'Ketentuan', () {
+                                     Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => KetentuanPage(),
+                                  ),
+                                );
+                              }),
+                              buildRow(Icons.security, 'Kebijakan Privasi', () {
+                                               Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PrivacyPage(),
+                                  ),
+                                );
+                              }),
                               buildRow(Icons.logout, 'Logout', () async {
                                 _isLoading = true;
                                 SharedPreferences prefs =

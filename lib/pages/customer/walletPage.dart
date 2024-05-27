@@ -43,8 +43,8 @@ class _WalletPage extends State<WalletPage> {
       var result = await HistoriSaldoClient.fetchSaldoHistory();
       if (result['success']) {
         List<SaldoHistory> saldoHistoryList = [];
-        for (var data in result['data']) {
-          saldoHistoryList.add(SaldoHistory.fromJson(data));
+        for (var i = result['data'].length - 1; i >= 0; i--) {
+          saldoHistoryList.add(SaldoHistory.fromJson(result['data'][i]));
         }
         return saldoHistoryList;
       } else {
@@ -76,7 +76,7 @@ class _WalletPage extends State<WalletPage> {
           ],
         ),
       ),
-      body: Container(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
@@ -210,40 +210,62 @@ class _WalletPage extends State<WalletPage> {
                 future: saldoHistoryFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
                   } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
                   } else {
                     List<SaldoHistory> saldoHistoryList = snapshot.data!;
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: saldoHistoryList.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(
-                            '${saldoHistoryList[index].tanggal}',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 13,
+                    return Container(
+                      height: 430, 
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: saldoHistoryList.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(
+                              saldoHistoryList[index].tanggal ?? 'Menunggu Konfirmasi',
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 13,
+                                color: saldoHistoryList[index].tanggal == null ? Colors.blue : Colors.black,
+                              ),
                             ),
-                          ),
-                          subtitle: Text(
-                            '${saldoHistoryList[index].namaBank}',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 16,
+                            subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    saldoHistoryList[index].namaBank,
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 16,
+                                      color: saldoHistoryList[index].namaBank == null ? Colors.blue : Colors.black,
+                                    ),
+                                  ),
+                                  Text(
+                                    'No. Rek ${saldoHistoryList[index].noRek}',
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            trailing: Text(
+                              '${formatRupiahDouble(saldoHistoryList[index].saldo)}',
+                              style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 16,
+                                color: saldoHistoryList[index].saldo == 0.0 ? Colors.blue : Colors.orange,
+                              ),
                             ),
-                          ),
-                          trailing: Text(
-                            '${formatRupiahDouble(saldoHistoryList[index].saldo)}',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 16,
-                              color: Colors.orange,
-                            ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     );
                   }
                 },

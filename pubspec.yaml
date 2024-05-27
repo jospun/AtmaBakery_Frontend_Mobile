@@ -92,6 +92,8 @@ flutter:
   - assets/images/ads_2.png
   - assets/images/ads_3.png
   - assets/images/bg_wallet.png
+  - assets/images/bg_profile.png
+  - assets/images/konten_profile.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
