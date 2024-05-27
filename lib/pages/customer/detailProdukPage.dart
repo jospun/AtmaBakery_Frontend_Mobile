@@ -145,16 +145,15 @@ class _DetailProdukPageState extends State<DetailProdukPage> {
     if (widget.item.id_kategori == "HMP") {
       getDetailHampers();
     }
+    if (widget.item.id_kategori == "HMP" || widget.item.status == "PO") {
+      isReadySelected = false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final item = widget.item;
-    if (item.id_kategori == "HMP" || item.status == "PO") {
-      isReadySelected = false;
-    } else {
-      isReadySelected = true;
-    }
+
     if (_isLoading) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -164,21 +163,21 @@ class _DetailProdukPageState extends State<DetailProdukPage> {
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Colors.white,
-        title: Row(
-          children: [
-            Expanded(
-              child: Text(
-                "Detail Produk",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat',
-                  color: Colors.black,
+          title: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "Detail Produk",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    color: Colors.black,
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -395,7 +394,9 @@ class _DetailProdukPageState extends State<DetailProdukPage> {
                             ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  isReadySelected = true;
+                                  if (item.stok != 0) {
+                                    isReadySelected = true;
+                                  }
                                 });
                               },
                               style: ElevatedButton.styleFrom(
@@ -421,7 +422,9 @@ class _DetailProdukPageState extends State<DetailProdukPage> {
                             ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  isReadySelected = false;
+                                  if (item.id_kategori != "TP") {
+                                    isReadySelected = false;
+                                  }
                                 });
                               },
                               style: ElevatedButton.styleFrom(
