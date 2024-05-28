@@ -8,27 +8,25 @@ class DetailTransaksiPage extends StatelessWidget {
   const DetailTransaksiPage({Key? key, required this.userHistory})
       : super(key: key);
 
-   void handleSelesaikanPesanan(BuildContext context) async {
-    if (userHistory.status == 'Sedang Diantar Kurir' ||
-        userHistory.status == 'Sedang Diantar Ojol' ||
-        userHistory.status == 'Siap Pick Up') {
-      try {
-        await TransaksiClient.updateStatusSelesaiSelf(userHistory.no_nota!);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Status pesanan berhasil diperbarui')),
-        );
-        Navigator.pop(context);
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal memperbarui status pesanan: $e')),
-        );
-      }
-    } else {
+void handleSelesaikanPesanan(BuildContext context) async {
+  if (userHistory.status == 'Sedang Diantar Kurir' || userHistory.status == 'Sedang Diantar Ojol' || userHistory.status == 'Siap Pick Up') {
+    try {
+      await TransaksiClient.updateStatusSelesaiSelf(userHistory.no_nota!);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Status pesanan tidak dapat diperbarui')),
+        SnackBar(content: Text('Status pesanan berhasil diperbarui')),
+      );
+      Navigator.pop(context, true);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memperbarui status pesanan: $e')),
       );
     }
-  }    
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Status pesanan tidak dapat diperbarui')),
+    );
+  }
+}
 
 String getStatusText(String? status) {
   switch (status) {

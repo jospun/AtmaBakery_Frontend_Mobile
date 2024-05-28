@@ -64,14 +64,19 @@ class _HistoriPemesananPage extends State<HistoriPemesananPage> {
     });
   }
 
-  void _navigateToDetail(UserHistory userHistory) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DetailTransaksiPage(userHistory: userHistory),
-      ),
-    );
+  void _navigateToDetail(UserHistory userHistory) async {
+  final result = await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => DetailTransaksiPage(userHistory: userHistory),
+    ),
+  );
+
+  if (result == true) {
+    _loadHistoryData();
   }
+}
+
 
   void _filterissasi () {
     List<UserHistory> temp = List.from(userHistories!);
