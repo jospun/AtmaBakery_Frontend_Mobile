@@ -1,41 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:p3l_atmabakery/formatter.dart';
 import 'package:p3l_atmabakery/data/userHistory.dart';
+import 'package:p3l_atmabakery/data/client/transaksiClient.dart';
 
 class DetailTransaksiPage extends StatelessWidget {
   final UserHistory userHistory;
   const DetailTransaksiPage({Key? key, required this.userHistory})
       : super(key: key);
 
-  String getStatusText(String? status) {
-    switch (status) {
-      case "Sedang Diproses":
-        return "Pesanan Sedang Dibuat";
-      case "Sedang Dikirim":
-        return "Pesanan Dalam Perjalanan";
-      case "Dibatalkan":
-        return "Pesanan Batal";
-      case "Menunggu Pembayaran":
-        return "Pesanan Perlu Dibayar";
-      case "Menunggu Konfirmasi":
-        return "Pesanan Sedang dicek oleh admin";
-      case "Diterima":
-        return "Pesanan Selesai";
-      case "Terkirim":
-        return "Pesanan Selesai";
-      default:
-        return "N/A";
+   void handleSelesaikanPesanan(BuildContext context) async {
+    if (userHistory.status == 'Sedang Diantar Kurir' ||
+        userHistory.status == 'Sedang Diantar Ojol' ||
+        userHistory.status == 'Siap Pick Up') {
+      try {
+        await TransaksiClient.updateStatusSelesaiSelf(userHistory.no_nota!);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Status pesanan berhasil diperbarui')),
+        );
+        Navigator.pop(context);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal memperbarui status pesanan: $e')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Status pesanan tidak dapat diperbarui')),
+      );
     }
-  }
+  }    
 
-  Icon getStatusIcon(String? status) {
-    switch (status) {
-      case "Terkirim":
-        return Icon(Icons.check_circle_outline_outlined, color: Colors.black);
-      default:
-        return Icon(Icons.error_outline_outlined, color: Colors.black);
-    }
+String getStatusText(String? status) {
+  switch (status) {
+    case "Menunggu Perhitungan ongkir":
+      return "Menunggu Perhitungan Ongkir";
+    case "Menunggu Pembayaran":
+      return "Pesanan Perlu Dibayar";
+    case "Menunggu Konfirmasi Pembayaran":
+      return "Menunggu Konfirmasi Pembayaran";
+    case "Menunggu Konfirmasi Pesanan":
+      return "Menunggu Konfirmasi Pesanan";
+    case "Pesanan Diterima":
+      return "Pesanan Diterima";
+    case "Sedang Di Proses":
+      return "Pesanan Sedang Diproses";
+    case "Siap Pick Up":
+      return "Pesanan Siap Pick Up";
+    case "Siap Kirim":
+      return "Pesanan Siap Dikirim";
+    case "Sedang Diantar Kurir":
+      return "Pesanan Dalam Perjalanan oleh Kurir";
+    case "Sedang Diantar Ojol":
+      return "Pesanan Dalam Perjalanan oleh Ojol";
+    case "Terkirim":
+      return "Pesanan Terkirim";
+    case "Selesai":
+      return "Pesanan Selesai";
+    case "Ditolak":
+      return "Pesanan Ditolak";
+    default:
+      return "N/A";
   }
+}
+
+Icon getStatusIcon(String? status) {
+  switch (status) {
+    case "Selesai":
+    case "Terkirim":
+      return Icon(Icons.check_circle_outline_outlined, color: Colors.black);
+    case "Ditolak":
+      return Icon(Icons.error_outline_outlined, color: Colors.black);
+    default:
+      return Icon(Icons.access_time, color: Colors.black);
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +122,13 @@ class DetailTransaksiPage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 15),
+               if (userHistory.status == 'Sedang Diantar Kurir' ||
+                  userHistory.status == 'Sedang Diantar Ojol' ||
+                  userHistory.status == 'Siap Pick Up')
+                ElevatedButton(
+                  onPressed: () => handleSelesaikanPesanan(context),
+                  child: Text('Selesaikan Pesanan'),
+                ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 10),
                 padding: EdgeInsets.all(20),
