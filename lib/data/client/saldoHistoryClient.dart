@@ -12,7 +12,7 @@ class HistoriSaldoClient {
       String? token = prefs.getString('token');
 
       final response = await http.get(
-        Uri.parse("https://$url/histori_saldo"),
+        Uri.parse("https://$url/histori_saldo/self"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": 'Bearer $token'
