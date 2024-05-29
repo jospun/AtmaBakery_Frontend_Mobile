@@ -120,6 +120,7 @@ class userClient {
 
   static Future<Response> update(User user, String token) async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       var request = await MultipartRequest(
         'POST',
         Uri.parse("https://$url/users/self"),
@@ -130,14 +131,23 @@ class userClient {
       });
 
       // Add fields
-      if (user.nama != null) request.fields['nama'] = user.nama!;
+      if (user.nama != null) {
+        request.fields['nama'] = user.nama!;
+        prefs.setString('nama', request.fields['nama']!);
+      }
       if (user.no_telp != null) request.fields['no_telp'] = user.no_telp!;
       if (user.tanggal_lahir != null)
         request.fields['tanggal_lahir'] = user.tanggal_lahir!;
       if (user.jenis_kelamin != null)
         request.fields['jenis_kelamin'] = user.jenis_kelamin!;
-      if (user.id_role != null) request.fields['id_role'] = user.id_role!;
-      if (user.email != null) request.fields['email'] = user.email!;
+      if (user.id_role != null) {
+        request.fields['id_role'] = user.id_role!;
+        prefs.setString('id_role', request.fields['id_role']!);
+      }
+      if (user.email != null) {
+        request.fields['email'] = user.email!;
+        prefs.setString('email', request.fields['email']!);
+      }
       if (user.id != null) request.fields['id_user'] = user.id.toString();
 
       if (user.foto_profil == null) {
@@ -145,6 +155,7 @@ class userClient {
           "Content-Type": "application/json",
           "Authorization": 'Bearer $token',
         });
+        prefs.remove("foto_profil");
       }
 
       // Add file if present
