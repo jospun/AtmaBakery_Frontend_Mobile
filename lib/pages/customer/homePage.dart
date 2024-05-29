@@ -197,7 +197,8 @@ class _HomePage extends State<HomePage> {
           ),
           CircleAvatar(
             radius: 30,
-            backgroundImage: profilePictureUrl != null
+            backgroundImage: profilePictureUrl != null &&
+                    profilePictureUrl != ""
                 ? NetworkImage(profilePictureUrl!)
                 : NetworkImage(
                     "https://res.cloudinary.com/daorbrq8v/image/upload/f_auto,q_auto/v1/atma-bakery/r1xujbu1yfoenzked4rc"),

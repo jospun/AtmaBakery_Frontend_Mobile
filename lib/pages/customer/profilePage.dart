@@ -33,7 +33,9 @@ class _ProfilePage extends State<ProfilePage> {
       User data = User(
           email: prefs.getString('email'),
           nama: prefs.getString('nama'),
-          foto_profil: prefs.getString('foto_profil'),
+          foto_profil: prefs.getString('foto_profil') == ""
+              ? null
+              : prefs.getString('foto_profil'),
           id_role: prefs.getString('id_role'));
       saldo = prefs.getDouble('saldo') ?? 0.0;
       poin = prefs.getInt('poin') ?? 0;
@@ -109,14 +111,14 @@ class _ProfilePage extends State<ProfilePage> {
                                         radius: 45,
                                         backgroundImage: NetworkImage(pfp!)),
                                     SizedBox(height: 2.h),
-                                      Text(
+                                    Text(
                                       "Hi, ${nama ?? "Guest"}",
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.w900,
                                         fontStyle: FontStyle.normal,
-                                        color: Colors.white, 
+                                        color: Colors.white,
                                       ),
                                     ),
                                     Text(
@@ -126,7 +128,7 @@ class _ProfilePage extends State<ProfilePage> {
                                         fontFamily: 'Montserrat',
                                         fontWeight: FontWeight.w900,
                                         fontStyle: FontStyle.normal,
-                                        color: Colors.white, 
+                                        color: Colors.white,
                                       ),
                                     ),
                                     SizedBox(height: 1.h),
@@ -137,109 +139,112 @@ class _ProfilePage extends State<ProfilePage> {
                           ),
                         ),
                         SizedBox(height: 2.h),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.3),
-                                          spreadRadius: 1,
-                                          blurRadius: 4,
-                                          offset: Offset(0, 2),
-                                        ),
-                                      ],
-                                    ),
-                                    height: 100,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Saldo Saya ',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12,
-                                                 fontFamily: 'Montserrat',
-                                              ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 1,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  height: 100,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Saldo Saya ',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                              fontFamily: 'Montserrat',
                                             ),
-                                     //     Icon(Icons.attach_money, color: Colors.black),
-                                          ],
-                                        ),
-                                        Text(
-                                          '${formatRupiah(saldo.toInt())}',
-                                          style: TextStyle(
-                                            color: Colors.orange,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 14,
                                           ),
+                                          //     Icon(Icons.attach_money, color: Colors.black),
+                                        ],
+                                      ),
+                                      Text(
+                                        '${formatRupiah(saldo.toInt())}',
+                                        style: TextStyle(
+                                          color: Colors.orange,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 14,
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.3),
-                                          spreadRadius: 1,
-                                          blurRadius: 4,
-                                          offset: Offset(0, 2),
-                                        ),
-                                      ],
-                                    ),
-                                    height: 100,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Poin Saya ',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 12,
-                                                 fontFamily: 'Montserrat',
-                                              ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 1,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  height: 100,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Poin Saya ',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                              fontFamily: 'Montserrat',
                                             ),
+                                          ),
                                           //  Icon(Icons.monetization_on, color: Colors.black),
-                                          ],
+                                        ],
+                                      ),
+                                      Text(
+                                        '$poin',
+                                        style: TextStyle(
+                                          color: Colors.orange,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 14,
                                         ),
-                                        Text(
-                                          '$poin',
-                                          style: TextStyle(
-                                             color: Colors.orange,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
+                        ),
                         SizedBox(height: 2.h),
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 20),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage('assets/images/konten_profile.png'),
+                              image: AssetImage(
+                                  'assets/images/konten_profile.png'),
                               fit: BoxFit.cover,
                             ),
                             boxShadow: [
@@ -280,8 +285,8 @@ class _ProfilePage extends State<ProfilePage> {
                                   ),
                                 );
                               }),
-                                 buildRow(Icons.info, 'Tentang Kami', () {
-                                  Navigator.push(
+                              buildRow(Icons.info, 'Tentang Kami', () {
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => TentangKamiPage(),
@@ -302,7 +307,7 @@ class _ProfilePage extends State<ProfilePage> {
                                     })
                                   : Container(),
                               buildRow(Icons.library_books, 'Ketentuan', () {
-                                     Navigator.push(
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => KetentuanPage(),
@@ -310,7 +315,7 @@ class _ProfilePage extends State<ProfilePage> {
                                 );
                               }),
                               buildRow(Icons.security, 'Kebijakan Privasi', () {
-                                               Navigator.push(
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => PrivacyPage(),

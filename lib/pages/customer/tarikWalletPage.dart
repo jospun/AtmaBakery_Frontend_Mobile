@@ -86,7 +86,7 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
                     radius: 20,
                     backgroundImage: NetworkImage(pfp.isNotEmpty
                         ? pfp
-                        : "https://example.com/default_profile_image.jpg"),
+                        : "https://res.cloudinary.com/daorbrq8v/image/upload/f_auto,q_auto/v1/atma-bakery/r1xujbu1yfoenzked4rc"),
                   ),
                   SizedBox(width: 10),
                   Column(
