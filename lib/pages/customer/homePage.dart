@@ -85,7 +85,7 @@ class _HomePage extends State<HomePage> {
     final prefs = await SharedPreferences.getInstance();
     final cachedNama = prefs.getString('nama');
     final cachedIdRole = prefs.getString('id_role');
-    final cachedProfilePictureUrl = prefs.getString('profilePictureUrl');
+    final cachedProfilePictureUrl = prefs.getString('foto_profil');
 
     if (cachedNama != null &&
         cachedIdRole != null &&
@@ -121,7 +121,7 @@ class _HomePage extends State<HomePage> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('nama', nama ?? '');
     await prefs.setString('id_role', id_role ?? '');
-    await prefs.setString('profilePictureUrl', profilePictureUrl ?? '');
+    await prefs.setString('foto_profil', profilePictureUrl ?? '');
   }
 
   @override
