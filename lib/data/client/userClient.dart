@@ -101,6 +101,8 @@ class userClient {
 
       if (responseBody['foto_profil'] != null) {
         prefs.setString("foto_profil", responseBody['foto_profil'].toString());
+      } else {
+        prefs.remove("foto_profil");
       }
 
       prefs.setString('id_role', responseBody['id_role'].toString());
