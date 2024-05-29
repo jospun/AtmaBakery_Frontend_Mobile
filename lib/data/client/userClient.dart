@@ -18,7 +18,7 @@ class userClient {
         throw Exception(jsonDecode(response.body)['message'].toString());
 
       dynamic responseBody = json.decode(response.body)['data'];
-      print(responseBody);
+
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if (responseBody['foto_profil'] != null) {
         prefs.setString("foto_profil", responseBody['foto_profil'].toString());
@@ -28,6 +28,8 @@ class userClient {
       prefs.setString('email', responseBody['email'].toString());
       prefs.setString('nama', responseBody['nama'].toString());
       prefs.setDouble('saldo', responseBody['saldo'].toDouble());
+      prefs.setInt('poin', responseBody['poin'].toInt());
+
       return json.decode(response.body)['token'].toString();
     } catch (e) {
       return Future.error(e.toString());
@@ -94,6 +96,18 @@ class userClient {
           "Authorization": 'Bearer $token'
         },
       ).timeout(const Duration(seconds: 5));
+
+      dynamic responseBody = json.decode(response.body)['data'];
+
+      if (responseBody['foto_profil'] != null) {
+        prefs.setString("foto_profil", responseBody['foto_profil'].toString());
+      }
+
+      prefs.setString('id_role', responseBody['id_role'].toString());
+      prefs.setString('email', responseBody['email'].toString());
+      prefs.setString('nama', responseBody['nama'].toString());
+      prefs.setDouble('saldo', responseBody['saldo'].toDouble());
+      prefs.setInt('poin', responseBody['poin'].toInt());
 
       if (response.statusCode != 200)
         throw Exception(jsonDecode(response.body)['message'].toString());

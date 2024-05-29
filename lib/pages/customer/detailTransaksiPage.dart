@@ -8,70 +8,72 @@ class DetailTransaksiPage extends StatelessWidget {
   const DetailTransaksiPage({Key? key, required this.userHistory})
       : super(key: key);
 
-void handleSelesaikanPesanan(BuildContext context) async {
-  if (userHistory.status == 'Sedang Diantar Kurir' || userHistory.status == 'Sedang Diantar Ojol' || userHistory.status == 'Siap Pick Up') {
-    try {
-      await TransaksiClient.updateStatusSelesaiSelf(userHistory.no_nota!);
+  void handleSelesaikanPesanan(BuildContext context) async {
+    if (userHistory.status == 'Sedang Diantar Kurir' ||
+        userHistory.status == 'Sedang Diantar Ojol' ||
+        userHistory.status == 'Siap Pick Up') {
+      try {
+        await TransaksiClient.updateStatusSelesaiSelf(userHistory.no_nota!);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Status pesanan berhasil diperbarui')),
+        );
+        Navigator.pop(context, true);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal memperbarui status pesanan: $e')),
+        );
+      }
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Status pesanan berhasil diperbarui')),
-      );
-      Navigator.pop(context, true);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Gagal memperbarui status pesanan: $e')),
+        SnackBar(content: Text('Status pesanan tidak dapat diperbarui')),
       );
     }
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Status pesanan tidak dapat diperbarui')),
-    );
   }
-}
 
-String getStatusText(String? status) {
-  switch (status) {
-    case "Menunggu Perhitungan ongkir":
-      return "Menunggu Perhitungan Ongkir";
-    case "Menunggu Pembayaran":
-      return "Pesanan Perlu Dibayar";
-    case "Menunggu Konfirmasi Pembayaran":
-      return "Menunggu Konfirmasi Pembayaran";
-    case "Menunggu Konfirmasi Pesanan":
-      return "Menunggu Konfirmasi Pesanan";
-    case "Pesanan Diterima":
-      return "Pesanan Diterima";
-    case "Sedang Di Proses":
-      return "Pesanan Sedang Diproses";
-    case "Siap Pick Up":
-      return "Pesanan Siap Pick Up";
-    case "Siap Kirim":
-      return "Pesanan Siap Dikirim";
-    case "Sedang Diantar Kurir":
-      return "Pesanan Dalam Perjalanan oleh Kurir";
-    case "Sedang Diantar Ojol":
-      return "Pesanan Dalam Perjalanan oleh Ojol";
-    case "Terkirim":
-      return "Pesanan Terkirim";
-    case "Selesai":
-      return "Pesanan Selesai";
-    case "Ditolak":
-      return "Pesanan Ditolak";
-    default:
-      return "N/A";
+  String getStatusText(String? status) {
+    switch (status) {
+      case "Menunggu Perhitungan ongkir":
+        return "Menunggu Perhitungan Ongkir";
+      case "Menunggu Pembayaran":
+        return "Pesanan Perlu Dibayar";
+      case "Menunggu Konfirmasi Pembayaran":
+        return "Menunggu Konfirmasi Pembayaran";
+      case "Menunggu Konfirmasi Pesanan":
+        return "Menunggu Konfirmasi Pesanan";
+      case "Pesanan Diterima":
+        return "Pesanan Diterima";
+      case "Sedang Di Proses":
+        return "Pesanan Sedang Diproses";
+      case "Siap Pick Up":
+        return "Pesanan Siap Pick Up";
+      case "Siap Kirim":
+        return "Pesanan Siap Dikirim";
+      case "Sedang Diantar Kurir":
+        return "Pesanan Dalam Perjalanan oleh Kurir";
+      case "Sedang Diantar Ojol":
+        return "Pesanan Dalam Perjalanan oleh Ojol";
+      case "Terkirim":
+        return "Pesanan Terkirim";
+      case "Selesai":
+        return "Pesanan Selesai";
+      case "Ditolak":
+        return "Pesanan Ditolak";
+      default:
+        return "N/A";
+    }
   }
-}
 
-Icon getStatusIcon(String? status) {
-  switch (status) {
-    case "Selesai":
-    case "Terkirim":
-      return Icon(Icons.check_circle_outline_outlined, color: Colors.black);
-    case "Ditolak":
-      return Icon(Icons.error_outline_outlined, color: Colors.black);
-    default:
-      return Icon(Icons.access_time, color: Colors.black);
+  Icon getStatusIcon(String? status) {
+    switch (status) {
+      case "Selesai":
+      case "Terkirim":
+        return Icon(Icons.check_circle_outline_outlined, color: Colors.black);
+      case "Ditolak":
+        return Icon(Icons.error_outline_outlined, color: Colors.black);
+      default:
+        return Icon(Icons.access_time, color: Colors.black);
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +122,7 @@ Icon getStatusIcon(String? status) {
                 ],
               ),
               SizedBox(height: 15),
-               if (userHistory.status == 'Sedang Diantar Kurir' ||
+              if (userHistory.status == 'Sedang Diantar Kurir' ||
                   userHistory.status == 'Sedang Diantar Ojol' ||
                   userHistory.status == 'Siap Pick Up')
                 ElevatedButton(
@@ -374,13 +376,13 @@ Icon getStatusIcon(String? status) {
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12))),
-                            DataCell(Text('0',
+                            DataCell(Text(
+                                userHistory.penggunaan_poin?.toString() ?? '0',
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12))),
                             DataCell(Text(
-                                formatRupiah(
-                                    (userHistory.penggunaan_poin ?? 0) * 100),
+                                "- ${formatRupiah((userHistory.penggunaan_poin ?? 0) * 100)}",
                                 style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 12))),

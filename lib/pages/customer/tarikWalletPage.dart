@@ -33,10 +33,12 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
   void submission() async {
     print(jumlahUangController.text);
     try {
-      await HistoriSaldoClient.create(double.parse(jumlahUangController.text),
+      await HistoriSaldoClient.create(jumlahUangController.text,
           namaBankController.text, nomorRekeningController.text);
       showSnackbar(
           context, "Berhasil Mengajukan Penarikan Saldo", Colors.green);
+      Navigator.pop(context);
+      Navigator.pop(context);
       Navigator.push(
         context,
         MaterialPageRoute(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:p3l_atmabakery/data/client/userClient.dart';
 import 'package:p3l_atmabakery/pages/splashScreen.dart';
 //import 'package:p3l_atmabakery/pages/homeNavbar.dart';
 //import 'package:p3l_atmabakery/pages/loginPage.dart';
@@ -15,6 +16,10 @@ Future<void> main() async {
   await FirebaseApi().initNotifications();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('token') ?? '';
+
+  if (token != '') {
+    await userClient.showSelf();
+  }
 
   runApp(MyApp(token: token));
 }

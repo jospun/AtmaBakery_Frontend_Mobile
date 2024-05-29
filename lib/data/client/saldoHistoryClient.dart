@@ -40,9 +40,9 @@ class HistoriSaldoClient {
   }
 
   static Future<Response> create(
-      double saldo, String nama_bank, String no_rek) async {
+      String saldo, String nama_bank, String no_rek) async {
     final Map<String, dynamic> data = {
-      'saldo': saldo.toInt(),
+      'saldo': int.parse(saldo),
       'nama_bank': nama_bank,
       'no_rek': no_rek
     };
@@ -50,7 +50,10 @@ class HistoriSaldoClient {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
 
-      final response = await http.post(
+      print("Data: $data");
+      print('Token: $token');
+
+      final response = await post(
         Uri.parse("https://$url/histori_saldo"),
         headers: {
           "Content-Type": "application/json",
