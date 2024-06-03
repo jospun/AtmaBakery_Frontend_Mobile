@@ -1,20 +1,18 @@
 import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:p3l_atmabakery/data/laporanPemasukkanPengeluaran.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:p3l_atmabakery/data/bahanBaku.dart';
-import 'package:p3l_atmabakery/data/client/laporanClient.dart';
 
 Future<void> initializeDateFormattingForLocale() async {
   await initializeDateFormatting('id_ID', null);
 }
 
-Future<Uint8List> createPdfBydate(
-    DateTime tanggalAwal, DateTime tanggalAkhir) async {
+Future<Uint8List> createPdfPemasukanPengeluaran(
+    LaporanPemasukkanPengeluaran laporan) async {
   await initializeDateFormattingForLocale();
   final image = pw.MemoryImage(
     (await rootBundle.load('assets/images/atma-bakery.png'))
@@ -22,15 +20,13 @@ Future<Uint8List> createPdfBydate(
         .asUint8List(),
   );
 
-  final bahanBaku =
-      await laporanClient.getBahanBakubyDate(tanggalAwal, tanggalAkhir);
   final doc = pw.Document();
 
   doc.addPage(
     pw.MultiPage(
       build: (context) => [
-        _headerPdf(context, image, tanggalAwal, tanggalAkhir),
-        _bahanBakuTable(context, bahanBaku),
+        _headerPdf(context, image),
+        _pemasukkanPengeluaranTable(context, laporan),
       ],
     ),
   );
@@ -38,8 +34,29 @@ Future<Uint8List> createPdfBydate(
   return doc.save();
 }
 
-pw.Widget _bahanBakuTable(pw.Context context, List<BahanBaku> bahanBaku) {
-  const tableHeaders = ['Nama Bahan Baku', 'Satuan', 'Digunakan'];
+pw.Widget _pemasukkanPengeluaranTable(
+    pw.Context context, LaporanPemasukkanPengeluaran laporan) {
+  const tableHeaders = ['', 'Pemasukkan', 'Pengeluaran'];
+
+  final pemasukkanData = laporan.pemasukkan
+          ?.map((p) => [p.nama ?? '', p.jumlah.toString(), ''])
+          .toList() ??
+      [];
+  final pengeluaranData = laporan.pengeluaran
+          ?.map((p) => [p.nama ?? '', '', p.jumlah.toString()])
+          .toList() ??
+      [];
+
+  final data = [
+    ...pemasukkanData,
+    ...pengeluaranData,
+    [
+      'Total ',
+      '${laporan.total_pemasukkan ?? 0}',
+      '${laporan.total_pengeluaran ?? 0}'
+    ],
+  ];
+
   return pw.Table.fromTextArray(
     border: null,
     cellAlignment: pw.Alignment.centerLeft,
@@ -52,25 +69,18 @@ pw.Widget _bahanBakuTable(pw.Context context, List<BahanBaku> bahanBaku) {
     cellAlignments: {
       0: pw.Alignment.centerLeft,
       1: pw.Alignment.centerLeft,
-      2: pw.Alignment.center,
+      2: pw.Alignment.centerLeft,
     },
     cellStyle: const pw.TextStyle(
       color: PdfColors.black,
       fontSize: 10,
     ),
     headers: tableHeaders,
-    data: bahanBaku
-        .map((item) => [
-              item.nama ?? '',
-              item.satuan ?? '',
-              item.digunakan.toString(),
-            ])
-        .toList(),
+    data: data,
   );
 }
 
-pw.Widget _headerPdf(
-    pw.Context context, pw.ImageProvider image, tanggalAwal, tanggalAkhir) {
+pw.Widget _headerPdf(pw.Context context, pw.ImageProvider image) {
   return pw.Column(
     children: [
       pw.Row(
@@ -116,31 +126,41 @@ pw.Widget _headerPdf(
               ),
               pw.Container(
                 padding: const pw.EdgeInsets.only(bottom: 30),
+                alignment: pw.Alignment.centerLeft,
                 child: pw.DefaultTextStyle(
                   style: pw.TextStyle(
                     fontSize: 14,
                   ),
-                  child: pw.Container(
-                    child: pw.Column(
-                      mainAxisAlignment: pw.MainAxisAlignment.start,
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Text('LAPORAN Penggunaan Bahan Baku',
-                            style: pw.TextStyle(
-                              fontSize: 12,
-                              decoration: pw.TextDecoration.underline,
-                            )),
-                        pw.SizedBox(height: 1.5.h),
-                        pw.Text(
-                            'Periode : ${_formatDate(tanggalAwal)} - ${_formatDate(tanggalAkhir)} ',
-                            style: pw.TextStyle(fontSize: 12)),
-                        pw.SizedBox(height: 1.h),
-                        pw.Text(
-                            'Tanggal Cetak : ${_formatDate(DateTime.now())}',
-                            style: pw.TextStyle(fontSize: 12),
-                            textAlign: pw.TextAlign.left),
-                      ],
-                    ),
+                  child: pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.start,
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text(
+                        'LAPORAN Pemasukan dan Pengeluaran',
+                        style: pw.TextStyle(
+                          fontSize: 12,
+                          decoration: pw.TextDecoration.underline,
+                        ),
+                      ),
+                      pw.SizedBox(height: 1.5.h),
+                      pw.Text(
+                        'Bulan : ${_formatMonth(DateTime.now())}',
+                        style: pw.TextStyle(fontSize: 12),
+                        textAlign: pw.TextAlign.left,
+                      ),
+                      pw.SizedBox(height: 1.h),
+                      pw.Text(
+                        'Tahun : ${_formatYear(DateTime.now())}',
+                        style: pw.TextStyle(fontSize: 12),
+                        textAlign: pw.TextAlign.left,
+                      ),
+                      pw.SizedBox(height: 1.h),
+                      pw.Text(
+                        'Tanggal Cetak : ${_formatDate(DateTime.now())}',
+                        style: pw.TextStyle(fontSize: 12),
+                        textAlign: pw.TextAlign.left,
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -150,6 +170,16 @@ pw.Widget _headerPdf(
       ),
     ],
   );
+}
+
+String _formatYear(DateTime date) {
+  final format = DateFormat('yyyy', 'id_ID');
+  return format.format(date);
+}
+
+String _formatMonth(DateTime date) {
+  final format = DateFormat('MMMM', 'id_ID');
+  return format.format(date);
 }
 
 String _formatDate(DateTime date) {

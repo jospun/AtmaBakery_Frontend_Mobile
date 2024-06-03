@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:p3l_atmabakery/data/client/laporanClient.dart';
 import 'package:p3l_atmabakery/pdf/createPDFBahanBakubyDate.dart';
+import 'package:p3l_atmabakery/pdf/createPDFPengeluarandanPemasukkan.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:p3l_atmabakery/pdf/createPDFBahanBakuNow.dart';
@@ -14,12 +16,27 @@ class LaporanPage extends StatefulWidget {
 class _LaporanPage extends State<LaporanPage> {
   DateTime? startDate;
   DateTime? endDate;
+  DateTime? selectedDate;
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
 
   Future<void> _selectDateRange(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(
       context: context,
       firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      lastDate: DateTime.now(),
     );
     if (picked != null &&
         picked != DateTimeRange(start: DateTime.now(), end: DateTime.now())) {
@@ -63,6 +80,22 @@ class _LaporanPage extends State<LaporanPage> {
                 }
               },
               child: Text('List Bahan Baku by Date'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                await _selectDate(context);
+                if (selectedDate != null) {
+                  print("Selected date: $selectedDate");
+
+                  final laporan = await laporanClient
+                      .getPemasukandanPengeluaran(selectedDate!);
+                  final pdfData = await createPdfPemasukanPengeluaran(laporan);
+                  await Printing.layoutPdf(
+                      onLayout: (PdfPageFormat format) async => pdfData);
+                }
+              },
+              child: Text('Cetak Laporan Bulanan'),
             ),
           ],
         ),

@@ -50,6 +50,7 @@ dependencies:
   flutter_screenutil: ^5.0.0 
   pdf: ^3.10.8
   printing: ^5.6.1
+  month_picker_dialog: ^2.0.0
   
 
 dependency_oveerrides:
