@@ -274,7 +274,28 @@ class _TarikWalletPageState extends State<TarikWalletPage> {
                         backgroundColor: const Color.fromRGBO(244, 142, 40, 1)),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        submission();
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Apakah Anda Yakin?'),
+                            content: const Text(
+                                'Semua hal tidak dapat dikembalikan saat menekan OK'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () => {
+                                  submission(),
+                                  Navigator.pop(context, 'OK'),
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
                       }
                     },
                     child: const Text(
