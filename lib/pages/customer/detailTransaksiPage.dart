@@ -12,16 +12,42 @@ class DetailTransaksiPage extends StatelessWidget {
     if (userHistory.status == 'Sedang Diantar Kurir' ||
         userHistory.status == 'Sedang Diantar Ojol' ||
         userHistory.status == 'Siap Pick Up') {
-      try {
-        await TransaksiClient.updateStatusSelesaiSelf(userHistory.no_nota!);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Status pesanan berhasil diperbarui')),
-        );
-        Navigator.pop(context, true);
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal memperbarui status pesanan: $e')),
-        );
+      // Show confirmation dialog
+      bool? confirm = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Konfirmasi'),
+            content: Text('Yakin ingin menyelesaikan pesanan?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      if (confirm == true) {
+        try {
+          await TransaksiClient.updateStatusSelesaiSelf(userHistory.no_nota!);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Status pesanan berhasil diperbarui')),
+          );
+          Navigator.pop(context, true);
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Gagal memperbarui status pesanan: $e')),
+          );
+        }
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
