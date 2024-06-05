@@ -67,52 +67,62 @@ class _PresensiPageState extends State<PresensiPage> {
     } else {
       if (listPresensi?.length != null) {
         return Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              'Presensi',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            actions: <Widget>[
-              ElevatedButton(
-                onPressed: () {
-                  showDatePicker(
-                    context: context,
-                    initialDate: datel,
-                    firstDate: DateTime(2001),
-                    lastDate: DateTime.now(),
-                  ).then((date) {
-                    if (date != null) {
-                      setState(() {
-                        datel = date;
-                      });
-                      _loadPresensiData(datel);
-                    }
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(255, 255, 255, 1)),
-                child: Text(
-                  formatter2.format(datel),
-                  style: TextStyle(
-                    color: const Color.fromRGBO(244, 142, 40, 1),
-                  ),
+appBar: AppBar(
+  automaticallyImplyLeading: false,
+  centerTitle: true,
+  backgroundColor: Colors.white,
+  title: Text(
+    "Presensi",
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      fontFamily: 'Montserrat',
+    ),
+  ),
+  bottom: PreferredSize(
+    preferredSize: Size.fromHeight(60.0),
+    child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () {
+                showDatePicker(
+                  context: context,
+                  initialDate: datel,
+                  firstDate: DateTime(2001),
+                  lastDate: DateTime.now(),
+                ).then((date) {
+                  if (date != null) {
+                    setState(() {
+                      datel = date;
+                    });
+                    _loadPresensiData(datel);
+                  }
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+                padding: EdgeInsets.symmetric(vertical: 15.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
-            ],
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios_new_outlined),
-              color: Colors.white,
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              child: Text(
+                formatter2.format(datel),
+                style: TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+              ),
             ),
-            backgroundColor: const Color.fromRGBO(244, 142, 40, 1),
-            elevation: 4,
-            shadowColor: Colors.grey,
           ),
+        ],
+      ),
+    ),
+  ),
+),
+
           body: Padding(
             padding: EdgeInsets.all(10),
             child: ListView.builder(

@@ -52,8 +52,17 @@ class _LaporanPage extends State<LaporanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Laporan Page'),
         automaticallyImplyLeading: false,
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        title: Text(
+          "Laporan",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Montserrat',
+          ),
+        ),
       ),
       body: GridView.count(
         primary: false,
@@ -70,7 +79,17 @@ class _LaporanPage extends State<LaporanPage> {
                 await Printing.layoutPdf(
                     onLayout: (PdfPageFormat format) async => pdfData);
               },
-              child: Text('Laporan Stok Bahan Baku'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.print), 
+                  SizedBox(height: 5), 
+                  Text(
+                    'Laporan Stok Bahan Baku',
+                    textAlign: TextAlign.center,
+                  ), // Centered text
+                ],
+              ),
             ),
           ),
           Container(
@@ -86,7 +105,17 @@ class _LaporanPage extends State<LaporanPage> {
                       onLayout: (PdfPageFormat format) async => pdfData);
                 }
               },
-              child: Text('Laporan Penggunaan Bahan Baku Periode'),
+               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.print), 
+                  SizedBox(height: 5), 
+                  Text(
+                    'Laporan Penggunaan Bahan Baku Periode',
+                    textAlign: TextAlign.center,
+                  ), // Centered text
+                ],
+              ),
             ),
           ),
           Container(
@@ -97,17 +126,27 @@ class _LaporanPage extends State<LaporanPage> {
                 if (selectedDate != null) {
                   print("Selected date: $selectedDate");
 
-                  final laporan = await laporanClient
-                      .getPemasukandanPengeluaran(selectedDate!);
+                  final laporan = await laporanClient.getPemasukandanPengeluaran(selectedDate!);
                   final pdfData = await createPdfPemasukanPengeluaran(laporan);
                   await Printing.layoutPdf(
-                      onLayout: (PdfPageFormat format) async => pdfData);
+                    onLayout: (PdfPageFormat format) async => pdfData,
+                  );
                   setState(() {
                     selectedDate = null;
                   });
                 }
               },
-              child: Text('Laporan Pemasukan dan Pengeluaran Bulanan'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.print), 
+                  SizedBox(height: 5), 
+                  Text(
+                    'Laporan Pemasukan dan Pengeluaran Bulanan',
+                    textAlign: TextAlign.center,
+                  ), // Centered text
+                ],
+              ),
             ),
           ),
         ],

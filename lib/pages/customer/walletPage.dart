@@ -38,22 +38,23 @@ class _WalletPage extends State<WalletPage> {
     }
   }
 
-  Future<List<SaldoHistory>> _fetchSaldoHistory() async {
-    try {
-      var result = await HistoriSaldoClient.fetchSaldoHistory();
-      if (result['success']) {
-        List<SaldoHistory> saldoHistoryList = [];
-        for (var i = result['data'].length - 1; i >= 0; i--) {
-          saldoHistoryList.add(SaldoHistory.fromJson(result['data'][i]));
-        }
-        return saldoHistoryList;
-      } else {
-        throw Exception(result['message']);
+ Future<List<SaldoHistory>> _fetchSaldoHistory() async {
+  try {
+    var result = await HistoriSaldoClient.fetchSaldoHistory();
+    if (result['success']) {
+      List<SaldoHistory> saldoHistoryList = [];
+      for (var item in result['data']) {
+        saldoHistoryList.add(SaldoHistory.fromJson(item));
       }
-    } catch (e) {
-      throw Exception('Error fetching saldo history: $e');
+      return saldoHistoryList;
+    } else {
+      throw Exception(result['message']);
     }
+  } catch (e) {
+    throw Exception('Error fetching saldo history: $e');
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
