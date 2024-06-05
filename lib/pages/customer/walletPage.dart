@@ -215,52 +215,63 @@ class _WalletPage extends State<WalletPage> {
                     );
                   } else if (snapshot.hasError) {
                     return Center(
-                      child: Text('Error: ${snapshot.error}'),
+                      child: Text(
+                        'Tidak Ada History Penarikan Disini!',
+                        textAlign: TextAlign.center,
+                      ),
                     );
                   } else {
                     List<SaldoHistory> saldoHistoryList = snapshot.data!;
                     return Container(
-                      height: 430, 
+                      height: 430,
                       child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: saldoHistoryList.length,
                         itemBuilder: (context, index) {
                           return ListTile(
                             title: Text(
-                              saldoHistoryList[index].tanggal ?? 'Menunggu Konfirmasi',
+                              saldoHistoryList[index].tanggal ??
+                                  'Menunggu Konfirmasi',
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 13,
-                                color: saldoHistoryList[index].tanggal == null ? Colors.blue : Colors.black,
+                                color: saldoHistoryList[index].tanggal == null
+                                    ? Colors.blue
+                                    : Colors.black,
                               ),
                             ),
                             subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    saldoHistoryList[index].namaBank,
-                                    style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 16,
-                                      color: saldoHistoryList[index].namaBank == null ? Colors.blue : Colors.black,
-                                    ),
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  saldoHistoryList[index].namaBank,
+                                  style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 16,
+                                    color:
+                                        saldoHistoryList[index].namaBank == null
+                                            ? Colors.blue
+                                            : Colors.black,
                                   ),
-                                  Text(
-                                    'No. Rek ${saldoHistoryList[index].noRek}',
-                                    style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                    ),
+                                ),
+                                Text(
+                                  'No. Rek ${saldoHistoryList[index].noRek}',
+                                  style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 14,
+                                    color: Colors.black,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
+                            ),
                             trailing: Text(
                               '${formatRupiahDouble(saldoHistoryList[index].saldo)}',
                               style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 16,
-                                color: saldoHistoryList[index].saldo == 0.0 ? Colors.blue : Colors.orange,
+                                color: saldoHistoryList[index].saldo == 0.0
+                                    ? Colors.blue
+                                    : Colors.orange,
                               ),
                             ),
                           );

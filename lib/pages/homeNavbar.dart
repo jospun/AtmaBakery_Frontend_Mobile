@@ -66,7 +66,7 @@ class _HomeNavbarState extends State<HomeNavbar> {
       return CircularProgressIndicator(); // Show loading indicator
     }
 
-    _widgetOptions = (id_role == "CUST" || id_role == null)
+    _widgetOptions = (id_role == "CUST")
         ? <Widget>[
             const HomePage(),
             const ProdukPage(),
@@ -95,7 +95,7 @@ class _HomeNavbarState extends State<HomeNavbar> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        items: (id_role == "CUST" || id_role == null)
+        items: (id_role == "CUST")
             ? const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),

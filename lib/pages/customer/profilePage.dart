@@ -277,14 +277,18 @@ class _ProfilePage extends State<ProfilePage> {
                           child: Column(
                             children: [
                               SizedBox(height: 2.h),
-                              buildRow(Icons.account_circle, 'Profil Saya', () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProfilSayaPage(),
-                                  ),
-                                );
-                              }),
+                              id_role != null
+                                  ? buildRow(
+                                      Icons.account_circle, 'Profil Saya', () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProfilSayaPage(),
+                                        ),
+                                      );
+                                    })
+                                  : Container(),
                               buildRow(Icons.info, 'Tentang Kami', () {
                                 Navigator.push(
                                   context,
@@ -322,60 +326,72 @@ class _ProfilePage extends State<ProfilePage> {
                                   ),
                                 );
                               }),
-                              buildRow(Icons.logout, 'Logout', () async {
-                                _isLoading = true;
-                                SharedPreferences prefs =
-                                    await SharedPreferences.getInstance();
-                                FocusManager.instance.primaryFocus!.unfocus();
-                                String token =
-                                    prefs.getString('token').toString();
-                                await userClient.Logout(token);
-                                prefs.remove('token');
-                                _isLoading = false;
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const LoginPage(),
-                                  ),
-                                );
-                              }),
+                              id_role != null
+                                  ? buildRow(Icons.logout, 'Logout', () async {
+                                      _isLoading = true;
+                                      SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      FocusManager.instance.primaryFocus!
+                                          .unfocus();
+                                      String token =
+                                          prefs.getString('token').toString();
+                                      await userClient.Logout(token);
+                                      prefs.remove('token');
+                                      _isLoading = false;
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => const LoginPage(),
+                                        ),
+                                      );
+                                    })
+                                  : Container(
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 10.h,
+                                          ),
+                                          Center(
+                                            child: RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  const TextSpan(
+                                                    text: "Sudah Punya Akun?",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  TextSpan(
+                                                    text: " Masuk Sekarang",
+                                                    style: const TextStyle(
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontSize: 15,
+                                                        color: Color.fromRGBO(
+                                                            90, 175, 220, 1)),
+                                                    recognizer: TapGestureRecognizer()
+                                                      ..onTap = () => Navigator
+                                                              .of(context)
+                                                          .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          const LoginPage())),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                             ],
                           ),
                         ),
-                        snapshot.requireData.nama == null
-                            ? Center(
-                                child: RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const TextSpan(
-                                        text: "Sudah Punya Akun?",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      TextSpan(
-                                        text: " Masuk Sekarang",
-                                        style: const TextStyle(
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 15,
-                                            color: Color.fromRGBO(
-                                                90, 175, 220, 1)),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () => Navigator.of(context)
-                                              .pushReplacement(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const LoginPage())),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : Container(
-                                height: 4.h,
-                              ),
                       ],
                     )),
                   ),
