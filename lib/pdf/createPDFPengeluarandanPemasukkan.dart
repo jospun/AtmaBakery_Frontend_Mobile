@@ -6,6 +6,7 @@ import 'package:p3l_atmabakery/data/laporanPemasukkanPengeluaran.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:p3l_atmabakery/formatter.dart';
 
 Future<void> initializeDateFormattingForLocale() async {
   await initializeDateFormatting('id_ID', null);
@@ -39,11 +40,11 @@ pw.Widget _pemasukkanPengeluaranTable(
   const tableHeaders = ['', 'Pemasukkan', 'Pengeluaran'];
 
   final pemasukkanData = laporan.pemasukkan
-          ?.map((p) => [p.nama ?? '', p.jumlah.toString(), ''])
+          ?.map((p) => [p.nama ?? '', formatRupiah(p.jumlah!), ''])
           .toList() ??
       [];
   final pengeluaranData = laporan.pengeluaran
-          ?.map((p) => [p.nama ?? '', '', p.jumlah.toString()])
+          ?.map((p) => [p.nama ?? '', '', formatRupiah(p.jumlah!)])
           .toList() ??
       [];
 
@@ -52,8 +53,8 @@ pw.Widget _pemasukkanPengeluaranTable(
     ...pengeluaranData,
     [
       'Total ',
-      '${laporan.total_pemasukkan ?? 0}',
-      '${laporan.total_pengeluaran ?? 0}'
+      '${formatRupiah(laporan.total_pemasukkan!)}',
+      '${formatRupiah(laporan.total_pengeluaran!)}'
     ],
   ];
 

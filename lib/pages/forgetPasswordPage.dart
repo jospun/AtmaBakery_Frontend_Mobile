@@ -112,15 +112,19 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                             decoration: InputDecoration(
                               filled: false,
                               fillColor: const Color.fromRGBO(234, 234, 234, 1),
-                                  border: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromRGBO(244, 142, 40, 1)),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromRGBO(210, 145, 79, 1),), 
-                                  ),
-                                  enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color.fromARGB(255, 181, 179, 179)), 
-                                  ),
+                              border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromRGBO(244, 142, 40, 1)),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color.fromRGBO(210, 145, 79, 1),
+                                ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 181, 179, 179)),
+                              ),
                               hintText: 'Email Anda',
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 12.0, horizontal: 16.0),
@@ -142,8 +146,8 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                               height: 5.h,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                backgroundColor:const Color.fromRGBO(244, 142, 40, 1)
-                              ),
+                                    backgroundColor:
+                                        const Color.fromRGBO(244, 142, 40, 1)),
                                 onPressed: emailSent
                                     ? null
                                     : () async {
@@ -215,7 +219,7 @@ void showSnackbar(BuildContext context, String msg, Color bg) {
     content: Text(msg),
     backgroundColor: bg,
     action: SnackBarAction(
-      label: 'hide',
+      label: 'x',
       onPressed: scaffold.hideCurrentSnackBar,
     ),
   ));

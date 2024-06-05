@@ -318,7 +318,7 @@ void showSnackbar(BuildContext context, String msg, Color bg) {
     content: Text(msg),
     backgroundColor: bg,
     action: SnackBarAction(
-      label: 'hide',
+      label: 'x',
       onPressed: Scaffold.hideCurrentSnackBar,
     ),
   ));

@@ -25,6 +25,7 @@ class _LaporanPage extends State<LaporanPage> {
       firstDate: DateTime(2000),
       lastDate: DateTime.now(),
     );
+
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
@@ -57,7 +58,6 @@ class _LaporanPage extends State<LaporanPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Ini Laporan Page"),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
@@ -65,7 +65,7 @@ class _LaporanPage extends State<LaporanPage> {
                 await Printing.layoutPdf(
                     onLayout: (PdfPageFormat format) async => pdfData);
               },
-              child: Text('Generate PDF'),
+              child: Text('Cetak Laporan Stok Bahan Baku'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -79,7 +79,7 @@ class _LaporanPage extends State<LaporanPage> {
                       onLayout: (PdfPageFormat format) async => pdfData);
                 }
               },
-              child: Text('List Bahan Baku by Date'),
+              child: Text('Cetak Laporan Penggunaan Bahan Baku Periode'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -93,9 +93,12 @@ class _LaporanPage extends State<LaporanPage> {
                   final pdfData = await createPdfPemasukanPengeluaran(laporan);
                   await Printing.layoutPdf(
                       onLayout: (PdfPageFormat format) async => pdfData);
+                  setState(() {
+                    selectedDate = null;
+                  });
                 }
               },
-              child: Text('Cetak Laporan Bulanan'),
+              child: Text('Cetak Laporan Pemasukan dan Pengeluaran Bulanan'),
             ),
           ],
         ),

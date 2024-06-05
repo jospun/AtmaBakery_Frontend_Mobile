@@ -73,18 +73,24 @@ class _HomeNavbarState extends State<HomeNavbar> {
             const NotificationPage(),
             const ProfilePage(),
           ]
-        : (id_role == "OWN" || id_role == "MO")
+        : (id_role == "MO")
             ? <Widget>[
                 const HomePage(),
                 const PresensiPage(),
                 const LaporanPage(),
                 const ProfilePage(),
               ]
-            : <Widget>[
-                const HomePage(),
-                const ProdukPage(),
-                const ProfilePage(),
-              ];
+            : (id_role == "OWN")
+                ? <Widget>[
+                    const HomePage(),
+                    const LaporanPage(),
+                    const ProfilePage(),
+                  ]
+                : <Widget>[
+                    const HomePage(),
+                    const ProdukPage(),
+                    const ProfilePage(),
+                  ];
 
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
@@ -108,7 +114,7 @@ class _HomeNavbarState extends State<HomeNavbar> {
                   label: 'Profil',
                 )
               ]
-            : (id_role == "OWN" || id_role == "MO")
+            : (id_role == "MO")
                 ? const [
                     BottomNavigationBarItem(
                       icon: Icon(Icons.home),
@@ -127,20 +133,35 @@ class _HomeNavbarState extends State<HomeNavbar> {
                       label: 'Profil',
                     )
                   ]
-                : const [
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.home),
-                      label: 'Beranda',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.cake),
-                      label: 'Produk',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.person),
-                      label: 'Profil',
-                    )
-                  ],
+                : (id_role == "OWN")
+                    ? const [
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.home),
+                          label: 'Beranda',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.task),
+                          label: 'Laporan',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.person),
+                          label: 'Profil',
+                        )
+                      ]
+                    : const [
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.home),
+                          label: 'Beranda',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.cake),
+                          label: 'Produk',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.person),
+                          label: 'Profil',
+                        )
+                      ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
         unselectedItemColor: Colors.grey,
