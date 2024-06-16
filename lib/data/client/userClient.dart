@@ -1,7 +1,8 @@
+import 'dart:convert';
+
+import 'package:http/http.dart';
 import 'package:p3l_atmabakery/data/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-import 'package:http/http.dart';
 
 class userClient {
   static final String url = "api-atma-bakery.vercel.app"; // ini pake emu yaa
@@ -72,7 +73,7 @@ class userClient {
     try {
       var response = await post(Uri.parse("https://$url/register"),
           headers: {"Content-Type": "application/json"},
-          body: user.toRawJson());
+          body: user.toRawJsonRegister());
       if (response.statusCode != 200)
         throw Exception(jsonDecode(response.body)['message'].toString());
       return response;

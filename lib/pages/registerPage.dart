@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:p3l_atmabakery/data/client/userClient.dart';
+import 'package:p3l_atmabakery/data/user.dart';
 import 'package:p3l_atmabakery/pages/loginPage.dart';
 import 'package:p3l_atmabakery/pages/privacyPolicyPage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:intl/intl.dart';
-import 'package:p3l_atmabakery/data/user.dart';
-import 'package:p3l_atmabakery/data/client/userClient.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -18,6 +18,7 @@ class _RegisterPage extends State<RegisterPage> {
   String selectedDate = '';
   bool isPasswordVisible = false;
   bool isPasswordVisible2 = false;
+  bool isLoading = false;
   bool checkedValue = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController controllerEmail = TextEditingController();
@@ -42,6 +43,12 @@ class _RegisterPage extends State<RegisterPage> {
   }
 
   void submission() async {
+    if (isLoading) return;
+
+    setState(() {
+      isLoading = true;
+    });
+
     DateFormat originalFormat = DateFormat("EEEE, dd MMMM yyyy", "en_US");
     DateTime parsedDate = originalFormat.parse(selectedDate);
 
@@ -58,12 +65,19 @@ class _RegisterPage extends State<RegisterPage> {
       no_telp: controllerNoTelp.text,
       tanggal_lahir: formattedDate,
     );
+
     try {
       await userClient.create(input);
       showSnackbar(context, "Berhasil Register", Colors.green);
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginPage()));
     } catch (e) {
       print(e.toString());
       showSnackbar(context, e.toString(), Colors.red);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -556,13 +570,23 @@ class _RegisterPage extends State<RegisterPage> {
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: const Color.fromRGBO(
                                           244, 142, 40, 1)),
-                                  onPressed: () => {
-                                    if (_formKey.currentState!.validate() &&
-                                        checkedValue != false)
-                                      {submission()}
-                                  },
-                                  child: const Text(
-                                    'Daftar',
+                                  onPressed: isLoading
+                                      ? null
+                                      : () async {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            if (!checkedValue) {
+                                              showSnackbar(
+                                                  context,
+                                                  "Anda belum menyetujui Term of Service dan Privacy Policy",
+                                                  Colors.red);
+                                              return;
+                                            }
+                                            submission();
+                                          }
+                                        },
+                                  child: Text(
+                                    isLoading ? "Loading..." : "Daftar",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontStyle: FontStyle.normal,

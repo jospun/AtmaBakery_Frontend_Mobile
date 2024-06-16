@@ -2,13 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:p3l_atmabakery/data/client/firebase_api.dart';
+import 'package:p3l_atmabakery/data/client/userClient.dart';
 import 'package:p3l_atmabakery/pages/forgetPasswordPage.dart';
 import 'package:p3l_atmabakery/pages/homeNavbar.dart';
-import 'package:p3l_atmabakery/pages/customer/homePage.dart';
 import 'package:p3l_atmabakery/pages/registerPage.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:p3l_atmabakery/data/user.dart';
-import 'package:p3l_atmabakery/data/client/userClient.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -20,6 +18,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isPasswordVisible = false;
+  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   TextEditingController controllerEmail = TextEditingController();
   TextEditingController controllerPassword = TextEditingController();
@@ -205,8 +204,6 @@ class _LoginPageState extends State<LoginPage> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Kata Sandi Tidak Boleh Kosong!';
-                              } else if (value.length < 8) {
-                                return 'Kata Sandi Minimal 8 Karakte!r';
                               }
                               return null;
                             },
@@ -242,23 +239,38 @@ class _LoginPageState extends State<LoginPage> {
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor:
                                         const Color.fromRGBO(244, 142, 40, 1)),
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    String? loggedIn = await login();
-                                    SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-                                    prefs.setString('token', loggedIn!);
-                                    print(prefs.getString('token')!);
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const HomeNavbar(),
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: const Text(
-                                  'Masuk',
+                                onPressed: isLoading
+                                    ? null
+                                    : () async {
+                                        if (_formKey.currentState!.validate()) {
+                                          try {
+                                            setState(() {
+                                              isLoading = true;
+                                            });
+                                            String? loggedIn = await login();
+                                            SharedPreferences prefs =
+                                                await SharedPreferences
+                                                    .getInstance();
+                                            prefs.setString('token', loggedIn!);
+                                            print(prefs.getString('token')!);
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) =>
+                                                    const HomeNavbar(),
+                                              ),
+                                            );
+                                          } catch (e) {
+                                            print(e.toString());
+                                          } finally {
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                          }
+                                        }
+                                      },
+                                child: Text(
+                                  isLoading ? "Loading..." : "Masuk",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontStyle: FontStyle.normal,

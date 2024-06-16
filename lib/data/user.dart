@@ -78,4 +78,13 @@ class User {
         "saldo": saldo,
         "poin": poin,
       };
+  String toRawJsonRegister() => json.encode(toJsonRegister());
+  Map<String, dynamic> toJsonRegister() => {
+        "email": email,
+        "nama": nama,
+        "password": password,
+        "password_confirmation": password_confirmation,
+        "no_telp": no_telp,
+        "tanggal_lahir": tanggal_lahir,
+      };
 }
